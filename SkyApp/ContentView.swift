@@ -13,7 +13,10 @@ struct ContentView: View {
             ImgBackgroundView()
             VStack {
                 MainForecastView()
+                    .respectSafeAre()
                 AirHumidityView()
+                HourlyForecastView()
+                DaysForecastView()
             }
         }
     }
@@ -36,12 +39,10 @@ struct MainForecastView: View {
     var body: some View {
         VStack {
             Text("Minas Gerais")
-                .padding(.bottom, 1)
                 .font(.custom("Itim", size: 35))
-                .foregroundColor(.white)
+                .padding(.bottom, 1)
             HStack {
                 Text("25°C")
-                    .foregroundColor(.white)
                     .padding(.trailing, 15)
                 Image(systemName: "sun.max.fill")
                     .foregroundColor(.yellow)
@@ -49,12 +50,9 @@ struct MainForecastView: View {
             }
             .font(.custom("Itim", size: 80))
         }
-        .padding(25)
-        .background(
-            RoundedRectangle(cornerRadius: 30)
-                .stroke(Color.white, lineWidth: 2)
-        )
-        .padding(.bottom)
+        .foregroundColor(.white)
+        .padding(.top, 50)
+        .padding(.bottom, 30)
     }
 }
 
@@ -72,15 +70,93 @@ struct AirHumidityView: View {
                 Text("10km/h")
             }
         }
-        .padding()
-        .font(.custom("Itim", size: 18))
+        .font(.custom("Itim", size: 19))
         .foregroundColor(.white)
+        .padding()
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
                 .opacity(0.3)
         )
         .padding([.trailing, .leading], 70)
+        .padding(.bottom, 30)
+    }
+}
+
+struct HourlyForecastView: View {
+    var body: some View {
+        Text("PREIVSÃO POR HORA")
+            .font(.custom("Itim", size: 22))
+            .foregroundColor(.white)
+        ScrollView(.horizontal, showsIndicators: false) {
+            HStack {
+                ForEach(0...23, id: \.self) { index in
+                    VStack {
+                        Text("13:00")
+                            .font(.custom("Itim", size: 18))
+                        Image(systemName: "sun.max.fill")
+                            .font(.system(size: 30))
+                            .foregroundColor(.yellow)
+                            .padding([.top, .bottom], 0.1)
+                            .animationBounce()
+                        Text("25°C")
+                            .font(.custom("Itim", size: 22))
+                        
+                    }
+                    .padding()
+                    .foregroundColor(.white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 30)
+                            .stroke(Color.white, lineWidth: 1).opacity(0.2)
+                    )
+                    .padding(1)
+                }
+            }
+            .padding(.trailing, 9)
+            .padding(.bottom, 20)
+        }
+        .padding(.leading, 9)
+    }
+}
+
+struct DaysForecastView: View {
+    var body: some View {
+        Text("PRÓXIMOS DIAS")
+            .font(.custom("Itim", size: 22))
+            .foregroundColor(.white)
+        VStack {
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack {
+                    ForEach(0...6, id: \.self) { index in
+                        HStack {
+                            Text("TER")
+                            Spacer()
+                            Image(systemName: "cloud.drizzle.fill")
+                            Spacer()
+                            Text("mín: 25°C")
+                                .padding(.trailing, 10)
+                            Text("máx: 35°C")
+                        }
+                        .font(.custom("Itim", size: 20))
+                        .foregroundColor(.white)
+                        .padding(.bottom, 17)
+                    }
+                }
+            }
+        }
+        .padding(15)
+    }
+}
+
+extension View {
+    func respectSafeAre() -> some View {
+        self.safeAreaInset(edge: .top) {
+            GeometryReader { geometry in
+                Color.clear
+                    .frame(height: geometry.safeAreaInsets.top )
+            }
+            .frame(height: 0)
+        }
     }
 }
 
