@@ -24,21 +24,19 @@ struct ContentView: View {
 
 struct ImgBackgroundView: View {
     var body: some View {
-        Image("dia-sol")
-            .resizable()
+        Image(Bg.daySum)
             .scaledToFill()
             .ignoresSafeArea()
             .overlay(
-                Color.black.opacity(0.2)
+                Color.black.opacity(0.3)
             )
     }
-
 }
 
 struct MainForecastView: View {
     var body: some View {
         VStack {
-            Text("Minas Gerais")
+            Text("Belo Horizonte")
                 .font(.custom("Itim", size: 35))
                 .padding(.bottom, 1)
             HStack {
@@ -76,7 +74,7 @@ struct AirHumidityView: View {
         .background(
             RoundedRectangle(cornerRadius: 20)
                 .fill(Color.white)
-                .opacity(0.3)
+                .opacity(0.2)
         )
         .padding([.trailing, .leading], 70)
         .padding(.bottom, 30)
@@ -144,7 +142,7 @@ struct DaysForecastView: View {
                 }
             }
         }
-        .padding(15)
+        .padding([.trailing, .leading, .bottom],15)
     }
 }
 
