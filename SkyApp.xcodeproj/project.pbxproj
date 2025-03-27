@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		39BA11962D95B2C400AC3925 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 39BA11952D95B2C400AC3925 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		39A30FD72D84C12A00E6E898 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		39A30FC62D84C12900E6E898 /* SkyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A30FD62D84C12A00E6E898 /* SkyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkyAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		39A30FE02D84C12A00E6E898 /* SkyAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkyAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		39BA11952D95B2C400AC3925 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -88,6 +93,7 @@
 		39A30FBD2D84C12900E6E898 = {
 			isa = PBXGroup;
 			children = (
+				39BA11952D95B2C400AC3925 /* .gitignore */,
 				39A30FC82D84C12900E6E898 /* SkyApp */,
 				39A30FD92D84C12A00E6E898 /* SkyAppTests */,
 				39A30FE32D84C12A00E6E898 /* SkyAppUITests */,
@@ -225,6 +231,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				39BA11962D95B2C400AC3925 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
