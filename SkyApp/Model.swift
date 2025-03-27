@@ -66,7 +66,7 @@ func formatPrintJSON(_ jsonData: Data) {
         print("❌ Erro ao formatar JSON")
     }
 }
-
+//
 func JsonDecoder(jsonString: String) {
     if let jsonData = jsonString.data(using: .utf8) { // jsonString deve conter o JSON recebido
         do {
