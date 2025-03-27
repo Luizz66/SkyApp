@@ -5,14 +5,42 @@
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
 //
 
+import Foundation
+import CoreLocation
 import SwiftUI
 
-struct Bg {
-    static let daySum: String = "dia-sol"
-    static let dayRain: String = "dia-chuva"
-    static let dayCloud: String = "dia-nublado"
-    static let nightMoon: String = "noite-lua"
-    static let nightRain: String = "noite-chuva"
-    static let nightCloud: String = "noite-nublada"
+// get localização atual
+class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
+    private var locationManager = CLLocationManager()
+    
+    @Published var city: String = "Carregando..."
+    @Published var state: String = "Carregando..."
+    
+    override init() {
+        super.init()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestWhenInUseAuthorization()
+        locationManager.startUpdatingLocation()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let location = locations.last else { return }
+        fetchCityAndState(from: location)
+    }
+
+    private func fetchCityAndState(from location: CLLocation) {
+        let geocoder = CLGeocoder()
+        geocoder.reverseGeocodeLocation(location) { placemarks, error in
+            if let placemark = placemarks?.first {
+                DispatchQueue.main.async {
+                    self.city = placemark.locality ?? "Cidade desconhecida"
+                    self.state = placemark.administrativeArea ?? "Estado desconhecido"
+                }
+            }
+        }
+    }
 }
+
+
 

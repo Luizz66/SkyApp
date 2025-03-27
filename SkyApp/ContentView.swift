@@ -6,12 +6,22 @@
 //
 
 import SwiftUI
+import CoreLocation
 
 struct ContentView: View {
+    @StateObject private var locationManager = LocationManager()
+    
     var body: some View {
         ZStack {
             ImgBackgroundView()
             VStack {
+                Button("Json") {
+                    fetchWeather(city: "Contagem")
+                }
+                .padding(50)
+                .background(Color.red)
+                .foregroundColor(.white)
+                .cornerRadius(10)
                 MainForecastView()
                     .respectSafeAre()
                 AirHumidityView()
@@ -19,6 +29,7 @@ struct ContentView: View {
                 DaysForecastView()
             }
         }
+        .environmentObject(locationManager)
     }
 }
 
@@ -34,9 +45,11 @@ struct ImgBackgroundView: View {
 }
 
 struct MainForecastView: View {
+    @EnvironmentObject var locationManager: LocationManager
+    
     var body: some View {
         VStack {
-            Text("Belo Horizonte")
+            Text("\(locationManager.city)")
                 .font(.custom("Itim", size: 35))
                 .padding(.bottom, 1)
             HStack {
