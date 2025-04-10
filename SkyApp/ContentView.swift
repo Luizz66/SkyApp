@@ -10,18 +10,12 @@ import CoreLocation
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
-    
+    @StateObject var weatherViewModel = WeatherViewModel()
+
     var body: some View {
         ZStack {
             ImgBackgroundView()
             VStack {
-                Button("Json") {
-                    fetchWeather(city: "Contagem")
-                }
-                .padding(50)
-                .background(Color.red)
-                .foregroundColor(.white)
-                .cornerRadius(10)
                 MainForecastView()
                     .respectSafeAre()
                 AirHumidityView()
@@ -30,6 +24,7 @@ struct ContentView: View {
             }
         }
         .environmentObject(locationManager)
+        .environmentObject(weatherViewModel)
     }
 }
 
@@ -46,20 +41,32 @@ struct ImgBackgroundView: View {
 
 struct MainForecastView: View {
     @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
     
     var body: some View {
         VStack {
-            Text("\(locationManager.city)")
-                .font(.custom("Itim", size: 35))
-                .padding(.bottom, 1)
-            HStack {
-                Text("25°C")
-                    .padding(.trailing, 15)
-                Image(systemName: "sun.max.fill")
-                    .foregroundColor(.yellow)
-                    .animationBounce()
+            if let clima = weatherViewModel.weatherData {
+                Text("\(clima.name)")
+                    .font(.custom("Itim", size: 35))
+                    .padding(.bottom, 1)
+                HStack {
+                    Text("\(clima.main.temp)")
+                        .padding(.trailing, 15)
+                    Image(systemName: "sun.max.fill")
+                        .foregroundColor(.yellow)
+                        .animationBounce()
+                }
+                .font(.custom("Itim", size: 80))
+            } else if let erro = weatherViewModel.errorMessage {
+                Text("Erro: \(erro)")
+            } else {
+                Text("Carregando clima...")
+                    .font(.custom("Itim", size: 35))
+                    .padding(.bottom, 1)
             }
-            .font(.custom("Itim", size: 80))
+        }
+        .onReceive(locationManager.$city.dropFirst()) { cidade in
+            weatherViewModel.loadWeather(for: cidade)
         }
         .foregroundColor(.white)
         .padding(.top, 50)
