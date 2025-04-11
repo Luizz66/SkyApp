@@ -7,10 +7,8 @@
 
 import Foundation
 import CoreLocation
-import SwiftUI
-import Combine
 
-// get localização atual
+//get localização atual
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
     
@@ -43,6 +41,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     }
 }
 
+//loadWeather
 class WeatherViewModel: ObservableObject {
     @Published var weatherData: WeatherData?
     @Published var errorMessage: String?
@@ -61,7 +60,7 @@ class WeatherViewModel: ObservableObject {
     }
 }
 
-
+//call api
 class WeatherService {
     private let token = Secrets.apiKey
     
@@ -93,7 +92,7 @@ class WeatherService {
                 let decoder = JSONDecoder()
                 let weather = try decoder.decode(WeatherData.self, from: data)
                 
-                printWeatherData(weather)
+                printWeatherData(weather)//del
                 
                 DispatchQueue.main.async {
                     completion(.success(weather))
@@ -106,7 +105,6 @@ class WeatherService {
         }.resume()
     }
 }
-
 
 //get apiKey
 struct Secrets {

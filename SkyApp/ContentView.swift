@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreLocation
 
 struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
@@ -30,12 +29,15 @@ struct ContentView: View {
 
 struct ImgBackgroundView: View {
     var body: some View {
-        Image(Bg.daySum)
-            .scaledToFill()
-            .ignoresSafeArea()
-            .overlay(
-                Color.black.opacity(0.3)
-            )
+        ZStack {
+            Image(Bg.daySum)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .overlay(
+                    Color.black.opacity(0.3)
+                )
+        }
     }
 }
 
@@ -46,11 +48,11 @@ struct MainForecastView: View {
     var body: some View {
         VStack {
             if let clima = weatherViewModel.weatherData {
-                Text("\(clima.name)")
+                Text(clima.name)
                     .font(.custom("Itim", size: 35))
                     .padding(.bottom, 1)
                 HStack {
-                    Text("\(clima.main.temp)")
+                    Text(formatTemp(temp: clima.main.temp))
                         .padding(.trailing, 15)
                     Image(systemName: "sun.max.fill")
                         .foregroundColor(.yellow)
@@ -75,18 +77,32 @@ struct MainForecastView: View {
 }
 
 struct AirHumidityView: View {
+    @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            HStack {
-                Text("Umidade")
-                Spacer()
-                Text("1000mm")
+            if let clima = weatherViewModel.weatherData {
+                HStack {
+                    Text("Umidade")
+                    Spacer()
+                    Text("\(clima.main.humidity)%")
+                }
+                HStack {
+                    Text("Vento")
+                    Spacer()
+                    Text(formatWind(wind: clima.wind.speed))
+                }
+            } else if let erro = weatherViewModel.errorMessage {
+                Text("Erro: \(erro)")
+            } else {
+                Text("Carregando clima...")
+                    .font(.custom("Itim", size: 35))
+                    .padding(.bottom, 1)
             }
-            HStack {
-                Text("Vento")
-                Spacer()
-                Text("10km/h")
-            }
+        }
+        .onReceive(locationManager.$city.dropFirst()) { cidade in
+            weatherViewModel.loadWeather(for: cidade)
         }
         .font(.custom("Itim", size: 19))
         .foregroundColor(.white)
@@ -163,43 +179,6 @@ struct DaysForecastView: View {
             }
         }
         .padding([.trailing, .leading, .bottom],15)
-    }
-}
-
-extension View {
-    func respectSafeAre() -> some View {
-        self.safeAreaInset(edge: .top) {
-            GeometryReader { geometry in
-                Color.clear
-                    .frame(height: geometry.safeAreaInsets.top )
-            }
-            .frame(height: 0)
-        }
-    }
-}
-
-// Extensão para adicionar a animação de bounce
-extension View {
-    func animationBounce() -> some View {
-        self.modifier(BounceEffect())
-    }
-}
-
-// Modificador customizado para o efeito de bounce
-struct BounceEffect: ViewModifier {
-    @State private var bounce = false
-    
-    func body(content: Content) -> some View {
-        content
-            .scaleEffect(bounce ? 1.02 : 1.0)
-            .offset(y: bounce ? -2 : 0)
-            .animation(
-                Animation.interpolatingSpring(stiffness: 250, damping: 30)
-                    .repeatForever(autoreverses: true), value: bounce
-            )
-            .onAppear {
-                bounce = true
-            }
     }
 }
 
