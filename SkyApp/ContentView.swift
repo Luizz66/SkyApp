@@ -139,17 +139,16 @@ struct HourlyForecastView: View {
                     }
                     .padding()
                     .foregroundColor(.white)
-                    .background(
-                        RoundedRectangle(cornerRadius: 30)
-                            .stroke(Color.white, lineWidth: 1).opacity(0.2)
-                    )
-                    .padding(1)
                 }
             }
-            .padding(.trailing, 9)
-            .padding(.bottom, 20)
         }
-        .padding(.leading, 9)
+        .padding([.leading, .trailing], 15)
+        .background(
+            RoundedRectangle(cornerRadius: 30)
+                .stroke(Color.white, lineWidth: 1).opacity(0.3)
+        )
+        .padding(.bottom, 20)
+        .padding([.leading, .trailing], 8)
     }
 }
 
