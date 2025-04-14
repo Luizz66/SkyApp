@@ -30,8 +30,8 @@ struct ContentView: View {
 struct ImgBackgroundView: View {
     var body: some View {
         ZStack {
-            Image(Bg.daySum)
-                .resizable()
+            Image(Bg.day)
+                //.resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
                 .overlay(

@@ -44,12 +44,12 @@ struct BounceEffect: ViewModifier {
 }
 
 struct Bg {
-    static let daySum: String = "dia-sol"
-    static let dayRain: String = "dia-chuva"
-    static let dayCloud: String = "dia-nublado"
-    static let nightMoon: String = "noite-lua"
-    static let nightRain: String = "noite-chuva"
-    static let nightCloud: String = "noite-nublada"
+    static let day: String = "day"
+    static let dayRain: String = "day-rain"
+    static let dayCloud: String = "day-cloud"
+    static let night: String = "night"
+    static let nightRain: String = "night-rain"
+    static let nightCloud: String = "night-cloud"
 }
 
 func formatTemp(temp: Double) -> String {
