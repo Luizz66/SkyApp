@@ -23,8 +23,14 @@ struct WeatherData: Codable {
         let description: String
     }
     
+    struct Coord: Codable {
+        let lon: Double
+        let lat: Double
+    }
+    
     let main: Main
     let wind: Wind
     let weather: [Weather]
+    let coord: Coord
     let name: String
 }

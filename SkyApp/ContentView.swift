@@ -35,7 +35,7 @@ struct ImgBackgroundView: View {
                 .scaledToFill()
                 .ignoresSafeArea()
                 .overlay(
-                    Color.black.opacity(0.3)
+                    Color.black.opacity(0.4)
                 )
         }
     }
@@ -71,8 +71,8 @@ struct MainForecastView: View {
             weatherViewModel.loadWeather(for: cidade)
         }
         .foregroundColor(.white)
-        .padding(.top, 50)
-        .padding(.bottom, 30)
+        .padding(.top, 70)
+        .padding(.bottom, 25)
     }
 }
 
@@ -108,9 +108,9 @@ struct AirHumidityView: View {
         .foregroundColor(.white)
         .padding()
         .background(
-            RoundedRectangle(cornerRadius: 20)
+            RoundedRectangle(cornerRadius: 15)
                 .fill(Color.white)
-                .opacity(0.2)
+                .opacity(0.1)
         )
         .padding([.trailing, .leading], 70)
         .padding(.bottom, 30)
@@ -119,8 +119,8 @@ struct AirHumidityView: View {
 
 struct HourlyForecastView: View {
     var body: some View {
-        Text("PREIVSÃO POR HORA")
-            .font(.custom("Itim", size: 22))
+        Text("PREVISÃO POR HORA")
+            .font(.custom("Itim", size: 20))
             .foregroundColor(.white)
         ScrollView(.horizontal, showsIndicators: false) {
             HStack {
@@ -137,25 +137,25 @@ struct HourlyForecastView: View {
                             .font(.custom("Itim", size: 22))
                         
                     }
-                    .padding()
+                    .padding([.top, .bottom], 5)
+                    .padding([.trailing, .leading], 20)
                     .foregroundColor(.white)
+                    .background(
+                        RoundedRectangle(cornerRadius: 20)
+                            .fill(Color.white).opacity(0.1)
+                    )
                 }
             }
         }
         .padding([.leading, .trailing], 15)
-        .background(
-            RoundedRectangle(cornerRadius: 30)
-                .stroke(Color.white, lineWidth: 1).opacity(0.3)
-        )
-        .padding(.bottom, 20)
-        .padding([.leading, .trailing], 8)
+        .padding(.bottom, 30)
     }
 }
 
 struct DaysForecastView: View {
     var body: some View {
         Text("PRÓXIMOS DIAS")
-            .font(.custom("Itim", size: 22))
+            .font(.custom("Itim", size: 20))
             .foregroundColor(.white)
         VStack {
             ScrollView(.vertical, showsIndicators: false) {

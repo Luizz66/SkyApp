@@ -31,11 +31,12 @@ struct BounceEffect: ViewModifier {
     
     func body(content: Content) -> some View {
         content
-            .scaleEffect(bounce ? 1.02 : 1.0)
-            .offset(y: bounce ? -2 : 0)
+            .scaleEffect(bounce ? 1.04 : 1.0)
+            .offset(y: bounce ? -1 : 0)
             .animation(
-                Animation.interpolatingSpring(stiffness: 250, damping: 30)
-                    .repeatForever(autoreverses: true), value: bounce
+                Animation.easeInOut(duration: 0.6)
+                    .repeatForever(autoreverses: true),
+                value: bounce
             )
             .onAppear {
                 bounce = true
@@ -54,7 +55,6 @@ struct Bg {
 
 func formatTemp(temp: Double) -> String {
     return String(format: "%.0f°C", temp)
-    //return String(format: "%.1f°C", temp).replacingOccurrences(of: ".", with: ",")
 }
 
 func formatWind(wind: Double) -> String {
@@ -70,6 +70,8 @@ func printWeatherData(_ data: WeatherData) {
     print("Máxima: \(data.main.temp_max)°C")
     print("Umidade: \(data.main.humidity)%")
     print("Vento: \(data.wind.speed) m/s")
+    print("Latitude: \(data.coord.lat)")
+    print("Longitude: \(data.coord.lon)")
     
     if let clima = data.weather.first {
         print("☁️ Clima: \(clima.main)")
