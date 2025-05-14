@@ -70,9 +70,8 @@ func printWeatherData(_ data: WeatherData) {
     print("Máxima: \(data.main.temp_max)°C")
     print("Umidade: \(data.main.humidity)%")
     print("Vento: \(data.wind.speed) m/s")
-    print("Latitude: \(data.coord.lat)")
-    print("Longitude: \(data.coord.lon)")
-    
+//    print("Latitude: \(data.coord.lat)")
+//    print("Longitude: \(data.coord.lon)")
     if let clima = data.weather.first {
         print("☁️ Clima: \(clima.main)")
         print("📝 Descrição: \(clima.description)")

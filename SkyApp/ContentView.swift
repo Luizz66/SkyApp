@@ -31,7 +31,6 @@ struct ImgBackgroundView: View {
     var body: some View {
         ZStack {
             Image(Bg.day)
-                //.resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
                 .overlay(
@@ -62,7 +61,7 @@ struct MainForecastView: View {
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
             } else {
-                Text("Carregando clima...")
+                Text("Carregando...")
                     .font(.custom("Itim", size: 35))
                     .padding(.bottom, 1)
             }
@@ -96,7 +95,7 @@ struct AirHumidityView: View {
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
             } else {
-                Text("Carregando clima...")
+                Text("Carregando...")
                     .font(.custom("Itim", size: 35))
                     .padding(.bottom, 1)
             }
@@ -127,7 +126,7 @@ struct HourlyForecastView: View {
                 ForEach(0...23, id: \.self) { index in
                     VStack {
                         Text("13:00")
-                            .font(.custom("Itim", size: 18))
+                            .font(.custom("Itim", size: 19))
                         Image(systemName: "sun.max.fill")
                             .font(.system(size: 30))
                             .foregroundColor(.yellow)
@@ -138,7 +137,7 @@ struct HourlyForecastView: View {
                         
                     }
                     .padding([.top, .bottom], 5)
-                    .padding([.trailing, .leading], 20)
+                    .padding([.trailing, .leading], 17)
                     .foregroundColor(.white)
                     .background(
                         RoundedRectangle(cornerRadius: 20)

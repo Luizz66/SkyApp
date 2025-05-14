@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Precisamos da sua localização para mostrar sua cidade</string>
+	<string>Este app precisa da sua localização para funcionar corretamente.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Itim-Regular.ttf</string>
