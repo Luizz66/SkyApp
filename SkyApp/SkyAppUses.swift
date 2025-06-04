@@ -54,26 +54,9 @@ struct Bg {
 }
 
 func formatTemp(temp: Double) -> String {
-    return String(format: "%.0f°C", temp)
+    return String(format: "%.1f°", temp).replacingOccurrences(of: ".", with: ",")
 }
 
 func formatWind(wind: Double) -> String {
     return String(format: "%.1f km/h", wind * 3.6).replacingOccurrences(of: ".", with: ",")
-}
-
-//del
-func printWeatherData(_ data: WeatherData) {
-    print(" --- DADOS DO CLIMA ---")
-    print("Cidade: \(data.name)")
-    print("Temperatura atual: \(data.main.temp)°C")
-    print("Mínima: \(data.main.temp_min)°C")
-    print("Máxima: \(data.main.temp_max)°C")
-    print("Umidade: \(data.main.humidity)%")
-    print("Vento: \(data.wind.speed) m/s")
-//    print("Latitude: \(data.coord.lat)")
-//    print("Longitude: \(data.coord.lon)")
-    if let clima = data.weather.first {
-        print("☁️ Clima: \(clima.main)")
-        print("📝 Descrição: \(clima.description)")
-    }
 }

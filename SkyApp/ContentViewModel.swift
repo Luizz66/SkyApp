@@ -12,8 +12,7 @@ import CoreLocation
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
     
-    @Published var city: String = "Carregando..."
-    @Published var state: String = "Carregando..."
+    @Published var coordinate: CLLocationCoordinate2D?
     
     override init() {
         super.init()
@@ -25,18 +24,8 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
-        fetchCityAndState(from: location)
-    }
-    
-    private func fetchCityAndState(from location: CLLocation) {
-        let geocoder = CLGeocoder()
-        geocoder.reverseGeocodeLocation(location) { placemarks, error in
-            if let placemark = placemarks?.first {
-                DispatchQueue.main.async {
-                    self.city = placemark.locality ?? "Cidade desconhecida"
-                    self.state = placemark.administrativeArea ?? "Estado desconhecido"
-                }
-            }
+        DispatchQueue.main.async {
+            self.coordinate = location.coordinate
         }
     }
 }
@@ -48,8 +37,8 @@ class WeatherViewModel: ObservableObject {
 
     private let weatherService = WeatherService()
 
-    func loadWeather(for cidade: String) {
-        weatherService.fetchWeather(for: cidade) { result in
+    func loadWeather(for coord: CLLocationCoordinate2D) {
+        weatherService.fetchWeather(for: coord) { result in
             switch result {
             case .success(let dados):
                 self.weatherData = dados
@@ -64,8 +53,8 @@ class WeatherViewModel: ObservableObject {
 class WeatherService {
     private let token = Secrets.apiKey
     
-    func fetchWeather(for city: String, completion: @escaping (Result<WeatherData, Error>) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?q=\(city)&appid=\(token)&units=metric&lang=pt"
+    func fetchWeather(for coord: CLLocationCoordinate2D, completion: @escaping (Result<WeatherData, Error>) -> Void) {
+        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=p"
         
         guard let url = URL(string: urlString) else {
             print("URL inválida")
@@ -89,8 +78,7 @@ class WeatherService {
             }
 
             do {
-                let decoder = JSONDecoder()
-                let weather = try decoder.decode(WeatherData.self, from: data)
+                let weather = try JSONDecoder().decode(WeatherData.self, from: data)
                 
                 printWeatherData(weather)//del
                 
@@ -104,6 +92,26 @@ class WeatherService {
             }
         }.resume()
     }
+}
+
+//del
+func printWeatherData(_ data: WeatherData) {
+    print(" --- DADOS DO CLIMA ---")
+    print("Cidade: \(data.name)")
+    print("Temperatura atual: \(data.main.temp)°C")
+    print("Sensação Térmica: \(data.main.feels_like)°C")
+    print("Mínima: \(data.main.temp_min)°C")
+    print("Máxima: \(data.main.temp_max)°C")
+    print("Umidade: \(data.main.humidity)% do céu")
+    print("Vento: \(data.wind.speed) m/s")
+    print("Chuva: \(data.rain?.one ?? 0) mm nas últimas 1h")
+    print("Nuvems: \(data.clouds.all)%")
+    if let clima = data.weather.first {
+        print("Clima: \(clima.main)")
+        print("Icon: \(clima.icon)")
+    }
+    print("Latitude: \(data.coord.lat)")
+    print("Longitude: \(data.coord.lon)")
 }
 
 //get apiKey

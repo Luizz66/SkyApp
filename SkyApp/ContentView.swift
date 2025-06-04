@@ -66,8 +66,8 @@ struct MainForecastView: View {
                     .padding(.bottom, 1)
             }
         }
-        .onReceive(locationManager.$city.dropFirst()) { cidade in
-            weatherViewModel.loadWeather(for: cidade)
+        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+            weatherViewModel.loadWeather(for: coordinate)
         }
         .foregroundColor(.white)
         .padding(.top, 70)
@@ -100,8 +100,8 @@ struct AirHumidityView: View {
                     .padding(.bottom, 1)
             }
         }
-        .onReceive(locationManager.$city.dropFirst()) { cidade in
-            weatherViewModel.loadWeather(for: cidade)
+        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+            weatherViewModel.loadWeather(for: coordinate)
         }
         .font(.custom("Itim", size: 19))
         .foregroundColor(.white)
@@ -132,7 +132,7 @@ struct HourlyForecastView: View {
                             .foregroundColor(.yellow)
                             .padding([.top, .bottom], 0.1)
                             .animationBounce()
-                        Text("25°C")
+                        Text("25°")
                             .font(.custom("Itim", size: 22))
                         
                     }
@@ -165,9 +165,9 @@ struct DaysForecastView: View {
                             Spacer()
                             Image(systemName: "cloud.drizzle.fill")
                             Spacer()
-                            Text("mín: 25°C")
+                            Text("mín: 25°")
                                 .padding(.trailing, 10)
-                            Text("máx: 35°C")
+                            Text("máx: 35°")
                         }
                         .font(.custom("Itim", size: 20))
                         .foregroundColor(.white)
