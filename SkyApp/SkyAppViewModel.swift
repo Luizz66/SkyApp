@@ -1,5 +1,5 @@
 //
-//  ContentViewModel.swift
+//  SkyAppViewModel.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
@@ -106,6 +106,8 @@ func printWeatherData(_ data: WeatherData) {
     print("Vento: \(data.wind.speed) m/s")
     print("Chuva: \(data.rain?.one ?? 0) mm nas últimas 1h")
     print("Nuvems: \(data.clouds.all)%")
+    print("Nascer do sol: \(data.sys.sunrise)")
+    print("Pôr do sol: \(data.sys.sunset)")
     if let clima = data.weather.first {
         print("Clima: \(clima.main)")
         print("Icon: \(clima.icon)")

@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  SkyAppView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct SkyAppView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject var weatherViewModel = WeatherViewModel()
 
@@ -55,7 +55,7 @@ struct MainForecastView: View {
                         .padding(.trailing, 15)
                     Image(systemName: "sun.max.fill")
                         .foregroundColor(.yellow)
-                        .animationBounce()
+                        .myAnimationBounce()
                 }
                 .font(.custom("Itim", size: 80))
             } else if let erro = weatherViewModel.errorMessage {
@@ -131,7 +131,7 @@ struct HourlyForecastView: View {
                             .font(.system(size: 30))
                             .foregroundColor(.yellow)
                             .padding([.top, .bottom], 0.1)
-                            .animationBounce()
+                            .myAnimationBounce()
                         Text("25°")
                             .font(.custom("Itim", size: 22))
                         
@@ -181,5 +181,5 @@ struct DaysForecastView: View {
 }
 
 #Preview {
-    ContentView()
+    SkyAppView()
 }

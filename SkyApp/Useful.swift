@@ -1,5 +1,5 @@
 //
-//  AppUses.swift
+//  Useful.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 11/04/25.
@@ -20,13 +20,13 @@ extension View {
 
 // Extensão para adicionar a animação de bounce
 extension View {
-    func animationBounce() -> some View {
-        self.modifier(BounceEffect())
+    func myAnimationBounce() -> some View {
+        self.modifier(MyBounceEffect())
     }
 }
 
 // Modificador customizado para o efeito de bounce
-struct BounceEffect: ViewModifier {
+struct MyBounceEffect: ViewModifier {
     @State private var bounce = false
     
     func body(content: Content) -> some View {
@@ -54,9 +54,25 @@ struct Bg {
 }
 
 func formatTemp(temp: Double) -> String {
-    return String(format: "%.1f°", temp).replacingOccurrences(of: ".", with: ",")
+    let formatted = String(format: "%.1f", temp).replacingOccurrences(of: ".", with: ",")
+    
+    if formatted.last == "0" {
+        return String(format: "%.0f°", temp).replacingOccurrences(of: ".", with: ",")
+    } else {
+        return formatted + "°"
+    }
 }
 
 func formatWind(wind: Double) -> String {
     return String(format: "%.1f km/h", wind * 3.6).replacingOccurrences(of: ".", with: ",")
+}
+
+func formatSys(from timestamp: TimeInterval) -> String {
+    let date = Date(timeIntervalSince1970: timestamp)
+    
+    let formatter = DateFormatter()
+    formatter.dateFormat = "HH:mm:ss"
+    formatter.timeZone = TimeZone(identifier: "America/Sao_Paulo")
+    
+    return formatter.string(from: date)
 }

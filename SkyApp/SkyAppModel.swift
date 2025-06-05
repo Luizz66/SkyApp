@@ -1,5 +1,5 @@
 //
-//  ContentModel.swift
+//  SkyAppModel.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
@@ -31,6 +31,11 @@ struct WeatherData: Codable {
         let all: Int//procentagem do céu coberto com nuvem
     }
     
+    struct Sys: Codable {
+        let sunrise: TimeInterval
+        let sunset: TimeInterval
+    }
+    
     struct Weather: Codable {
         let main: String
         let icon: String //descrisção com base no icone
@@ -45,6 +50,7 @@ struct WeatherData: Codable {
     let wind: Wind
     let rain: Rain?
     let clouds: Clouds
+    let sys: Sys
     let weather: [Weather]
     let coord: Coord
     let name: String
