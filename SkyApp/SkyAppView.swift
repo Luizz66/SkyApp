@@ -17,26 +17,15 @@ struct SkyAppView: View {
             VStack {
                 MainForecastView()
                     .respectSafeAre()
-                AirHumidityView()
-                HourlyForecastView()
-                DaysForecastView()
+                ScrollView(.vertical, showsIndicators: false) {
+                    TemperatureRangeView()
+                    DaysForecastView()
+                    ForecastDetails()
+                }
             }
         }
         .environmentObject(locationManager)
         .environmentObject(weatherViewModel)
-    }
-}
-
-struct ImgBackgroundView: View {
-    var body: some View {
-        ZStack {
-            Image(Bg.day)
-                .scaledToFill()
-                .ignoresSafeArea()
-                .overlay(
-                    Color.black.opacity(0.4)
-                )
-        }
     }
 }
 
@@ -51,9 +40,15 @@ struct MainForecastView: View {
                     .font(.custom("Itim", size: 35))
                     .padding(.bottom, 1)
                 HStack {
-                    Text(formatTemp(temp: clima.main.temp))
-                        .padding(.trailing, 15)
+                    VStack(alignment: .leading) {
+                        Text(formatTemp(temp: clima.main.temp))
+                            .padding(.trailing, 15)
+                        Text(clima.weather.first?.description ?? "...")
+                            .font(.system(size: 26))
+                            .opacity(0.6)
+                    }
                     Image(systemName: "sun.max.fill")
+                        .font(.system(size: 95))
                         .foregroundColor(.yellow)
                         .myAnimationBounce()
                 }
@@ -64,6 +59,7 @@ struct MainForecastView: View {
                 Text("Carregando...")
                     .font(.custom("Itim", size: 35))
                     .padding(.bottom, 1)
+                    .foregroundColor(.white)
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
@@ -71,112 +67,117 @@ struct MainForecastView: View {
         }
         .foregroundColor(.white)
         .padding(.top, 70)
-        .padding(.bottom, 25)
+        .padding(.bottom, 40)
     }
 }
 
-struct AirHumidityView: View {
+struct TemperatureRangeView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
     var body: some View {
-        VStack(alignment: .leading, spacing: 10) {
+        VStack {
             if let clima = weatherViewModel.weatherData {
                 HStack {
-                    Text("Umidade")
-                    Spacer()
-                    Text("\(clima.main.humidity)%")
+                    Image(systemName: "thermometer.low")
+                    Text(formatMinTemp(temp: clima.main.temp_min))
+                        .padding(.trailing, 30)
+                    Image(systemName: "thermometer.high")
+                    Text(formatMaxTemp(temp: clima.main.temp_max))
                 }
-                HStack {
-                    Text("Vento")
-                    Spacer()
-                    Text(formatWind(wind: clima.wind.speed))
-                }
+                .foregroundColor(.white)
+                .font(.custom("Itim", size: 23))
+                .padding()
+                .background(Color.white.opacity(0.1))
+                .cornerRadius(20)
+                .padding(.bottom, 35)
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
             } else {
                 Text("Carregando...")
                     .font(.custom("Itim", size: 35))
                     .padding(.bottom, 1)
+                    .foregroundColor(.white)
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
         }
-        .font(.custom("Itim", size: 19))
-        .foregroundColor(.white)
-        .padding()
-        .background(
-            RoundedRectangle(cornerRadius: 15)
-                .fill(Color.white)
-                .opacity(0.1)
-        )
-        .padding([.trailing, .leading], 70)
-        .padding(.bottom, 30)
     }
 }
 
-struct HourlyForecastView: View {
-    var body: some View {
-        Text("PREVISÃO POR HORA")
-            .font(.custom("Itim", size: 20))
-            .foregroundColor(.white)
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack {
-                ForEach(0...23, id: \.self) { index in
-                    VStack {
-                        Text("13:00")
-                            .font(.custom("Itim", size: 19))
-                        Image(systemName: "sun.max.fill")
-                            .font(.system(size: 30))
-                            .foregroundColor(.yellow)
-                            .padding([.top, .bottom], 0.1)
-                            .myAnimationBounce()
-                        Text("25°")
-                            .font(.custom("Itim", size: 22))
-                        
-                    }
-                    .padding([.top, .bottom], 5)
-                    .padding([.trailing, .leading], 17)
-                    .foregroundColor(.white)
-                    .background(
-                        RoundedRectangle(cornerRadius: 20)
-                            .fill(Color.white).opacity(0.1)
-                    )
-                }
-            }
-        }
-        .padding([.leading, .trailing], 15)
-        .padding(.bottom, 30)
-    }
-}
 
 struct DaysForecastView: View {
     var body: some View {
-        Text("PRÓXIMOS DIAS")
-            .font(.custom("Itim", size: 20))
-            .foregroundColor(.white)
+        HStack {
+            Image(systemName: "calendar")
+            Text("PREVISÃO PARA 5 DIAS")
+        }
+        .font(.custom("Itim", size: 20))
+        .opacity(0.6)
+        .padding(.bottom, 10)
+        .foregroundColor(.white)
         VStack {
-            ScrollView(.vertical, showsIndicators: false) {
-                VStack {
-                    ForEach(0...6, id: \.self) { index in
-                        HStack {
-                            Text("TER")
-                            Spacer()
-                            Image(systemName: "cloud.drizzle.fill")
-                            Spacer()
-                            Text("mín: 25°")
-                                .padding(.trailing, 10)
-                            Text("máx: 35°")
-                        }
-                        .font(.custom("Itim", size: 20))
-                        .foregroundColor(.white)
-                        .padding(.bottom, 17)
+                ForEach(0...4, id: \.self) { item in
+                    HStack {
+                        Text("TER")
+                        Spacer()
+                        Image(systemName: "cloud.drizzle.fill")
+                            .myAnimationBounce()
+                        Spacer()
+                        Text("mín: 25°")
+                            .padding(.trailing, 10)
+                        Text("máx: 35°")
                     }
+                    .font(.custom("Itim", size: 20))
+                    .foregroundColor(.white)
+                    .padding(.bottom, 17)
                 }
-            }
         }
         .padding([.trailing, .leading, .bottom],15)
+    }
+}
+
+struct ForecastDetails: View {
+    var body: some View {
+        HStack {
+            VStack(alignment: .leading) {
+                VStack(alignment: .leading) {
+                    HStack {
+                        Image(systemName: "humidity.fill")
+                        Text("UMIDADE")
+                    }
+                    Text("60%")
+                }
+                .background(Color.red)
+                VStack(alignment: .leading) {
+                    HStack {
+                        Image(systemName: "humidity.fill")
+                        Text("VENTO")
+                    }
+                    Text("60%")
+                }
+                .background(Color.red)
+            }
+            VStack {
+                Text("SENSAÇÃO")
+                Text("60%")
+            }
+            .background(Color.red)
+        }
+    }
+}
+
+struct ImgBackgroundView: View {
+    var body: some View {
+        ZStack {
+            Image(Bg.day)
+                .scaledToFill()
+                .ignoresSafeArea()
+                .overlay(
+                    Color.black.opacity(0.4)
+                )
+        }
     }
 }
 

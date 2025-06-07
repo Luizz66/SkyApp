@@ -102,14 +102,14 @@ func printWeatherData(_ data: WeatherData) {
     print("Sensação Térmica: \(data.main.feels_like)°C")
     print("Mínima: \(data.main.temp_min)°C")
     print("Máxima: \(data.main.temp_max)°C")
-    print("Umidade: \(data.main.humidity)% do céu")
+    print("Umidade: \(data.main.humidity)%")
     print("Vento: \(data.wind.speed) m/s")
     print("Chuva: \(data.rain?.one ?? 0) mm nas últimas 1h")
-    print("Nuvems: \(data.clouds.all)%")
+    print("Nuvems: \(data.clouds.all)% do céu")
     print("Nascer do sol: \(data.sys.sunrise)")
     print("Pôr do sol: \(data.sys.sunset)")
     if let clima = data.weather.first {
-        print("Clima: \(clima.main)")
+        print("Clima: \(clima.description)")
         print("Icon: \(clima.icon)")
     }
     print("Latitude: \(data.coord.lat)")

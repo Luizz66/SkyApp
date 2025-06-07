@@ -63,6 +63,18 @@ func formatTemp(temp: Double) -> String {
     }
 }
 
+func formatMaxTemp(temp: Double) -> String {
+    let str = String(format: "%.0f", temp)
+    let formatted = "Máx:. \(str)°"
+    return formatted
+}
+
+func formatMinTemp(temp: Double) -> String {
+    let str = String(format: "%.0f", temp)
+    let formatted = "Mín:. \(str)°"
+    return formatted
+}
+
 func formatWind(wind: Double) -> String {
     return String(format: "%.1f km/h", wind * 3.6).replacingOccurrences(of: ".", with: ",")
 }
