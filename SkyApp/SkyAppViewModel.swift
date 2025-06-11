@@ -104,7 +104,7 @@ func printWeatherData(_ data: WeatherData) {
     print("Máxima: \(data.main.temp_max)°C")
     print("Umidade: \(data.main.humidity)%")
     print("Vento: \(data.wind.speed) m/s")
-    print("Chuva: \(data.rain?.one ?? 0) mm nas últimas 1h")
+    print("Chuva: \(data.rain?.one ?? 0.0) mm nas últimas 1h")
     print("Nuvems: \(data.clouds.all)% do céu")
     print("Nascer do sol: \(data.sys.sunrise)")
     print("Pôr do sol: \(data.sys.sunset)")

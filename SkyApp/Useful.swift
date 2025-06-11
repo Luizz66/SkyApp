@@ -18,6 +18,12 @@ extension View {
     }
 }
 
+extension Font {
+    static func itim(size: CGFloat) -> Font {
+        .custom("Itim", size: size)
+    }
+}
+
 // Extensão para adicionar a animação de bounce
 extension View {
     func myAnimationBounce() -> some View {
@@ -79,12 +85,16 @@ func formatWind(wind: Double) -> String {
     return String(format: "%.1f km/h", wind * 3.6).replacingOccurrences(of: ".", with: ",")
 }
 
+func formatPrecipitation (rain: Double) -> String {
+    return String(format: "%.1f mm" , rain).replacingOccurrences(of: ".", with: ",")
+}
+
 func formatSys(from timestamp: TimeInterval) -> String {
     let date = Date(timeIntervalSince1970: timestamp)
     
     let formatter = DateFormatter()
-    formatter.dateFormat = "HH:mm:ss"
+    formatter.dateFormat = "HH:mm"
     formatter.timeZone = TimeZone(identifier: "America/Sao_Paulo")
     
-    return formatter.string(from: date)
+    return formatter.string(from: date) + " h"
 }
