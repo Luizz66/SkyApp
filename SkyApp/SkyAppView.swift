@@ -34,15 +34,29 @@ struct SkyAppView: View {
 }
 
 struct ImgBackgroundView: View {
+    @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    
     var body: some View {
         ZStack {
-            Image(Bg.day)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .overlay(
-                    Color.black.opacity(0.4)
-                )
+            if let clima = weatherViewModel.weatherData {
+                Image(backgroundImage(icon: clima.weather[0].icon))
+                    .resizable()
+                    .scaledToFill()
+                    .ignoresSafeArea()
+                    .overlay(
+                        clima.weather[0].icon.last == "d" ? Color.black.opacity(0.3) : Color.black.opacity(0.2)
+                    )
+            } else if let erro = weatherViewModel.errorMessage {
+                Text("Erro: \(erro)")
+            }
+            else {
+                Text("...")
+                    .font(.itim(size: 35))
+            }
+        }
+        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+            weatherViewModel.loadWeather(for: coordinate)
         }
     }
 }

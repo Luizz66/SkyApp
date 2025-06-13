@@ -6,13 +6,33 @@
 //
 import SwiftUI
 
-struct Bg {
+struct Img {
     static let day: String = "day"
-    static let dayRain: String = "day-rain"
     static let dayCloud: String = "day-cloud"
+    static let dayRain: String = "day-rain"
     static let night: String = "night"
-    static let nightRain: String = "night-rain"
     static let nightCloud: String = "night-cloud"
+    static let nightRain: String = "night-rain"
+}
+
+func backgroundImage(icon: String) -> String {
+    switch icon {
+    case "01d", "02d":
+        return Img.day
+    case "03d", "04d", "50d":
+        return Img.dayCloud
+    case "09d", "10d", "11d":
+        return Img.dayRain
+    case "01n", "02n":
+        return Img.night
+    case "03n", "04n", "50n":
+        return Img.nightCloud
+    case "09n", "10n", "11n":
+        return Img.nightRain
+        //tratar o 13d e 13n (neve)
+    default:
+        return Img.day
+    }
 }
 
 extension Font {
