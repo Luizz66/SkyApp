@@ -28,7 +28,7 @@ struct WeatherData: Codable {
     }
     
     struct Clouds: Codable {
-        let all: Int//procentagem do céu coberto com nuvem
+        let all: Int
     }
     
     struct Sys: Codable {
@@ -37,8 +37,8 @@ struct WeatherData: Codable {
     }
     
     struct Weather: Codable {
-        let description: String
-        let icon: String //descrisção com base no icone
+        let id: Int
+        let icon: String
     }
     
     struct Coord: Codable {

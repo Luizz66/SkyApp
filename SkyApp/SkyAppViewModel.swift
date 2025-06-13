@@ -34,9 +34,9 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 class WeatherViewModel: ObservableObject {
     @Published var weatherData: WeatherData?
     @Published var errorMessage: String?
-
+    
     private let weatherService = WeatherService()
-
+    
     func loadWeather(for coord: CLLocationCoordinate2D) {
         weatherService.fetchWeather(for: coord) { result in
             switch result {
@@ -60,7 +60,7 @@ class WeatherService {
             print("URL inválida")
             return
         }
-
+        
         //requisição
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -69,14 +69,14 @@ class WeatherService {
                 }
                 return
             }
-
+            
             guard let data = data else {
                 DispatchQueue.main.async {
                     completion(.failure(NSError(domain: "Sem dados", code: -1)))
                 }
                 return
             }
-
+            
             do {
                 let weather = try JSONDecoder().decode(WeatherData.self, from: data)
                 
@@ -109,7 +109,7 @@ func printWeatherData(_ data: WeatherData) {
     print("Nascer do sol: \(data.sys.sunrise)")
     print("Pôr do sol: \(data.sys.sunset)")
     if let clima = data.weather.first {
-        print("Clima: \(clima.description)")
+        print("ClimaID: \(clima.id)")
         print("Icon: \(clima.icon)")
     }
     print("Latitude: \(data.coord.lat)")

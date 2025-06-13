@@ -6,50 +6,6 @@
 //
 import SwiftUI
 
-extension View {
-    func respectSafeAre() -> some View {
-        self.safeAreaInset(edge: .top) {
-            GeometryReader { geometry in
-                Color.clear
-                    .frame(height: geometry.safeAreaInsets.top )
-            }
-            .frame(height: 0)
-        }
-    }
-}
-
-extension Font {
-    static func itim(size: CGFloat) -> Font {
-        .custom("Itim", size: size)
-    }
-}
-
-// Extensão para adicionar a animação de bounce
-extension View {
-    func myAnimationBounce() -> some View {
-        self.modifier(MyBounceEffect())
-    }
-}
-
-// Modificador customizado para o efeito de bounce
-struct MyBounceEffect: ViewModifier {
-    @State private var bounce = false
-    
-    func body(content: Content) -> some View {
-        content
-            .scaleEffect(bounce ? 1.04 : 1.0)
-            .offset(y: bounce ? -1 : 0)
-            .animation(
-                Animation.easeInOut(duration: 0.6)
-                    .repeatForever(autoreverses: true),
-                value: bounce
-            )
-            .onAppear {
-                bounce = true
-            }
-    }
-}
-
 struct Bg {
     static let day: String = "day"
     static let dayRain: String = "day-rain"
@@ -59,25 +15,26 @@ struct Bg {
     static let nightCloud: String = "night-cloud"
 }
 
-func formatTemp(temp: Double) -> String {
-    let formatted = String(format: "%.1f", temp).replacingOccurrences(of: ".", with: ",")
-    
-    if formatted.last == "0" {
-        return String(format: "%.0f°", temp).replacingOccurrences(of: ".", with: ",")
-    } else {
-        return formatted + "°"
+extension Font {
+    static func itim(size: CGFloat) -> Font {
+        .custom("Itim", size: size)
     }
 }
 
-func formatMaxTemp(temp: Double) -> String {
-    let str = String(format: "%.0f", temp)
-    let formatted = "Máx:. \(str)°"
-    return formatted
+func formatTemp(temp: Double) -> String {
+    let formatted = String(format: "%.1f°", temp).replacingOccurrences(of: ".", with: ",")
+    
+    if formatted.last == "0" {
+        let intTemp = Int(temp)
+        return "\(intTemp)°"
+    } else {
+        return formatted
+    }
 }
 
-func formatMinTemp(temp: Double) -> String {
+func formatRangeTemp(txt: String, temp: Double) -> String {
     let str = String(format: "%.0f", temp)
-    let formatted = "Mín:. \(str)°"
+    let formatted = "\(txt).: \(str)°"
     return formatted
 }
 
@@ -98,3 +55,106 @@ func formatSys(from timestamp: TimeInterval) -> String {
     
     return formatter.string(from: date) + " h"
 }
+
+func sensationDescription(temp: Double, feelsLike: Double) -> String {
+    let intTemp = Int(temp)
+    let intFeelsLike = Int(feelsLike)
+
+    if intFeelsLike < intTemp {
+        return "A sensação térmica está mais baixa do que a temperatura real."
+    }
+    else if intFeelsLike > intTemp {
+        return "A sensação térmica está mais alta do que a temperatura real."
+    }
+    else {
+        return "Similar à temperatura real."
+    }
+}
+
+func mainIcon(icon: String) -> String {
+    return iconsSF[icon] ?? "circle.badge.questionmark.fill"
+}
+
+let iconsSF: [String: String] = [
+    "01d": "sun.max.fill",
+    "01n": "moon.stars.fill",
+    "02d": "cloud.sun.fill",
+    "02n": "cloud.moon.fill",
+    "03d": "cloud.fill",
+    "03n": "cloud.fill",
+    "04d": "smoke.fill",
+    "04n": "smoke.fill",
+    "09d": "cloud.drizzle.fill",
+    "09n": "cloud.drizzle.fill",
+    "10d": "cloud.sun.rain.fill",
+    "10n": "cloud.moon.rain.fill",
+    "11d": "cloud.bolt.rain.fill",
+    "11n": "cloud.bolt.rain.fill",
+    "13d": "snowflake",
+    "13n": "snowflake",
+    "50d": "cloud.fog.fill",
+    "50n": "cloud.fog.fill"
+]
+
+
+func mainDescription(id: Int) -> String {
+    return descriptionMap[id] ?? "Condição desconhecida"
+}
+
+let descriptionMap: [Int: String] = [
+    200: "Trovoada com chuva fraca",
+    201: "Trovoada com chuva",
+    202: "Trovoada com chuva forte",
+    210: "Trovoada fraca",
+    211: "Trovoada",
+    212: "Trovoada forte",
+    221: "Trovoada irregular",
+    230: "Trovoada com garoa fraca",
+    231: "Trovoada com garoa",
+    232: "Trovoada com garoa forte",
+    300: "Garoa de intensidade fraca",
+    301: "Garoa",
+    302: "Garoa de intensidade forte",
+    310: "Chuva com garoa de intensidade fraca",
+    311: "Chuva com garoa",
+    312: "Chuva com garoa de intensidade forte",
+    313: "Pancadas de chuva com garoa",
+    314: "Pancadas fortes de chuva com garoa",
+    321: "Pancada de garoa",
+    500: "Chuva fraca",
+    501: "Chuva moderada",
+    502: "Chuva de intensidade forte",
+    503: "Chuva muito forte",
+    504: "Chuva extrema",
+    511: "Chuva congelante",
+    520: "Pancada de chuva fraca",
+    521: "Pancada de chuva",
+    522: "Pancada de chuva forte",
+    531: "Pancadas irregulares de chuva",
+    600: "Neve fraca",
+    601: "Neve",
+    602: "Neve forte",
+    611: "Granizo",
+    612: "Pancada de granizo fraco",
+    613: "Pancada de granizo",
+    615: "Chuva fraca com neve",
+    616: "Chuva com neve",
+    620: "Pancada de neve fraca",
+    621: "Pancada de neve",
+    622: "Pancada de neve forte",
+    701: "Névoa",
+    711: "Fumaça",
+    721: "Neblina seca",
+    731: "Redemoinhos de areia/poeira",
+    741: "Nevoeiro",
+    751: "Areia",
+    761: "Poeira",
+    762: "Cinzas vulcânicas",
+    771: "Rajadas de vento",
+    781: "Tornado",
+    800: "Céu limpo",
+    801: "Poucas nuvens: 11-25%",
+    802: "Nuvens dispersas: 25-50%",
+    803: "Nuvens quebradas: 51-84%",
+    804: "Nuvens encobertas: 85-100%"
+]

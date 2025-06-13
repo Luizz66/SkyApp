@@ -10,7 +10,7 @@ import SwiftUI
 struct SkyAppView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject var weatherViewModel = WeatherViewModel()
-
+    
     var body: some View {
         ZStack {
             ImgBackgroundView()
@@ -24,11 +24,26 @@ struct SkyAppView: View {
                 }
                 .padding(.horizontal, 15)
                 .padding(.bottom, 30)
+                .cornerRadius(25)
             }
             .foregroundColor(.white)
         }
         .environmentObject(locationManager)
         .environmentObject(weatherViewModel)
+    }
+}
+
+struct ImgBackgroundView: View {
+    var body: some View {
+        ZStack {
+            Image(Bg.day)
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .overlay(
+                    Color.black.opacity(0.4)
+                )
+        }
     }
 }
 
@@ -46,13 +61,13 @@ struct MainForecastView: View {
                     VStack(alignment: .leading) {
                         Text(formatTemp(temp: clima.main.temp))
                             .padding(.trailing, 15)
-                        Text(clima.weather.first?.description ?? "...")
+                        Text(mainDescription(id: clima.weather.first?.id ?? 0))
                             .font(.itim(size: 21))
                             .opacity(0.6)
                     }
-                    Image(systemName: "sun.max.fill")
-                        .font(.system(size: 95))
-                        .foregroundColor(.yellow)
+                    Image(systemName: mainIcon(icon: clima.weather[0].icon))
+                        .font(.system(size: 90))
+                        .foregroundColor(Color("color-sun"))
                         .myAnimationBounce()
                 }
                 .font(.itim(size: 85))
@@ -68,9 +83,9 @@ struct MainForecastView: View {
             weatherViewModel.loadWeather(for: coordinate)
         }
         .safeAreaInset(edge: .top) {
-            Color.clear.frame(height: 20)
+            Color.clear.frame(height: 50)
         }
-        .padding(.bottom, 30)
+        .padding(.bottom, 50)
     }
 }
 
@@ -83,10 +98,12 @@ struct TemperatureRangeView: View {
             if let clima = weatherViewModel.weatherData {
                 HStack {
                     Image(systemName: "thermometer.low")
-                    Text(formatMinTemp(temp: clima.main.temp_min))
+                        .opacity(0.6)
+                    Text(formatRangeTemp(txt: "Mín", temp: clima.main.temp_min))
                         .padding(.trailing, 30)
                     Image(systemName: "thermometer.high")
-                    Text(formatMaxTemp(temp: clima.main.temp_max))
+                        .opacity(0.6)
+                    Text(formatRangeTemp(txt: "Máx", temp: clima.main.temp_max))
                 }
                 .font(.itim(size: 23))
                 .padding()
@@ -118,20 +135,28 @@ struct DaysForecastView: View {
         .opacity(0.6)
         .padding(.bottom, 10)
         VStack {
-                ForEach(0...4, id: \.self) { item in
-                    HStack {
-                        Text("TER")
-                        Spacer()
-                        Image(systemName: "cloud.drizzle.fill")
-                            .myAnimationBounce()
-                        Spacer()
-                        Text("mín: 25°")
-                            .padding(.trailing, 10)
-                        Text("máx: 35°")
-                    }
-                    .font(.itim(size: 20))
-                    .padding(.bottom, 17)
+            ForEach(0...4, id: \.self) { item in
+                HStack {
+                    Text("Ter.")
+                    Spacer()
+                    Image(systemName: "cloud.drizzle.fill")
+                        .myAnimationBounce()
+                    Spacer()
+                    Image(systemName: "thermometer.low")
+                        .font(.itim(size: 17))
+                        .opacity(0.6)
+                    Text(" 25°")
+                        .padding(.trailing, 10)
+                    Image(systemName: "thermometer.high")
+                        .font(.itim(size: 17))
+                        .opacity(0.6)
+                    Text(" 35°")
                 }
+                .font(.itim(size: 20))
+                Divider()
+                    .background(Color.white)
+                    .padding(.bottom, 7)
+            }
         }
         .padding(.bottom, 8)
     }
@@ -151,8 +176,8 @@ struct ForecastDetails: View {
                                 HStack {
                                     Image(systemName: "humidity.fill")
                                     Text("UMIDADE")
-                                        .opacity(0.6)
                                 }
+                                .opacity(0.6)
                                 .padding(.bottom, 0.1)
                                 Text("\(clima.main.humidity)%")
                                     .font(.itim(size: 30))
@@ -161,8 +186,8 @@ struct ForecastDetails: View {
                                 HStack {
                                     Image(systemName: "wind")
                                     Text("VENTO")
-                                        .opacity(0.6)
                                 }
+                                .opacity(0.6)
                                 .padding(.bottom, 0.1)
                                 Text(formatWind(wind: clima.wind.speed))
                                     .font(.itim(size: 30))
@@ -179,13 +204,13 @@ struct ForecastDetails: View {
                         HStack {
                             Image(systemName: "thermometer.medium")
                             Text("SENSAÇÃO")
-                                .opacity(0.6)
                         }
+                        .opacity(0.6)
                         .padding(.bottom, 0.1)
                         Text(formatTemp(temp: clima.main.feels_like))
                             .font(.itim(size: 30))
                         Spacer()
-                        Text("Similar á temperatura real.")//func
+                        Text(sensationDescription(temp: clima.main.temp, feelsLike: clima.main.feels_like))
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(8)
@@ -199,14 +224,14 @@ struct ForecastDetails: View {
                         HStack {
                             Image(systemName: "drop.fill")
                             Text("PRECIPITAÇÃO")
-                                .opacity(0.6)
                         }
+                        .opacity(0.6)
                         .padding(.bottom, 0.1)
                         Text(formatPrecipitation(rain: clima.rain?.one ?? 0.0))
                             .font(.itim(size: 30))
                             .padding(.bottom, 50)
                         Spacer()
-                        Text("nas últimas 1h.")// func
+                        Text("nas últimas 1h.")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(8)
@@ -218,8 +243,8 @@ struct ForecastDetails: View {
                         HStack {
                             Image(systemName: "sunrise.fill")
                             Text("NASCER DO SOL")
-                                .opacity(0.6)
                         }
+                        .opacity(0.6)
                         .padding(.bottom, 0.1)
                         Text(formatSys(from: clima.sys.sunrise))
                             .font(.itim(size: 30))
@@ -237,8 +262,8 @@ struct ForecastDetails: View {
                     HStack {
                         Image(systemName: "cloud.fill")
                         Text("NUVENS")
-                            .opacity(0.6)
                     }
+                    .opacity(0.6)
                     .padding(.bottom, 0.1)
                     HStack {
                         Text("\(clima.clouds.all)% do céu.")
@@ -267,17 +292,41 @@ struct ForecastDetails: View {
     }
 }
 
-struct ImgBackgroundView: View {
-    var body: some View {
-        ZStack {
-            Image(Bg.day)
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .overlay(
-                    Color.black.opacity(0.4)
-                )
+extension View {
+    func respectSafeAre() -> some View {
+        self.safeAreaInset(edge: .top) {
+            GeometryReader { geometry in
+                Color.clear
+                    .frame(height: geometry.safeAreaInsets.top )
+            }
+            .frame(height: 0)
         }
+    }
+}
+
+// Extensão para adicionar a animação de bounce
+extension View {
+    func myAnimationBounce() -> some View {
+        self.modifier(MyBounceEffect())
+    }
+}
+
+// Modificador customizado para o efeito de bounce
+struct MyBounceEffect: ViewModifier {
+    @State private var bounce = false
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(bounce ? 1.04 : 1.0)
+            .offset(y: bounce ? -1 : 0)
+            .animation(
+                Animation.easeInOut(duration: 0.6)
+                    .repeatForever(autoreverses: true),
+                value: bounce
+            )
+            .onAppear {
+                bounce = true
+            }
     }
 }
 
