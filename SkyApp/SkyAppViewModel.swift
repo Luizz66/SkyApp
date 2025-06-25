@@ -4,9 +4,9 @@
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
 //
-
 import Foundation
 import CoreLocation
+import SwiftUI
 
 //get localização atual
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
@@ -33,6 +33,7 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
 //loadWeather
 class WeatherViewModel: ObservableObject {
     @Published var weatherData: WeatherData?
+    @Published var forecastData: ForecastData?
     @Published var errorMessage: String?
     
     private let weatherService = WeatherService()
@@ -47,83 +48,112 @@ class WeatherViewModel: ObservableObject {
             }
         }
     }
-}
-
-//call api
-class WeatherService {
-    private let token = Secrets.apiKey
     
-    func fetchWeather(for coord: CLLocationCoordinate2D, completion: @escaping (Result<WeatherData, Error>) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=p"
-        
-        guard let url = URL(string: urlString) else {
-            print("URL inválida")
-            return
+    func loadForecast(for coord: CLLocationCoordinate2D) {
+        weatherService.fetchForecast(for: coord) { result in
+            switch result {
+            case .success(let dados):
+                self.forecastData = dados
+            case .failure(let erro):
+                self.errorMessage = erro.localizedDescription
+            }
         }
-        
-        //requisição
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            if let error = error {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-                return
-            }
-            
-            guard let data = data else {
-                DispatchQueue.main.async {
-                    completion(.failure(NSError(domain: "Sem dados", code: -1)))
-                }
-                return
-            }
-            
-            do {
-                let weather = try JSONDecoder().decode(WeatherData.self, from: data)
-                
-                printWeatherData(weather)//del
-                
-                DispatchQueue.main.async {
-                    completion(.success(weather))
-                }
-            } catch {
-                DispatchQueue.main.async {
-                    completion(.failure(error))
-                }
-            }
-        }.resume()
     }
 }
 
-//del
-func printWeatherData(_ data: WeatherData) {
-    print(" --- DADOS DO CLIMA ---")
-    print("Cidade: \(data.name)")
-    print("Temperatura atual: \(data.main.temp)°C")
-    print("Sensação Térmica: \(data.main.feels_like)°C")
-    print("Mínima: \(data.main.temp_min)°C")
-    print("Máxima: \(data.main.temp_max)°C")
-    print("Umidade: \(data.main.humidity)%")
-    print("Vento: \(data.wind.speed) m/s")
-    print("Chuva: \(data.rain?.one ?? 0.0) mm nas últimas 1h")
-    print("Nuvems: \(data.clouds.all)% do céu")
-    print("Nascer do sol: \(data.sys.sunrise)")
-    print("Pôr do sol: \(data.sys.sunset)")
-    if let clima = data.weather.first {
-        print("ClimaID: \(clima.id)")
-        print("Icon: \(clima.icon)")
-    }
-    print("Latitude: \(data.coord.lat)")
-    print("Longitude: \(data.coord.lon)")
+struct Img {
+    static let day = "day"
+    static let dayCloud = "day-cloud"
+    static let dayRain = "day-rain"
+    static let night = "night"
+    static let nightCloud = "night-cloud"
+    static let nightRain = "night-rain"
 }
 
-//get apiKey
-struct Secrets {
-    static var apiKey: String {
-        guard let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
-              let dict = NSDictionary(contentsOfFile: path),
-              let apiKey = dict["API_KEY"] as? String else {
-            fatalError("API Key não encontrada")
-        }
-        return apiKey
+func backgroundImage(icon: String) -> String {
+    switch icon {
+    case "01d", "02d":
+        return Img.day
+    case "03d", "04d", "50d":
+        return Img.dayCloud
+    case "09d", "10d", "11d":
+        return Img.dayRain
+    case "01n", "02n":
+        return Img.night
+    case "03n", "04n", "50n":
+        return Img.nightCloud
+    case "09n", "10n", "11n":
+        return Img.nightRain
+        //tratar o 13d e 13n (neve)
+    default:
+        return Img.day
     }
 }
+
+extension View {
+    func respectSafeAre() -> some View {
+        self.safeAreaInset(edge: .top) {
+            GeometryReader { geometry in
+                Color.clear
+                    .frame(height: geometry.safeAreaInsets.top )
+            }
+            .frame(height: 0)
+        }
+    }
+}
+
+// Extensão para adicionar a animação de bounce
+extension View {
+    func myAnimationBounce() -> some View {
+        self.modifier(MyBounceEffect())
+    }
+}
+
+// Modificador customizado para o efeito de bounce
+struct MyBounceEffect: ViewModifier {
+    @State private var bounce = false
+    
+    func body(content: Content) -> some View {
+        content
+            .scaleEffect(bounce ? 1.04 : 1.0)
+            .offset(y: bounce ? -1 : 0)
+            .animation(
+                Animation.easeInOut(duration: 0.6)
+                    .repeatForever(autoreverses: true),
+                value: bounce
+            )
+            .onAppear {
+                bounce = true
+            }
+    }
+}
+
+struct LoadingScreenView: View {
+    var body: some View {
+        ZStack {
+            Image("loading")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .overlay(
+                    Color.black.opacity(0.2)
+                )
+            VStack(spacing: 20) {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(1.5)
+            }
+        }
+    }
+}
+
+//extension View {
+//    func myIconStyle() -> some View {
+//        self.modifier()
+//    }
+//}
+//
+//func iconStyle(icon: String) -> some View {
+//    Image(icon)
+//        .foregroundColor(Color("color-sun"))
+//}

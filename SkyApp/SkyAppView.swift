@@ -4,7 +4,6 @@
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
 //
-
 import SwiftUI
 
 struct SkyAppView: View {
@@ -18,7 +17,6 @@ struct SkyAppView: View {
                 MainForecastView()
                     .respectSafeAre()
                 ScrollView(.vertical, showsIndicators: false) {
-                    TemperatureRangeView()
                     DaysForecastView()
                     ForecastDetails()
                 }
@@ -51,8 +49,7 @@ struct ImgBackgroundView: View {
                 Text("Erro: \(erro)")
             }
             else {
-                Text("...")
-                    .font(.itim(size: 35))
+                LoadingScreenView()
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
@@ -87,10 +84,6 @@ struct MainForecastView: View {
                 .font(.itim(size: 85))
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
-            } else {
-                Text("Carregando...")
-                    .font(.itim(size: 35))
-                    .padding(.bottom, 1)
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
@@ -103,21 +96,21 @@ struct MainForecastView: View {
     }
 }
 
-struct TemperatureRangeView: View {
+struct DaysForecastView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
+            if let todayTemp = todayMinMaxTemp {
                 HStack {
                     Image(systemName: "thermometer.low")
                         .opacity(0.6)
-                    Text(formatRangeTemp(txt: "Mín", temp: clima.main.temp_min))
+                    Text(formatIntTemp(txt: "Mín", temp: todayTemp.min))
                         .padding(.trailing, 30)
                     Image(systemName: "thermometer.high")
                         .opacity(0.6)
-                    Text(formatRangeTemp(txt: "Máx", temp: clima.main.temp_max))
+                    Text(formatIntTemp(txt: "Máx", temp: todayTemp.max))
                 }
                 .font(.itim(size: 23))
                 .padding()
@@ -126,53 +119,88 @@ struct TemperatureRangeView: View {
                 .padding(.bottom, 35)
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
-            } else {
-                Text("Carregando...")
-                    .font(.itim(size: 35))
-                    .padding(.bottom, 1)
             }
-        }
-        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
-        }
-    }
-}
-
-
-struct DaysForecastView: View {
-    var body: some View {
-        HStack {
-            Image(systemName: "calendar")
-            Text("PREVISÃO PARA 5 DIAS")
-        }
-        .font(.itim(size: 20))
-        .opacity(0.6)
-        .padding(.bottom, 10)
-        VStack {
-            ForEach(0...4, id: \.self) { item in
+            //
+            if let _ = weatherViewModel.forecastData {
                 HStack {
-                    Text("Ter.")
-                    Spacer()
-                    Image(systemName: "cloud.drizzle.fill")
-                        .myAnimationBounce()
-                    Spacer()
-                    Image(systemName: "thermometer.low")
-                        .font(.itim(size: 17))
-                        .opacity(0.6)
-                    Text(" 25°")
-                        .padding(.trailing, 10)
-                    Image(systemName: "thermometer.high")
-                        .font(.itim(size: 17))
-                        .opacity(0.6)
-                    Text(" 35°")
+                    Image(systemName: "calendar")
+                    Text("PREVISÃO PARA 5 DIAS")
                 }
                 .font(.itim(size: 20))
-                Divider()
-                    .background(Color.white)
-                    .padding(.bottom, 7)
+                .opacity(0.6)
+                .padding(.bottom, 10)
+                ForEach(dailyForecasts.prefix(5), id: \.date) { forecast in
+                    HStack {
+                        Text(formatDayWeek(from: forecast.date))
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Image(systemName: mainIcon(icon: forecast.icon))
+                            .myAnimationBounce()
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                        Image(systemName: "thermometer.low")
+                            .font(.itim(size: 17))
+                            .opacity(0.6)
+                        Text("\(Int(forecast.tempMin))°")
+                            .padding(.trailing, 10)
+                        Image(systemName: "thermometer.high")
+                            .font(.itim(size: 17))
+                            .opacity(0.6)
+                        Text("\(Int(forecast.tempMax))°")
+                    }
+                    .font(.itim(size: 20))
+                    Divider()
+                        .background(Color.white)
+                        .padding(.bottom, 7)
+                }
+            } else if let erro = weatherViewModel.errorMessage {
+                Text("Erro: \(erro)")
             }
         }
         .padding(.bottom, 8)
+        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+            weatherViewModel.loadForecast(for: coordinate)
+        }
+    }
+    private var dailyForecasts: [DailyForecast] {
+        guard let list = weatherViewModel.forecastData?.list else { return [] }
+        
+        let grouped = Dictionary(grouping: list) { forecast in
+            String(forecast.dt_txt.prefix(10)) // yyyy-mm-dd
+        }
+        
+        let sortedKeys = grouped.keys.sorted()
+        
+        let today = Date()
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        let todayString = dateFormatter.string(from: today)
+        
+        // Ignorar o dia de hoje
+        let nextDays = sortedKeys.filter { $0 > todayString }
+        return nextDays.prefix(5).compactMap { date in
+            if let forecasts = grouped[date] {
+                let minTemp = forecasts.map { $0.main.temp_min }.min() ?? 0.0
+                let maxTemp = forecasts.map { $0.main.temp_max }.max() ?? 0.0
+                let icon = forecasts.first?.weather.first?.icon ?? "01d"
+                
+                return DailyForecast(date: date, icon: icon, tempMin: minTemp, tempMax: maxTemp)
+            }
+            return nil
+        }
+    }
+    private var todayMinMaxTemp: (min: Double, max: Double)? {
+        guard let list = weatherViewModel.forecastData?.list else { return nil }
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        let todayString = formatter.string(from: Date())
+        let todayForecasts = list.filter { $0.dt_txt.contains(todayString) }
+        
+        guard !todayForecasts.isEmpty else { return nil }
+        
+        let minTemp = todayForecasts.map { $0.main.temp_min }.min() ?? 0.0
+        let maxTemp = todayForecasts.map { $0.main.temp_max }.max() ?? 0.0
+        
+        return (minTemp, maxTemp)
     }
 }
 
@@ -294,53 +322,11 @@ struct ForecastDetails: View {
                 .cornerRadius(20)
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
-            } else {
-                Text("Carregando...")
-                    .font(.itim(size: 35))
-                    .padding(.bottom, 1)
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
         }
-    }
-}
-
-extension View {
-    func respectSafeAre() -> some View {
-        self.safeAreaInset(edge: .top) {
-            GeometryReader { geometry in
-                Color.clear
-                    .frame(height: geometry.safeAreaInsets.top )
-            }
-            .frame(height: 0)
-        }
-    }
-}
-
-// Extensão para adicionar a animação de bounce
-extension View {
-    func myAnimationBounce() -> some View {
-        self.modifier(MyBounceEffect())
-    }
-}
-
-// Modificador customizado para o efeito de bounce
-struct MyBounceEffect: ViewModifier {
-    @State private var bounce = false
-    
-    func body(content: Content) -> some View {
-        content
-            .scaleEffect(bounce ? 1.04 : 1.0)
-            .offset(y: bounce ? -1 : 0)
-            .animation(
-                Animation.easeInOut(duration: 0.6)
-                    .repeatForever(autoreverses: true),
-                value: bounce
-            )
-            .onAppear {
-                bounce = true
-            }
     }
 }
 

@@ -1,39 +1,10 @@
 //
-//  Useful.swift
+//  Utils.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 11/04/25.
 //
 import SwiftUI
-
-struct Img {
-    static let day: String = "day"
-    static let dayCloud: String = "day-cloud"
-    static let dayRain: String = "day-rain"
-    static let night: String = "night"
-    static let nightCloud: String = "night-cloud"
-    static let nightRain: String = "night-rain"
-}
-
-func backgroundImage(icon: String) -> String {
-    switch icon {
-    case "01d", "02d":
-        return Img.day
-    case "03d", "04d", "50d":
-        return Img.dayCloud
-    case "09d", "10d", "11d":
-        return Img.dayRain
-    case "01n", "02n":
-        return Img.night
-    case "03n", "04n", "50n":
-        return Img.nightCloud
-    case "09n", "10n", "11n":
-        return Img.nightRain
-        //tratar o 13d e 13n (neve)
-    default:
-        return Img.day
-    }
-}
 
 extension Font {
     static func itim(size: CGFloat) -> Font {
@@ -52,10 +23,28 @@ func formatTemp(temp: Double) -> String {
     }
 }
 
-func formatRangeTemp(txt: String, temp: Double) -> String {
-    let str = String(format: "%.0f", temp)
-    let formatted = "\(txt).: \(str)°"
-    return formatted
+func formatIntTemp(txt: String?, temp: Double) -> String {
+    let formatted = Int(temp)
+    
+    if txt == nil {
+        return " \(formatted)°"
+    }
+    else {
+        return "\(txt!).: \(formatted)°"
+    }
+}
+
+func formatDayWeek(from dateString: String) -> String {
+    let dateFormatter = DateFormatter()
+    dateFormatter.dateFormat = "yyyy-MM-dd"
+    dateFormatter.locale = Locale(identifier: "pt_BR")
+    
+    guard let date = dateFormatter.date(from: dateString) else {
+        return "-"
+    }
+    
+    dateFormatter.dateFormat = "EEE"
+    return dateFormatter.string(from: date).capitalized
 }
 
 func formatWind(wind: Double) -> String {
@@ -79,7 +68,7 @@ func formatSys(from timestamp: TimeInterval) -> String {
 func sensationDescription(temp: Double, feelsLike: Double) -> String {
     let intTemp = Int(temp)
     let intFeelsLike = Int(feelsLike)
-
+    
     if intFeelsLike < intTemp {
         return "A sensação térmica está mais baixa do que a temperatura real."
     }
@@ -94,7 +83,6 @@ func sensationDescription(temp: Double, feelsLike: Double) -> String {
 func mainIcon(icon: String) -> String {
     return iconsSF[icon] ?? "circle.badge.questionmark.fill"
 }
-
 let iconsSF: [String: String] = [
     "01d": "sun.max.fill",
     "01n": "moon.stars.fill",
@@ -120,7 +108,6 @@ let iconsSF: [String: String] = [
 func mainDescription(id: Int) -> String {
     return descriptionMap[id] ?? "Condição desconhecida"
 }
-
 let descriptionMap: [Int: String] = [
     200: "Trovoada com chuva fraca",
     201: "Trovoada com chuva",
@@ -173,8 +160,8 @@ let descriptionMap: [Int: String] = [
     771: "Rajadas de vento",
     781: "Tornado",
     800: "Céu limpo",
-    801: "Poucas nuvens: 11-25%",
-    802: "Nuvens dispersas: 25-50%",
-    803: "Nuvens quebradas: 51-84%",
-    804: "Nuvens encobertas: 85-100%"
+    801: "Poucas nuvens",
+    802: "Nuvens dispersas",
+    803: "Nuvens quebradas",
+    804: "Nuvens encobertas"
 ]
