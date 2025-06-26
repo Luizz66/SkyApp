@@ -11,7 +11,7 @@ import SwiftUI
 struct SkyApp: App {
     var body: some Scene {
         WindowGroup {
-            SkyAppView()
+            AppView()
         }
     }
 }

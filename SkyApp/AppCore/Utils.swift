@@ -80,7 +80,7 @@ func sensationDescription(temp: Double, feelsLike: Double) -> String {
     }
 }
 
-func mainIcon(icon: String) -> String {
+func IconSF(icon: String) -> String {
     return iconsSF[icon] ?? "circle.badge.questionmark.fill"
 }
 let iconsSF: [String: String] = [

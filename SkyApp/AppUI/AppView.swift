@@ -1,12 +1,12 @@
 //
-//  SkyAppView.swift
+//  AppView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
 //
 import SwiftUI
 
-struct SkyAppView: View {
+struct AppView: View {
     @StateObject private var locationManager = LocationManager()
     @StateObject var weatherViewModel = WeatherViewModel()
     
@@ -17,6 +17,7 @@ struct SkyAppView: View {
                 MainForecastView()
                     .respectSafeAre()
                 ScrollView(.vertical, showsIndicators: false) {
+                    RangeForecastView()
                     DaysForecastView()
                     ForecastDetails()
                 }
@@ -76,9 +77,9 @@ struct MainForecastView: View {
                             .font(.itim(size: 21))
                             .opacity(0.6)
                     }
-                    Image(systemName: mainIcon(icon: clima.weather[0].icon))
+                    Image(systemName: IconSF(icon: clima.weather[0].icon))
+                        .myIconStyle(clima.weather[0].icon)
                         .font(.system(size: 90))
-                        .foregroundColor(Color("color-sun"))
                         .myAnimationBounce()
                 }
                 .font(.itim(size: 85))
@@ -96,7 +97,7 @@ struct MainForecastView: View {
     }
 }
 
-struct DaysForecastView: View {
+struct RangeForecastView : View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
@@ -119,8 +120,47 @@ struct DaysForecastView: View {
                 .padding(.bottom, 35)
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
+            } else {
+                ProgressView("Carregando temperatura...")
+                    .font(.itim(size: 17))
             }
-            //
+        }
+        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+            weatherViewModel.loadForecast(for: coordinate)
+        }
+    }
+    private var todayMinMaxTemp: (min: Double, max: Double)? {
+        guard let list = weatherViewModel.forecastData?.list else { return nil }
+        
+        let apiFormatter = DateFormatter()
+        apiFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        apiFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        
+        let calendar = Calendar.current
+        let today = Date()
+        
+        let todayForecasts = list.compactMap { item -> (Double, Double)? in
+            guard let date = apiFormatter.date(from: item.dt_txt) else { return nil }
+            if calendar.isDate(date, inSameDayAs: today) {
+                return (item.main.temp_min, item.main.temp_max)
+            }
+            return nil
+        }
+        
+        guard !todayForecasts.isEmpty else { return nil }
+        
+        let minTemp = todayForecasts.map { $0.0 }.min() ?? 0.0
+        let maxTemp = todayForecasts.map { $0.1 }.max() ?? 0.0
+        return (minTemp, maxTemp)
+    }
+}
+
+struct DaysForecastView: View {
+    @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    
+    var body: some View {
+        VStack {
             if let _ = weatherViewModel.forecastData {
                 HStack {
                     Image(systemName: "calendar")
@@ -133,7 +173,8 @@ struct DaysForecastView: View {
                     HStack {
                         Text(formatDayWeek(from: forecast.date))
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        Image(systemName: mainIcon(icon: forecast.icon))
+                        Image(systemName: IconSF(icon: forecast.icon))
+                            .myIconStyle(forecast.icon)
                             .myAnimationBounce()
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: "thermometer.low")
@@ -186,21 +227,6 @@ struct DaysForecastView: View {
             }
             return nil
         }
-    }
-    private var todayMinMaxTemp: (min: Double, max: Double)? {
-        guard let list = weatherViewModel.forecastData?.list else { return nil }
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        let todayString = formatter.string(from: Date())
-        let todayForecasts = list.filter { $0.dt_txt.contains(todayString) }
-        
-        guard !todayForecasts.isEmpty else { return nil }
-        
-        let minTemp = todayForecasts.map { $0.main.temp_min }.min() ?? 0.0
-        let maxTemp = todayForecasts.map { $0.main.temp_max }.max() ?? 0.0
-        
-        return (minTemp, maxTemp)
     }
 }
 
@@ -331,5 +357,5 @@ struct ForecastDetails: View {
 }
 
 #Preview {
-    SkyAppView()
+    AppView()
 }

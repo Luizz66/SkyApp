@@ -1,5 +1,5 @@
 //
-//  SkyAppModel.swift
+//  AppModel.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
@@ -9,6 +9,8 @@ import Foundation
 struct WeatherData: Codable {
     struct Main: Codable {
         let temp: Double
+        let temp_min: Double
+        let temp_max: Double
         let feels_like: Double
         let humidity: Int
     }
@@ -90,4 +92,4 @@ struct Secrets {
         }
         return apiKey
     }
-}//UTILS
+}

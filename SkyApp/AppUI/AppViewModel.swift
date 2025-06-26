@@ -1,5 +1,5 @@
 //
-//  SkyAppViewModel.swift
+//  AppViewModel.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
@@ -147,13 +147,27 @@ struct LoadingScreenView: View {
     }
 }
 
-//extension View {
-//    func myIconStyle() -> some View {
-//        self.modifier()
-//    }
-//}
-//
-//func iconStyle(icon: String) -> some View {
-//    Image(icon)
-//        .foregroundColor(Color("color-sun"))
-//}
+extension Image {
+    func myIconStyle(_ icon: String) -> some View {
+        Group {
+            switch icon {
+            case "01d":
+                self.foregroundColor(Color(.colorSun))
+            case "02d":
+                self.foregroundStyle(.gray, .colorSun)
+            case "09d", "09n", "11d", "11n":
+                self.foregroundStyle(.gray, .blue)
+            case "10d":
+                self.foregroundStyle(.gray, .colorSun, .blue)
+            case "10n":
+                self.foregroundStyle(.gray, .white, .blue)
+            case "13d", "13n":
+                self.foregroundColor(Color(.colorSnow))
+            case "50d", "50n":
+                self.foregroundColor(Color(.gray)).opacity(0.4)
+            default:
+                self.foregroundColor(.white)
+            }
+        }
+    }
+}

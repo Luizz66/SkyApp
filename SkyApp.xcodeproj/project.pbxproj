@@ -38,7 +38,7 @@
 		39A310042D84CBB300E6E898 /* Exceptions for "SkyApp" folder in "SkyApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Info.plist,
+				Resources/Info.plist,
 			);
 			target = 39A30FC52D84C12900E6E898 /* SkyApp */;
 		};
@@ -415,11 +415,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Resources\"";
 				DEVELOPMENT_TEAM = H6S53M4CN4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SkyApp/Info.plist;
+				INFOPLIST_FILE = SkyApp/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -445,11 +445,11 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Preview Content\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Resources\"";
 				DEVELOPMENT_TEAM = H6S53M4CN4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SkyApp/Info.plist;
+				INFOPLIST_FILE = SkyApp/Resources/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
