@@ -90,26 +90,49 @@ func backgroundImage(icon: String) -> String {
     }
 }
 
-extension View {
-    func respectSafeAre() -> some View {
-        self.safeAreaInset(edge: .top) {
-            GeometryReader { geometry in
-                Color.clear
-                    .frame(height: geometry.safeAreaInsets.top )
+extension Image {
+    func myIconStyle(_ icon: String) -> some View {
+        Group {
+            switch icon {
+            case "01d":
+                self.foregroundColor(Color(.colorSun))
+            case "02d":
+                self.foregroundStyle(.colorCloud, .colorSun)
+            case "09d", "09n", "11d", "11n":
+                self.foregroundStyle(.colorCloud, .blue)
+            case "10d":
+                self.foregroundStyle(.colorCloud, .colorSun, .blue)
+            case "10n":
+                self.foregroundStyle(.colorCloud, .white, .blue)
+            case "13d", "13n":
+                self.foregroundColor(Color(.colorSnow))
+            case "50d", "50n":
+                self.foregroundColor(Color(.colorCloud))
+            default:
+                self.foregroundColor(.white)
             }
-            .frame(height: 0)
         }
     }
 }
 
-// Extensão para adicionar a animação de bounce
+//extension View {
+//    func respectSafeAre() -> some View {
+//        self.safeAreaInset(edge: .top) {
+//            GeometryReader { geometry in
+//                Color.clear
+//                    .frame(height: geometry.safeAreaInsets.top )
+//            }
+//            .frame(height: 0)
+//        }
+//    }
+//}
+
 extension View {
     func myAnimationBounce() -> some View {
         self.modifier(MyBounceEffect())
     }
 }
 
-// Modificador customizado para o efeito de bounce
 struct MyBounceEffect: ViewModifier {
     @State private var bounce = false
     
@@ -130,43 +153,19 @@ struct MyBounceEffect: ViewModifier {
 
 struct LoadingScreenView: View {
     var body: some View {
-        ZStack {
+        ZStack{
             Image("loading")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
+                .blur(radius: 70)
                 .overlay(
-                    Color.black.opacity(0.2)
+                    Color.black.opacity(0.3)
                 )
             VStack(spacing: 20) {
                 ProgressView()
                     .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    .scaleEffect(1.5)
-            }
-        }
-    }
-}
-
-extension Image {
-    func myIconStyle(_ icon: String) -> some View {
-        Group {
-            switch icon {
-            case "01d":
-                self.foregroundColor(Color(.colorSun))
-            case "02d":
-                self.foregroundStyle(.gray, .colorSun)
-            case "09d", "09n", "11d", "11n":
-                self.foregroundStyle(.gray, .blue)
-            case "10d":
-                self.foregroundStyle(.gray, .colorSun, .blue)
-            case "10n":
-                self.foregroundStyle(.gray, .white, .blue)
-            case "13d", "13n":
-                self.foregroundColor(Color(.colorSnow))
-            case "50d", "50n":
-                self.foregroundColor(Color(.gray)).opacity(0.4)
-            default:
-                self.foregroundColor(.white)
+                    .scaleEffect(2.6)
             }
         }
     }

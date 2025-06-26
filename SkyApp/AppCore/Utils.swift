@@ -12,7 +12,7 @@ extension Font {
     }
 }
 
-func formatTemp(temp: Double) -> String {
+func formatTemp(_ temp: Double) -> String {
     let formatted = String(format: "%.1f°", temp).replacingOccurrences(of: ".", with: ",")
     
     if formatted.last == "0" {
@@ -40,7 +40,7 @@ func formatDayWeek(from dateString: String) -> String {
     dateFormatter.locale = Locale(identifier: "pt_BR")
     
     guard let date = dateFormatter.date(from: dateString) else {
-        return "-"
+        return "--"
     }
     
     dateFormatter.dateFormat = "EEE"
@@ -80,7 +80,7 @@ func sensationDescription(temp: Double, feelsLike: Double) -> String {
     }
 }
 
-func IconSF(icon: String) -> String {
+func SF(icon: String) -> String {
     return iconsSF[icon] ?? "circle.badge.questionmark.fill"
 }
 let iconsSF: [String: String] = [

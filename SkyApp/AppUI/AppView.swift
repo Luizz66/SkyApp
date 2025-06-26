@@ -15,7 +15,7 @@ struct AppView: View {
             ImgBackgroundView()
             VStack {
                 MainForecastView()
-                    .respectSafeAre()
+                    .ignoresSafeArea(edges: .all)
                 ScrollView(.vertical, showsIndicators: false) {
                     RangeForecastView()
                     DaysForecastView()
@@ -44,7 +44,7 @@ struct ImgBackgroundView: View {
                     .scaledToFill()
                     .ignoresSafeArea()
                     .overlay(
-                        clima.weather[0].icon.last == "d" ? Color.black.opacity(0.3) : Color.black.opacity(0.2)
+                        clima.weather[0].icon.last == "d" ? Color.black.opacity(0.4) : Color.black.opacity(0.3)
                     )
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
@@ -71,13 +71,13 @@ struct MainForecastView: View {
                     .padding(.bottom, 1)
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(formatTemp(temp: clima.main.temp))
+                        Text(formatTemp(clima.main.temp))
                             .padding(.trailing, 15)
                         Text(mainDescription(id: clima.weather.first?.id ?? 0))
                             .font(.itim(size: 21))
                             .opacity(0.6)
                     }
-                    Image(systemName: IconSF(icon: clima.weather[0].icon))
+                    Image(systemName: SF(icon: clima.weather[0].icon))
                         .myIconStyle(clima.weather[0].icon)
                         .font(.system(size: 90))
                         .myAnimationBounce()
@@ -122,6 +122,7 @@ struct RangeForecastView : View {
                 Text("Erro: \(erro)")
             } else {
                 ProgressView("Carregando temperatura...")
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     .font(.itim(size: 17))
             }
         }
@@ -173,7 +174,7 @@ struct DaysForecastView: View {
                     HStack {
                         Text(formatDayWeek(from: forecast.date))
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        Image(systemName: IconSF(icon: forecast.icon))
+                        Image(systemName: SF(icon: forecast.icon))
                             .myIconStyle(forecast.icon)
                             .myAnimationBounce()
                             .frame(maxWidth: .infinity, alignment: .leading)
@@ -207,25 +208,25 @@ struct DaysForecastView: View {
         let grouped = Dictionary(grouping: list) { forecast in
             String(forecast.dt_txt.prefix(10)) // yyyy-mm-dd
         }
-        
         let sortedKeys = grouped.keys.sorted()
         
-        let today = Date()
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd"
-        let todayString = dateFormatter.string(from: today)
+        let todayString = dateFormatter.string(from: Date())
         
-        // Ignorar o dia de hoje
         let nextDays = sortedKeys.filter { $0 > todayString }
+        
         return nextDays.prefix(5).compactMap { date in
-            if let forecasts = grouped[date] {
-                let minTemp = forecasts.map { $0.main.temp_min }.min() ?? 0.0
-                let maxTemp = forecasts.map { $0.main.temp_max }.max() ?? 0.0
-                let icon = forecasts.first?.weather.first?.icon ?? "01d"
-                
-                return DailyForecast(date: date, icon: icon, tempMin: minTemp, tempMax: maxTemp)
-            }
-            return nil
+            guard let forecasts = grouped[date] else { return nil }
+            
+            let middayForecast = forecasts.first(where: { $0.dt_txt.contains("12:00:00") })
+            
+            // Se não encontrar 12:00, pega o primeiro disponível
+            let icon = middayForecast?.weather.first?.icon ?? forecasts.first?.weather.first?.icon ?? "01d"
+            
+            let minTemp = forecasts.map { $0.main.temp_min }.min() ?? 0.0
+            let maxTemp = forecasts.map { $0.main.temp_max }.max() ?? 0.0
+            return DailyForecast(date: date, icon: icon, tempMin: minTemp, tempMax: maxTemp)
         }
     }
 }
@@ -238,7 +239,7 @@ struct ForecastDetails: View {
         VStack {
             if let clima = weatherViewModel.weatherData {
                 HStack {
-                    VStack {
+                    VStack /*umidade e vento*/ {
                         Group {
                             VStack (alignment: .leading) {
                                 HStack {
@@ -267,15 +268,14 @@ struct ForecastDetails: View {
                         .background(.white.opacity(0.1))
                         .cornerRadius(20)
                     }
-                    //
-                    VStack (alignment: .leading) {
+                    VStack (alignment: .leading) /*sensação*/ {
                         HStack {
                             Image(systemName: "thermometer.medium")
                             Text("SENSAÇÃO")
                         }
                         .opacity(0.6)
                         .padding(.bottom, 0.1)
-                        Text(formatTemp(temp: clima.main.feels_like))
+                        Text(formatTemp(clima.main.feels_like))
                             .font(.itim(size: 30))
                         Spacer()
                         Text(sensationDescription(temp: clima.main.temp, feelsLike: clima.main.feels_like))
@@ -286,9 +286,8 @@ struct ForecastDetails: View {
                     .background(.white.opacity(0.1))
                     .cornerRadius(20)
                 }
-                //
                 HStack {
-                    VStack (alignment: .leading) {
+                    VStack (alignment: .leading) /*precipitação*/ {
                         HStack {
                             Image(systemName: "drop.fill")
                             Text("PRECIPITAÇÃO")
@@ -306,8 +305,7 @@ struct ForecastDetails: View {
                     .font(.itim(size: 15))
                     .background(.white.opacity(0.1))
                     .cornerRadius(20)
-                    //
-                    VStack (alignment: .leading) {
+                    VStack (alignment: .leading) /*nascer do sol*/ {
                         HStack {
                             Image(systemName: "sunrise.fill")
                             Text("NASCER DO SOL")
@@ -325,8 +323,7 @@ struct ForecastDetails: View {
                     .background(.white.opacity(0.1))
                     .cornerRadius(20)
                 }
-                //
-                VStack (alignment: .leading) {
+                VStack (alignment: .leading) /*nuvens*/ {
                     HStack {
                         Image(systemName: "cloud.fill")
                         Text("NUVENS")

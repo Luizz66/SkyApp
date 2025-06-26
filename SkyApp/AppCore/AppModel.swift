@@ -21,10 +21,6 @@ struct WeatherData: Codable {
     
     struct Rain: Codable {
         let one: Double
-        //0 - 2.5 mm: leve
-        //2.5 - 7.6 mm: moderada
-        //>7.6 mm: forte
-        //ex: 🌧️ Chuva moderada: 2.73 mm nas últimas 1h
     }
     
     struct Clouds: Codable {
