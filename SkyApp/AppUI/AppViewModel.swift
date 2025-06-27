@@ -65,9 +65,11 @@ struct Img {
     static let day = "day"
     static let dayCloud = "day-cloud"
     static let dayRain = "day-rain"
+    static let daySnow = "day-snow"
     static let night = "night"
     static let nightCloud = "night-cloud"
     static let nightRain = "night-rain"
+    static let nightSnow = "night-snow"
 }
 
 func backgroundImage(icon: String) -> String {
@@ -84,7 +86,10 @@ func backgroundImage(icon: String) -> String {
         return Img.nightCloud
     case "09n", "10n", "11n":
         return Img.nightRain
-        //tratar o 13d e 13n (neve)
+    case "13d":
+        return Img.daySnow
+    case "13n":
+        return Img.nightSnow
     default:
         return Img.day
     }
@@ -115,18 +120,6 @@ extension Image {
     }
 }
 
-//extension View {
-//    func respectSafeAre() -> some View {
-//        self.safeAreaInset(edge: .top) {
-//            GeometryReader { geometry in
-//                Color.clear
-//                    .frame(height: geometry.safeAreaInsets.top )
-//            }
-//            .frame(height: 0)
-//        }
-//    }
-//}
-
 extension View {
     func myAnimationBounce() -> some View {
         self.modifier(MyBounceEffect())
@@ -148,25 +141,5 @@ struct MyBounceEffect: ViewModifier {
             .onAppear {
                 bounce = true
             }
-    }
-}
-
-struct LoadingScreenView: View {
-    var body: some View {
-        ZStack{
-            Image("loading")
-                .resizable()
-                .scaledToFill()
-                .ignoresSafeArea()
-                .blur(radius: 70)
-                .overlay(
-                    Color.black.opacity(0.3)
-                )
-            VStack(spacing: 20) {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    .scaleEffect(2.6)
-            }
-        }
     }
 }

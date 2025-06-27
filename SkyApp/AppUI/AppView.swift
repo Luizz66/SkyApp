@@ -15,7 +15,6 @@ struct AppView: View {
             ImgBackgroundView()
             VStack {
                 MainForecastView()
-                    .ignoresSafeArea(edges: .all)
                 ScrollView(.vertical, showsIndicators: false) {
                     RangeForecastView()
                     DaysForecastView()
@@ -37,12 +36,14 @@ struct ImgBackgroundView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
     var body: some View {
-        ZStack {
+        VStack {
             if let clima = weatherViewModel.weatherData {
                 Image(backgroundImage(icon: clima.weather[0].icon))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
+                    .frame(width: UIScreen.main.bounds.width,
+                           height: UIScreen.main.bounds.height)
                     .overlay(
                         clima.weather[0].icon.last == "d" ? Color.black.opacity(0.4) : Color.black.opacity(0.3)
                     )
@@ -90,9 +91,7 @@ struct MainForecastView: View {
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
         }
-        .safeAreaInset(edge: .top) {
-            Color.clear.frame(height: 50)
-        }
+        .safeAreaPadding(.top, 85)
         .padding(.bottom, 50)
     }
 }
@@ -117,12 +116,11 @@ struct RangeForecastView : View {
                 .padding()
                 .background(.white.opacity(0.1))
                 .cornerRadius(20)
-                .padding(.bottom, 35)
+                .padding(.bottom, 40)
             } else if let erro = weatherViewModel.errorMessage {
                 Text("Erro: \(erro)")
             } else {
-                ProgressView("Carregando temperatura...")
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                Text("Carregando temperatura...")
                     .font(.itim(size: 17))
             }
         }
@@ -349,6 +347,26 @@ struct ForecastDetails: View {
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
+        }
+    }
+}
+
+struct LoadingScreenView: View {
+    var body: some View {
+        ZStack{
+            Image("loading")
+                .resizable()
+                .scaledToFill()
+                .ignoresSafeArea()
+                .blur(radius: 70)
+                .overlay(
+                    Color.black.opacity(0.3)
+                )
+            VStack(spacing: 20) {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                    .scaleEffect(2.6)
+            }
         }
     }
 }
