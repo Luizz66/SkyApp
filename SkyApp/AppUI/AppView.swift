@@ -47,10 +47,7 @@ struct ImgBackgroundView: View {
                     .overlay(
                         clima.weather[0].icon.last == "d" ? Color.black.opacity(0.4) : Color.black.opacity(0.3)
                     )
-            } else if let erro = weatherViewModel.errorMessage {
-                Text("Erro: \(erro)")
-            }
-            else {
+            } else {
                 LoadingScreenView()
             }
         }
@@ -85,7 +82,8 @@ struct MainForecastView: View {
                 }
                 .font(.itim(size: 85))
             } else if let erro = weatherViewModel.errorMessage {
-                Text("Erro: \(erro)")
+                Text("❌ Erro: \(erro)")
+                    .font(.itim(size: 16))
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
@@ -118,7 +116,9 @@ struct RangeForecastView : View {
                 .cornerRadius(20)
                 .padding(.bottom, 40)
             } else if let erro = weatherViewModel.errorMessage {
-                Text("Erro: \(erro)")
+                Text("❌ Erro: \(erro)")
+                    .font(.itim(size: 16))
+                    .padding(.bottom, 30)
             } else {
                 Text("Carregando temperatura...")
                     .font(.itim(size: 17))
@@ -192,7 +192,9 @@ struct DaysForecastView: View {
                         .padding(.bottom, 7)
                 }
             } else if let erro = weatherViewModel.errorMessage {
-                Text("Erro: \(erro)")
+                Text("❌ Erro: \(erro)")
+                    .font(.itim(size: 16))
+                    .padding(.bottom, 20)
             }
         }
         .padding(.bottom, 8)
@@ -342,7 +344,8 @@ struct ForecastDetails: View {
                 .background(.white.opacity(0.1))
                 .cornerRadius(20)
             } else if let erro = weatherViewModel.errorMessage {
-                Text("Erro: \(erro)")
+                Text("❌ Erro: \(erro)")
+                    .font(.itim(size: 16))
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
@@ -360,7 +363,7 @@ struct LoadingScreenView: View {
                 .ignoresSafeArea()
                 .blur(radius: 70)
                 .overlay(
-                    Color.black.opacity(0.3)
+                    Color.black.opacity(0.5)
                 )
             VStack(spacing: 20) {
                 ProgressView()
