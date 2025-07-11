@@ -102,17 +102,30 @@ extension Image {
             case "01d":
                 self.foregroundColor(Color(.colorSun))
             case "02d":
-                self.foregroundStyle(.colorCloud, .colorSun)
+                self.foregroundStyle(.white, .colorSun)
             case "09d", "09n", "11d", "11n":
-                self.foregroundStyle(.colorCloud, .blue)
+                self.foregroundStyle(.white, .colorBlue)
             case "10d":
-                self.foregroundStyle(.colorCloud, .colorSun, .blue)
+                self.foregroundStyle(.white, .colorSun, .colorBlue)
             case "10n":
-                self.foregroundStyle(.colorCloud, .white, .blue)
+                self.foregroundStyle(.white, .white, .colorBlue)
             case "13d", "13n":
-                self.foregroundColor(Color(.colorSnow))
-            case "50d", "50n":
-                self.foregroundColor(Color(.colorCloud))
+                self.foregroundColor(Color(.colorBlue))
+            default:
+                self.foregroundColor(.white)
+            }
+        }
+    }
+}
+
+extension Image {
+    func myColorTemp(_ temp: String) -> some View {
+        Group {
+            switch temp {
+            case "low":
+                self.foregroundStyle(.blue.opacity(0.6), .white)
+            case "high":
+                self.foregroundStyle(.red.opacity(0.6), .white)
             default:
                 self.foregroundColor(.white)
             }
@@ -143,3 +156,32 @@ struct MyBounceEffect: ViewModifier {
             }
     }
 }
+
+struct SymbolPorcentageView: View {
+    var progress: Double
+    
+    var body: some View {
+        let fillFraction = min(max(progress / 100, 0), 1)
+        
+        ZStack {
+            Image(systemName: "cloud")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(.white)
+            
+            Image(systemName: "cloud.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(.white.opacity(0.6))
+                .mask(
+                    GeometryReader { geo in
+                        Rectangle()
+                            .size(width: geo.size.width, height: geo.size.height * fillFraction)
+                            .offset(y: geo.size.height * (1 - fillFraction))
+                    }
+                )
+        }
+        .frame(width: 100, height: 100)
+    }
+}
+

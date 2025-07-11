@@ -103,10 +103,12 @@ struct RangeForecastView : View {
             if let todayTemp = todayMinMaxTemp {
                 HStack {
                     Image(systemName: "thermometer.low")
+                        .myColorTemp("low")
                         .opacity(0.6)
                     Text(formatIntTemp(txt: "Mín", temp: todayTemp.min))
                         .padding(.trailing, 30)
                     Image(systemName: "thermometer.high")
+                        .myColorTemp("high")
                         .opacity(0.6)
                     Text(formatIntTemp(txt: "Máx", temp: todayTemp.max))
                 }
@@ -177,11 +179,13 @@ struct DaysForecastView: View {
                             .myAnimationBounce()
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: "thermometer.low")
+                            .myColorTemp("low")
                             .font(.itim(size: 17))
                             .opacity(0.6)
                         Text("\(Int(forecast.tempMin))°")
                             .padding(.trailing, 10)
                         Image(systemName: "thermometer.high")
+                            .myColorTemp("high")
                             .font(.itim(size: 17))
                             .opacity(0.6)
                         Text("\(Int(forecast.tempMax))°")
@@ -334,7 +338,7 @@ struct ForecastDetails: View {
                         Text("\(clima.clouds.all)% do céu.")
                             .font(.itim(size: 30))
                         Spacer()
-                        Image(systemName: "cloud")
+                        SymbolPorcentageView(progress: Double(clima.clouds.all))
                             .font(.itim(size: 65))
                     }
                 }
