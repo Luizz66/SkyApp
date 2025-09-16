@@ -10,27 +10,8 @@
 		39BA11962D95B2C400AC3925 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 39BA11952D95B2C400AC3925 /* .gitignore */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		39A30FD72D84C12A00E6E898 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 39A30FBE2D84C12900E6E898 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 39A30FC52D84C12900E6E898;
-			remoteInfo = SkyApp;
-		};
-		39A30FE12D84C12A00E6E898 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 39A30FBE2D84C12900E6E898 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 39A30FC52D84C12900E6E898;
-			remoteInfo = SkyApp;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		39A30FC62D84C12900E6E898 /* SkyApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SkyApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		39A30FD62D84C12A00E6E898 /* SkyAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkyAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		39A30FE02D84C12A00E6E898 /* SkyAppUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SkyAppUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		39BA11952D95B2C400AC3925 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -38,7 +19,7 @@
 		39A310042D84CBB300E6E898 /* Exceptions for "SkyApp" folder in "SkyApp" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				Resources/Info.plist,
+				Assets/Info.plist,
 			);
 			target = 39A30FC52D84C12900E6E898 /* SkyApp */;
 		};
@@ -53,34 +34,10 @@
 			path = SkyApp;
 			sourceTree = "<group>";
 		};
-		39A30FD92D84C12A00E6E898 /* SkyAppTests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SkyAppTests;
-			sourceTree = "<group>";
-		};
-		39A30FE32D84C12A00E6E898 /* SkyAppUITests */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SkyAppUITests;
-			sourceTree = "<group>";
-		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		39A30FC32D84C12900E6E898 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		39A30FD32D84C12A00E6E898 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		39A30FDD2D84C12A00E6E898 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -95,8 +52,6 @@
 			children = (
 				39BA11952D95B2C400AC3925 /* .gitignore */,
 				39A30FC82D84C12900E6E898 /* SkyApp */,
-				39A30FD92D84C12A00E6E898 /* SkyAppTests */,
-				39A30FE32D84C12A00E6E898 /* SkyAppUITests */,
 				39A30FC72D84C12900E6E898 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -105,8 +60,6 @@
 			isa = PBXGroup;
 			children = (
 				39A30FC62D84C12900E6E898 /* SkyApp.app */,
-				39A30FD62D84C12A00E6E898 /* SkyAppTests.xctest */,
-				39A30FE02D84C12A00E6E898 /* SkyAppUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -136,52 +89,6 @@
 			productReference = 39A30FC62D84C12900E6E898 /* SkyApp.app */;
 			productType = "com.apple.product-type.application";
 		};
-		39A30FD52D84C12A00E6E898 /* SkyAppTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 39A30FED2D84C12A00E6E898 /* Build configuration list for PBXNativeTarget "SkyAppTests" */;
-			buildPhases = (
-				39A30FD22D84C12A00E6E898 /* Sources */,
-				39A30FD32D84C12A00E6E898 /* Frameworks */,
-				39A30FD42D84C12A00E6E898 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				39A30FD82D84C12A00E6E898 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				39A30FD92D84C12A00E6E898 /* SkyAppTests */,
-			);
-			name = SkyAppTests;
-			packageProductDependencies = (
-			);
-			productName = SkyAppTests;
-			productReference = 39A30FD62D84C12A00E6E898 /* SkyAppTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
-		39A30FDF2D84C12A00E6E898 /* SkyAppUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 39A30FF02D84C12A00E6E898 /* Build configuration list for PBXNativeTarget "SkyAppUITests" */;
-			buildPhases = (
-				39A30FDC2D84C12A00E6E898 /* Sources */,
-				39A30FDD2D84C12A00E6E898 /* Frameworks */,
-				39A30FDE2D84C12A00E6E898 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				39A30FE22D84C12A00E6E898 /* PBXTargetDependency */,
-			);
-			fileSystemSynchronizedGroups = (
-				39A30FE32D84C12A00E6E898 /* SkyAppUITests */,
-			);
-			name = SkyAppUITests;
-			packageProductDependencies = (
-			);
-			productName = SkyAppUITests;
-			productReference = 39A30FE02D84C12A00E6E898 /* SkyAppUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -194,14 +101,6 @@
 				TargetAttributes = {
 					39A30FC52D84C12900E6E898 = {
 						CreatedOnToolsVersion = 16.2;
-					};
-					39A30FD52D84C12A00E6E898 = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 39A30FC52D84C12900E6E898;
-					};
-					39A30FDF2D84C12A00E6E898 = {
-						CreatedOnToolsVersion = 16.2;
-						TestTargetID = 39A30FC52D84C12900E6E898;
 					};
 				};
 			};
@@ -220,8 +119,6 @@
 			projectRoot = "";
 			targets = (
 				39A30FC52D84C12900E6E898 /* SkyApp */,
-				39A30FD52D84C12A00E6E898 /* SkyAppTests */,
-				39A30FDF2D84C12A00E6E898 /* SkyAppUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -235,20 +132,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		39A30FD42D84C12A00E6E898 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		39A30FDE2D84C12A00E6E898 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
@@ -259,34 +142,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		39A30FD22D84C12A00E6E898 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		39A30FDC2D84C12A00E6E898 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		39A30FD82D84C12A00E6E898 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 39A30FC52D84C12900E6E898 /* SkyApp */;
-			targetProxy = 39A30FD72D84C12A00E6E898 /* PBXContainerItemProxy */;
-		};
-		39A30FE22D84C12A00E6E898 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 39A30FC52D84C12900E6E898 /* SkyApp */;
-			targetProxy = 39A30FE12D84C12A00E6E898 /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		39A30FE82D84C12A00E6E898 /* Debug */ = {
@@ -416,11 +272,11 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Resources\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Assets\"";
 				DEVELOPMENT_TEAM = H6S53M4CN4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SkyApp/Resources/Info.plist;
+				INFOPLIST_FILE = SkyApp/Assets/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -447,11 +303,11 @@
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Resources\"";
+				DEVELOPMENT_ASSET_PATHS = "\"SkyApp/Assets\"";
 				DEVELOPMENT_TEAM = H6S53M4CN4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = SkyApp/Resources/Info.plist;
+				INFOPLIST_FILE = SkyApp/Assets/Info.plist;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -467,74 +323,6 @@
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-			};
-			name = Release;
-		};
-		39A30FEE2D84C12A00E6E898 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = lg.SkyAppTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkyApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkyApp";
-			};
-			name = Debug;
-		};
-		39A30FEF2D84C12A00E6E898 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = lg.SkyAppTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SkyApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SkyApp";
-			};
-			name = Release;
-		};
-		39A30FF12D84C12A00E6E898 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = lg.SkyAppUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SkyApp;
-			};
-			name = Debug;
-		};
-		39A30FF22D84C12A00E6E898 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = lg.SkyAppUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = SkyApp;
 			};
 			name = Release;
 		};
@@ -555,24 +343,6 @@
 			buildConfigurations = (
 				39A30FEB2D84C12A00E6E898 /* Debug */,
 				39A30FEC2D84C12A00E6E898 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		39A30FED2D84C12A00E6E898 /* Build configuration list for PBXNativeTarget "SkyAppTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				39A30FEE2D84C12A00E6E898 /* Debug */,
-				39A30FEF2D84C12A00E6E898 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		39A30FF02D84C12A00E6E898 /* Build configuration list for PBXNativeTarget "SkyAppUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				39A30FF12D84C12A00E6E898 /* Debug */,
-				39A30FF22D84C12A00E6E898 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

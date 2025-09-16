@@ -1,14 +1,14 @@
 //
-//  AppView.swift
+//  ContentView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
 //
 import SwiftUI
 
-struct AppView: View {
+struct ContentView: View {
     @StateObject private var locationManager = LocationManager()
-    @StateObject var weatherViewModel = WeatherViewModel()
+    @StateObject var weather = Weather()
     
     var body: some View {
         ZStack {
@@ -27,18 +27,18 @@ struct AppView: View {
             .foregroundColor(.white)
         }
         .environmentObject(locationManager)
-        .environmentObject(weatherViewModel)
+        .environmentObject(weather)
     }
 }
 
 struct ImgBackgroundView: View {
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var weather: Weather
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
-                Image(backgroundImage(icon: clima.weather[0].icon))
+            if let clima = weather.weatherData {
+                Image(Style().backgroundStyle(icon: clima.weather[0].icon))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -52,42 +52,42 @@ struct ImgBackgroundView: View {
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
+            weather.loadWeather(for: coordinate)
         }
     }
 }
 
 struct MainForecastView: View {
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var weather: Weather
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
+            if let clima = weather.weatherData {
                 Text(clima.name)
                     .font(.itim(size: 35))
                     .padding(.bottom, 1)
                 HStack {
                     VStack(alignment: .leading) {
-                        Text(formatTemp(clima.main.temp))
+                        Text(clima.formattedTemp.mainTemp)
                             .padding(.trailing, 15)
-                        Text(mainDescription(id: clima.weather.first?.id ?? 0))
+                        Text(clima.mainDescription)
                             .font(.itim(size: 21))
                             .opacity(0.6)
                     }
-                    Image(systemName: SF(icon: clima.weather[0].icon))
-                        .myIconStyle(clima.weather[0].icon)
+                    Image(systemName: clima.mySFSymbol)
+                        .symbolStyle(clima.weather[0].icon)
+                        .animationBounce()
                         .font(.system(size: 90))
-                        .myAnimationBounce()
                 }
                 .font(.itim(size: 85))
-            } else if let erro = weatherViewModel.errorMessage {
+            } else if let erro = weather.errorMessage {
                 Text("❌ Erro: \(erro)")
                     .font(.itim(size: 16))
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
+            weather.loadWeather(for: coordinate)
         }
         .safeAreaPadding(.top, 85)
         .padding(.bottom, 50)
@@ -96,28 +96,28 @@ struct MainForecastView: View {
 
 struct RangeForecastView : View {
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var weather: Weather
     
     var body: some View {
         VStack {
-            if let todayTemp = todayMinMaxTemp {
+            if let todayTemp = weather.todayMinMaxTemp {
                 HStack {
                     Image(systemName: "thermometer.low")
-                        .myColorTemp("low")
+                        .foregroundStyle(.blue.opacity(0.6), .white)
                         .opacity(0.6)
-                    Text(formatIntTemp(txt: "Mín", temp: todayTemp.min))
+                    Text(todayTemp.min)
                         .padding(.trailing, 30)
                     Image(systemName: "thermometer.high")
-                        .myColorTemp("high")
+                        .foregroundStyle(.red.opacity(0.6), .white)
                         .opacity(0.6)
-                    Text(formatIntTemp(txt: "Máx", temp: todayTemp.max))
+                    Text(todayTemp.max)
                 }
                 .font(.itim(size: 23))
                 .padding()
                 .background(.white.opacity(0.1))
                 .cornerRadius(20)
                 .padding(.bottom, 40)
-            } else if let erro = weatherViewModel.errorMessage {
+            } else if let erro = weather.errorMessage {
                 Text("❌ Erro: \(erro)")
                     .font(.itim(size: 16))
                     .padding(.bottom, 30)
@@ -127,42 +127,18 @@ struct RangeForecastView : View {
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
-            weatherViewModel.loadForecast(for: coordinate)
+            weather.loadForecast(for: coordinate)
         }
-    }
-    private var todayMinMaxTemp: (min: Double, max: Double)? {
-        guard let list = weatherViewModel.forecastData?.list else { return nil }
-        
-        let apiFormatter = DateFormatter()
-        apiFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        apiFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        
-        let calendar = Calendar.current
-        let today = Date()
-        
-        let todayForecasts = list.compactMap { item -> (Double, Double)? in
-            guard let date = apiFormatter.date(from: item.dt_txt) else { return nil }
-            if calendar.isDate(date, inSameDayAs: today) {
-                return (item.main.temp_min, item.main.temp_max)
-            }
-            return nil
-        }
-        
-        guard !todayForecasts.isEmpty else { return nil }
-        
-        let minTemp = todayForecasts.map { $0.0 }.min() ?? 0.0
-        let maxTemp = todayForecasts.map { $0.1 }.max() ?? 0.0
-        return (minTemp, maxTemp)
     }
 }
 
 struct DaysForecastView: View {
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var weather: Weather
     
     var body: some View {
         VStack {
-            if let _ = weatherViewModel.forecastData {
+            if let _ = weather.forecastData {
                 HStack {
                     Image(systemName: "calendar")
                     Text("PREVISÃO PARA 5 DIAS")
@@ -170,32 +146,32 @@ struct DaysForecastView: View {
                 .font(.itim(size: 20))
                 .opacity(0.6)
                 .padding(.bottom, 10)
-                ForEach(dailyForecasts.prefix(5), id: \.date) { forecast in
+                ForEach(weather.dailyForecasts.prefix(5), id: \.date) { forecast in
                     HStack {
-                        Text(formatDayWeek(from: forecast.date))
+                        Text(forecast.date)
                             .frame(maxWidth: .infinity, alignment: .leading)
-                        Image(systemName: SF(icon: forecast.icon))
-                            .myIconStyle(forecast.icon)
-                            .myAnimationBounce()
+                        Image(systemName: forecast.mySFSymbol)
+                            .symbolStyle(forecast.icon)
+                            .animationBounce()
                             .frame(maxWidth: .infinity, alignment: .leading)
                         Image(systemName: "thermometer.low")
-                            .myColorTemp("low")
+                            .foregroundStyle(.blue.opacity(0.6), .white)
                             .font(.itim(size: 17))
                             .opacity(0.6)
-                        Text("\(Int(forecast.tempMin))°")
+                        Text(forecast.formattedTemp.min)
                             .padding(.trailing, 10)
                         Image(systemName: "thermometer.high")
-                            .myColorTemp("high")
+                            .foregroundStyle(.red.opacity(0.6), .white)
                             .font(.itim(size: 17))
                             .opacity(0.6)
-                        Text("\(Int(forecast.tempMax))°")
+                        Text(forecast.formattedTemp.max)
                     }
                     .font(.itim(size: 20))
                     Divider()
                         .background(Color.white)
                         .padding(.bottom, 7)
                 }
-            } else if let erro = weatherViewModel.errorMessage {
+            } else if let erro = weather.errorMessage {
                 Text("❌ Erro: \(erro)")
                     .font(.itim(size: 16))
                     .padding(.bottom, 20)
@@ -203,45 +179,18 @@ struct DaysForecastView: View {
         }
         .padding(.bottom, 8)
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
-            weatherViewModel.loadForecast(for: coordinate)
-        }
-    }
-    private var dailyForecasts: [DailyForecast] {
-        guard let list = weatherViewModel.forecastData?.list else { return [] }
-        
-        let grouped = Dictionary(grouping: list) { forecast in
-            String(forecast.dt_txt.prefix(10)) // yyyy-mm-dd
-        }
-        let sortedKeys = grouped.keys.sorted()
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
-        let todayString = dateFormatter.string(from: Date())
-        
-        let nextDays = sortedKeys.filter { $0 > todayString }
-        
-        return nextDays.prefix(5).compactMap { date in
-            guard let forecasts = grouped[date] else { return nil }
-            
-            let middayForecast = forecasts.first(where: { $0.dt_txt.contains("12:00:00") })
-            
-            // Se não encontrar 12:00, pega o primeiro disponível
-            let icon = middayForecast?.weather.first?.icon ?? forecasts.first?.weather.first?.icon ?? "01d"
-            
-            let minTemp = forecasts.map { $0.main.temp_min }.min() ?? 0.0
-            let maxTemp = forecasts.map { $0.main.temp_max }.max() ?? 0.0
-            return DailyForecast(date: date, icon: icon, tempMin: minTemp, tempMax: maxTemp)
+            weather.loadForecast(for: coordinate)
         }
     }
 }
 
 struct ForecastDetails: View {
     @EnvironmentObject var locationManager: LocationManager
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var weather: Weather
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
+            if let clima = weather.weatherData {
                 HStack {
                     VStack /*umidade e vento*/ {
                         Group {
@@ -262,7 +211,7 @@ struct ForecastDetails: View {
                                 }
                                 .opacity(0.6)
                                 .padding(.bottom, 0.1)
-                                Text(formatWind(wind: clima.wind.speed))
+                                Text(clima.formattedWind)
                                     .font(.itim(size: 30))
                             }
                         }
@@ -279,10 +228,10 @@ struct ForecastDetails: View {
                         }
                         .opacity(0.6)
                         .padding(.bottom, 0.1)
-                        Text(formatTemp(clima.main.feels_like))
+                        Text(clima.formattedTemp.feelsLike)
                             .font(.itim(size: 30))
                         Spacer()
-                        Text(sensationDescription(temp: clima.main.temp, feelsLike: clima.main.feels_like))
+                        Text(clima.sensationDescription)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(8)
@@ -298,8 +247,7 @@ struct ForecastDetails: View {
                         }
                         .opacity(0.6)
                         .padding(.bottom, 0.1)
-                        Text(formatPrecipitation(rain: clima.rain?.one ?? 0.0))
-                            .font(.itim(size: 30))
+                        Text(clima.formattedPrecipitation)                            .font(.itim(size: 30))
                             .padding(.bottom, 50)
                         Spacer()
                         Text("nas últimas 1h.")
@@ -316,10 +264,10 @@ struct ForecastDetails: View {
                         }
                         .opacity(0.6)
                         .padding(.bottom, 0.1)
-                        Text(formatSys(from: clima.sys.sunrise))
+                        Text(clima.formattedSys.sunrise)
                             .font(.itim(size: 30))
                         Spacer()
-                        Text("Pôr do sol: \(formatSys(from: clima.sys.sunset))")
+                        Text("Pôr do sol: \(clima.formattedSys.sunset)")
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
                     .padding(8)
@@ -347,14 +295,42 @@ struct ForecastDetails: View {
                 .font(.itim(size: 15))
                 .background(.white.opacity(0.1))
                 .cornerRadius(20)
-            } else if let erro = weatherViewModel.errorMessage {
+            } else if let erro = weather.errorMessage {
                 Text("❌ Erro: \(erro)")
                     .font(.itim(size: 16))
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
+            weather.loadWeather(for: coordinate)
         }
+    }
+}
+
+struct SymbolPorcentageView: View {
+    var progress: Double
+    
+    var body: some View {
+        let fillFraction = min(max(progress / 100, 0), 1)
+        
+        ZStack {
+            Image(systemName: "cloud")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(.white)
+            
+            Image(systemName: "cloud.fill")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .foregroundColor(.white.opacity(0.6))
+                .mask(
+                    GeometryReader { geo in
+                        Rectangle()
+                            .size(width: geo.size.width, height: geo.size.height * fillFraction)
+                            .offset(y: geo.size.height * (1 - fillFraction))
+                    }
+                )
+        }
+        .frame(width: 100, height: 100)
     }
 }
 
@@ -379,5 +355,5 @@ struct LoadingScreenView: View {
 }
 
 #Preview {
-    AppView()
+    ContentView()
 }

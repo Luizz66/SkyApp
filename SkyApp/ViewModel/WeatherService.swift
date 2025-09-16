@@ -1,5 +1,5 @@
 //
-//  Services.swift
+//  WeatherService.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 25/06/25.
@@ -11,7 +11,7 @@ import CoreLocation
 class WeatherService {
     private let token = Secrets.apiKey
     
-    func fetchWeather(for coord: CLLocationCoordinate2D, completion: @escaping (Result<WeatherData, Error>) -> Void) {
+    func fetchCurrentWeather(for coord: CLLocationCoordinate2D, completion: @escaping (Result<WeatherData, Error>) -> Void) {
         let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=p"
         
         guard let url = URL(string: urlString) else {
@@ -19,7 +19,7 @@ class WeatherService {
             return
         }
         
-        //requisição
+        //request
         URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
                 DispatchQueue.main.async {
@@ -85,3 +85,13 @@ class WeatherService {
     }
 }
 
+struct Secrets {
+    static var apiKey: String {
+        guard let path = Bundle.main.path(forResource: "Secrets", ofType: "plist"),
+              let dict = NSDictionary(contentsOfFile: path),
+              let apiKey = dict["API_KEY"] as? String else {
+            fatalError("API Key não encontrada")
+        }
+        return apiKey
+    }
+}
