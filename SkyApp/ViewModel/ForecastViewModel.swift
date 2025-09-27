@@ -1,33 +1,21 @@
 //
-//  Weather.swift
+//  ForecastViewModel.swift
 //  SkyApp
 //
-//  Created by Luiz Gustavo Barros Campos on 14/03/25.
+//  Created by Luiz Gustavo Barros Campos on 27/09/25.
 //
 
 import CoreLocation
 import SwiftUI
 
-class Weather: ObservableObject {
-    @Published var weatherData: WeatherData?
+class ForecastViewModel: ObservableObject {
     @Published var forecastData: ForecastData?
     @Published var errorMessage: String?
     
-    private let weatherService = WeatherService()
-    
-    func loadWeather(for coord: CLLocationCoordinate2D) {
-        weatherService.fetchCurrentWeather(for: coord) { result in
-            switch result {
-            case .success(let dados):
-                self.weatherData = dados
-            case .failure(let erro):
-                self.errorMessage = erro.localizedDescription
-            }
-        }
-    }
+    private let apiService = APIService()
     
     func loadForecast(for coord: CLLocationCoordinate2D) {
-        weatherService.fetchForecast(for: coord) { result in
+        apiService.fetchForecast(for: coord) { result in
             switch result {
             case .success(let dados):
                 self.forecastData = dados
@@ -36,25 +24,26 @@ class Weather: ObservableObject {
             }
         }
     }
-}
-
-extension Weather {
+    
     var todayMinMaxTemp: (min: String, max: String)? {
-        
         guard let list = forecastData?.list else { return nil }
         
         let apiFormatter = DateFormatter()
         apiFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
-        apiFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+        apiFormatter.timeZone = TimeZone(secondsFromGMT: 0) // API vem em UTC
         
         var calendar = Calendar.current
-        calendar.timeZone = TimeZone(secondsFromGMT: 0)!
+        calendar.timeZone = TimeZone.current // use o fuso do usuário
         
         let today = Date()
         
         let todayForecasts = list.compactMap { item -> (Double, Double)? in
-            guard let date = apiFormatter.date(from: item.dt_txt) else { return nil }
-            if calendar.isDate(date, inSameDayAs: today) {
+            guard let dateUTC = apiFormatter.date(from: item.dt_txt) else { return nil }
+            
+            // converter a data UTC para local
+            let localDate = dateUTC.addingTimeInterval(TimeInterval(TimeZone.current.secondsFromGMT()))
+            
+            if calendar.isDate(localDate, inSameDayAs: today) {
                 return (item.main.temp_min, item.main.temp_max)
             }
             return nil
@@ -62,14 +51,15 @@ extension Weather {
         
         guard !todayForecasts.isEmpty else { return nil }
         
-        let strMin = "Mín.: \(Int(todayForecasts.map { $0.0 }.min() ?? 0.0))°"
-        let strMax = "Máx.: \(Int(todayForecasts.map { $0.1 }.max() ?? 0.0))°"
+        let minTemp = todayForecasts.map { $0.0 }.min() ?? 0.0
+        let maxTemp = todayForecasts.map { $0.1 }.max() ?? 0.0
+        
+        let strMin = "Mín.: \(Int(minTemp))°"
+        let strMax = "Máx.: \(Int(maxTemp))°"
         
         return (strMin, strMax)
     }
-}
-
-extension Weather {
+    
     var dailyForecasts: [DailyForecast] {
         guard let list = forecastData?.list else { return [] }
         
@@ -114,5 +104,16 @@ extension Weather {
             dateFormatter.dateFormat = "EEE"
             return dateFormatter.string(from: date).capitalized
         }
+    }
+}
+
+extension DailyForecast {
+    // computed property
+    var formattedTemp: (min: String, max: String) {
+        return ("\(Int(tempMin))°", "\(Int(tempMax))°")
+    }
+    
+    var mySFSymbol: String {
+        return Legend().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
     }
 }

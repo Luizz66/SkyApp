@@ -1,18 +1,19 @@
 //
-//  WeatherService.swift
+//  APIService.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 25/06/25.
 //
+
 import Foundation
 import CoreLocation
 
-//call api
-class WeatherService {
+class APIService {
     private let token = Secrets.apiKey
+    private let baseURL = "https://api.openweathermap.org/data/2.5/"
     
     func fetchCurrentWeather(for coord: CLLocationCoordinate2D, completion: @escaping (Result<WeatherData, Error>) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=p"
+        let urlString = "\(baseURL)weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=p"
         
         guard let url = URL(string: urlString) else {
             print("URL inválida")
@@ -49,7 +50,7 @@ class WeatherService {
     }
     
     func fetchForecast(for coord: CLLocationCoordinate2D, completion: @escaping (Result<ForecastData, Error>) -> Void) {
-        let urlString = "https://api.openweathermap.org/data/2.5/forecast?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=pt"
+        let urlString = "\(baseURL)forecast?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=pt"
         
         guard let url = URL(string: urlString) else {
             print("URL inválida")

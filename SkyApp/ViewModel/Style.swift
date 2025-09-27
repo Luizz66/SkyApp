@@ -31,7 +31,7 @@ class Style {
         }
     }
 
-    struct Img {
+    private struct Img {
         static let day = "day"
         static let dayCloud = "day-cloud"
         static let dayRain = "day-rain"

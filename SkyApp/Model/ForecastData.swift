@@ -31,13 +31,4 @@ struct DailyForecast {
     let icon: String
     let tempMin: Double
     let tempMax: Double
-    
-    //computed property
-    var formattedTemp: (min: String, max: String) {
-        return ("\(Int(tempMin))°", "\(Int(tempMax))°")
-    }
-    
-    var mySFSymbol: String {
-        return Legend().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
-    }
 }
