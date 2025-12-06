@@ -29,11 +29,8 @@ class WeatherViewModel: ObservableObject {
 extension WeatherData {
     // computed property
     var formattedTemp: (mainTemp: String, feelsLike: String) {
-        let formattedT = String(format: "%.1f°", main.temp).dotToComma()
-        let formattedFL = String(format: "%.1f°", main.feels_like).dotToComma()
-        
-        let tempStr = formattedT.last == "0" ? "\(Int(main.temp))°" : formattedT
-        let feelsLikeStr = formattedFL.last == "0" ? "\(Int(main.feels_like))°" : formattedFL
+        let tempStr = String(format: "%.0f°", main.temp).dotToComma()
+        let feelsLikeStr = String(format: "%.0f°", main.feels_like).dotToComma()
         
         return (tempStr, feelsLikeStr)
     }

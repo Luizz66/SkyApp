@@ -5,7 +5,6 @@
 //  Created by Luiz Gustavo Barros Campos on 15/09/25.
 //
 
-import Foundation
 import SwiftUI
 
 struct BounceEffect: ViewModifier {
@@ -14,9 +13,9 @@ struct BounceEffect: ViewModifier {
     func body(content: Content) -> some View {
         content
             .scaleEffect(bounce ? 1.04 : 1.0)
-            .offset(y: bounce ? -1 : 0)
+            .offset(y: bounce ? -1.5 : 0)
             .animation(
-                Animation.easeInOut(duration: 0.6)
+                Animation.easeInOut(duration: 0.9)
                     .repeatForever(autoreverses: true),
                 value: bounce
             )

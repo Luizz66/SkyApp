@@ -11,20 +11,20 @@ struct BackgroundImgView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
+    let style = Style()
+    
     var body: some View {
         VStack {
             if let clima = weatherViewModel.weatherData {
-                Image(Style().backgroundStyle(icon: clima.weather[0].icon))
+                Image(style.backgroundStyle(icon: clima.weather[0].icon))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
                     .frame(width: UIScreen.main.bounds.width,
                            height: UIScreen.main.bounds.height)
-                    .overlay(
-                        clima.weather[0].icon.last == "d" ? Color.black.opacity(0.4) : Color.black.opacity(0.3)
-                    )
+                    .overlay(Color.black.opacity(0.4))
             } else {
-                LoadingScreenView()
+                LoadScreenView()
             }
         }
         .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in

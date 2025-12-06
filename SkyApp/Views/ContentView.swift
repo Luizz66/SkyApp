@@ -16,15 +16,26 @@ struct ContentView: View {
         ZStack {
             BackgroundImgView()
             VStack {
-                MainForecastView()
+                MainWeatherView()
                 ScrollView(.vertical, showsIndicators: false) {
-                    RangeForecastView()
                     WeekForecastView()
-                    DetailsForecastView()
+                    DetailsWeatherView()
                 }
                 .padding(.horizontal, 15)
                 .padding(.bottom, 30)
-                .cornerRadius(25)
+                .mask(
+                    LinearGradient(
+                        gradient: Gradient(stops: [
+                            .init(color: .clear, location: 0.0),
+                            .init(color: .black, location: 0.06),
+                            .init(color: .black, location: 0.90),
+                            .init(color: .black.opacity(0.1), location: 0.95),
+                            .init(color: .clear, location: 1.0)
+                        ]),
+                        startPoint: .top,
+                        endPoint: .bottom
+                    )
+                )
             }
             .preferredColorScheme(.dark)
         }

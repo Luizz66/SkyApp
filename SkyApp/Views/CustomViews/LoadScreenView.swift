@@ -1,5 +1,5 @@
 //
-//  LoadingScreenView.swift
+//  LoadScreenView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 26/09/25.
@@ -7,16 +7,16 @@
 
 import SwiftUI
 
-struct LoadingScreenView: View {
+struct LoadScreenView: View {
     var body: some View {
         ZStack{
             Image("loading")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .blur(radius: 70)
+                .blur(radius: 75)
                 .overlay(
-                    Color.black.opacity(0.5)
+                    Color.black.opacity(0.6)
                 )
             VStack(spacing: 20) {
                 ProgressView()
@@ -28,5 +28,5 @@ struct LoadingScreenView: View {
 }
 
 #Preview {
-    LoadingScreenView()
+    LoadScreenView()
 }

@@ -22,7 +22,7 @@ struct SymbolPorcentageView: View {
             Image(systemName: "cloud.fill")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
-                .foregroundColor(.white.opacity(0.6))
+                .foregroundColor(.white.opacity(0.7))
                 .mask(
                     GeometryReader { geo in
                         Rectangle()

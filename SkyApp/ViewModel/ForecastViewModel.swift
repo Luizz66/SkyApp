@@ -84,8 +84,11 @@ class ForecastViewModel: ObservableObject {
             let minTemp = forecasts.map { $0.main.temp_min }.min() ?? 0.0
             let maxTemp = forecasts.map { $0.main.temp_max }.max() ?? 0.0
             
+            let weekday = formatDayWeek(from: date)
+            let realDate = isTomorrow(weekday) ? "Amanhã" : weekday
+            
             return DailyForecast(
-                date: formatDayWeek(from: date),
+                date: realDate,
                 icon: icon,
                 tempMin: minTemp,
                 tempMax: maxTemp
@@ -103,6 +106,25 @@ class ForecastViewModel: ObservableObject {
             
             dateFormatter.dateFormat = "EEE"
             return dateFormatter.string(from: date).capitalized
+        }
+        
+        func isTomorrow(_ weekdayAbbrev: String) -> Bool {
+            let formatter = DateFormatter()
+            formatter.locale = Locale(identifier: "pt_BR")
+            formatter.dateFormat = "EEE"
+            
+            guard let date = formatter.date(from: weekdayAbbrev) else {
+                return false
+            }
+            
+            let calendar = Calendar.current
+            let targetWeekday = calendar.component(.weekday, from: date)
+            
+            let todayWeekday = calendar.component(.weekday, from: Date())
+            
+            let nextWeekday = todayWeekday % 7 + 1
+            
+            return targetWeekday == nextWeekday
         }
     }
 }
