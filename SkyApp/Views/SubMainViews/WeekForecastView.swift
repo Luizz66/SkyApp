@@ -11,6 +11,8 @@ struct WeekForecastView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var forecastViewModel: ForecastViewModel
     
+    @EnvironmentObject var search: Search
+
     var body: some View {
         VStack {
             if let _ = forecastViewModel.forecastData {
@@ -41,7 +43,7 @@ struct WeekForecastView: View {
             }
         }
         .padding(.bottom, 8)
-        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
             forecastViewModel.loadForecast(for: coordinate)
         }
     }
@@ -98,5 +100,6 @@ func DayView(daily dailyForecast: DailyForecast) -> some View {
     WeekForecastView()
         .environmentObject(LocationManager())
         .environmentObject(ForecastViewModel())
+        .environmentObject(Search()) 
         .preferredColorScheme(.dark)
 }

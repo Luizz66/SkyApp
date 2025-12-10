@@ -11,6 +11,8 @@ struct BackgroundImgView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
+    @EnvironmentObject var search: Search
+    
     let style = Style()
     
     var body: some View {
@@ -27,7 +29,7 @@ struct BackgroundImgView: View {
                 LoadScreenView()
             }
         }
-        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
         }
     }
@@ -37,5 +39,6 @@ struct BackgroundImgView: View {
     BackgroundImgView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
+        .environmentObject(Search()) 
         .preferredColorScheme(.dark)
 }

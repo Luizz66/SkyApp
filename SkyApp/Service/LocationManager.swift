@@ -6,12 +6,15 @@
 //
 
 import CoreLocation
+import MapKit
+import SwiftUI
 
 //get current location
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     private var locationManager = CLLocationManager()
-    
-    @Published var coordinate: CLLocationCoordinate2D?
+        
+    @Published var currentCoordinate: CLLocationCoordinate2D?
+    @Published var searchCoordinate: CLLocationCoordinate2D?
     
     override init() {
         super.init()
@@ -24,7 +27,24 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         DispatchQueue.main.async {
-            self.coordinate = location.coordinate
+//            print(location.coordinate)
+            self.currentCoordinate = location.coordinate
         }
+    }
+    
+    func getSearchLocation(_ suggestion: MKLocalSearchCompletion) {
+        let request = MKLocalSearch.Request(completion: suggestion)
+        let search = MKLocalSearch(request: request)
+        
+        search.start { response, error in
+            if let location = response?.mapItems.first?.placemark.location {
+//                print(location.coordinate)
+                self.searchCoordinate = location.coordinate
+            }
+        }
+    }
+    
+    func coordinatePublisher(isSearch: Bool) -> Published<CLLocationCoordinate2D?>.Publisher {
+        return isSearch ? $searchCoordinate : $currentCoordinate
     }
 }

@@ -11,6 +11,8 @@ struct DetailsWeatherView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
+    @EnvironmentObject var search: Search
+    
     var body: some View {
         VStack {
             if let clima = weatherViewModel.weatherData {
@@ -25,7 +27,7 @@ struct DetailsWeatherView: View {
                 CloudsView(weatherData: clima)
             }
         }
-        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
         }
     }
@@ -159,4 +161,5 @@ func CloudsView(weatherData: WeatherData) -> some View {
     }
     .environmentObject(LocationManager())
     .environmentObject(WeatherViewModel())
+    .environmentObject(Search()) 
 }

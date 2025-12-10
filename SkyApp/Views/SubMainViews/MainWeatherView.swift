@@ -12,6 +12,8 @@ struct MainWeatherView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     @EnvironmentObject var forecastViewModel: ForecastViewModel
     
+    @EnvironmentObject var search: Search
+    
     var body: some View {
         VStack {
             if let clima = weatherViewModel.weatherData {
@@ -37,7 +39,7 @@ struct MainWeatherView: View {
                 .font(.itim(size: 85))
                 .padding(.bottom, 10)
                 
-                RangeForecastView(locationManager, forecastViewModel)
+                RangeForecastView(search, locationManager, forecastViewModel)
                 
             } else if let erro = weatherViewModel.errorMessage {
                 GeometryReader { geo in
@@ -52,13 +54,13 @@ struct MainWeatherView: View {
             }
         }
         .safeAreaPadding(.top, 70)
-        .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
             weatherViewModel.loadWeather(for: coordinate)
         }
     }
 }
 
-func RangeForecastView(_ locationManager: LocationManager,_ forecastViewModel: ForecastViewModel) -> some View {
+func RangeForecastView(_ search: Search,_ locationManager: LocationManager,_ forecastViewModel: ForecastViewModel) -> some View {
     VStack {
         if let todayTemp = forecastViewModel.todayMinMaxTemp {
             HStack {
@@ -85,7 +87,7 @@ func RangeForecastView(_ locationManager: LocationManager,_ forecastViewModel: F
             .padding(.bottom, 15)
         }
     }
-    .onReceive(locationManager.$coordinate.compactMap { $0 }) { coordinate in
+    .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
         forecastViewModel.loadForecast(for: coordinate)
     }
 }
@@ -94,5 +96,6 @@ func RangeForecastView(_ locationManager: LocationManager,_ forecastViewModel: F
     MainWeatherView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
+        .environmentObject(Search()) 
         .preferredColorScheme(.dark)
 }
