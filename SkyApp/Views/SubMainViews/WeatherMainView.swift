@@ -1,5 +1,5 @@
 //
-//  MainForecastView.swift
+//  WeatherMainView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 26/09/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct MainWeatherView: View {
+struct WeatherMainView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     @EnvironmentObject var forecastViewModel: ForecastViewModel
@@ -39,7 +39,7 @@ struct MainWeatherView: View {
                 .font(.itim(size: 85))
                 .padding(.bottom, 10)
                 
-                RangeForecastView(search, locationManager, forecastViewModel)
+                rangeForecastView(search, locationManager, forecastViewModel)
                 
             } else if let erro = weatherViewModel.errorMessage {
                 GeometryReader { geo in
@@ -60,7 +60,7 @@ struct MainWeatherView: View {
     }
 }
 
-func RangeForecastView(_ search: Search,_ locationManager: LocationManager,_ forecastViewModel: ForecastViewModel) -> some View {
+func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ forecastViewModel: ForecastViewModel) -> some View {
     VStack {
         if let todayTemp = forecastViewModel.todayMinMaxTemp {
             HStack {
@@ -93,9 +93,10 @@ func RangeForecastView(_ search: Search,_ locationManager: LocationManager,_ for
 }
 
 #Preview {
-    MainWeatherView()
+    WeatherMainView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
+        .environmentObject(ForecastViewModel())
         .environmentObject(Search()) 
         .preferredColorScheme(.dark)
 }

@@ -12,7 +12,7 @@ struct MainView: View {
         ZStack {
             BackgroundImgView()
             VStack {
-                MainWeatherView()
+                WeatherMainView()
                 ScrollView(.vertical, showsIndicators: false) {
                     WeekForecastView()
                     DetailsWeatherView()
@@ -33,7 +33,6 @@ struct MainView: View {
                     )
                 )
             }
-            .preferredColorScheme(.dark)
         }
     }
 }
@@ -44,4 +43,5 @@ struct MainView: View {
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())
         .environmentObject(Search())
+        .preferredColorScheme(.dark)
 }

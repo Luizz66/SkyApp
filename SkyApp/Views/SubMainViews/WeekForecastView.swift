@@ -12,7 +12,7 @@ struct WeekForecastView: View {
     @EnvironmentObject var forecastViewModel: ForecastViewModel
     
     @EnvironmentObject var search: Search
-
+    
     var body: some View {
         VStack {
             if let _ = forecastViewModel.forecastData {
@@ -27,7 +27,7 @@ struct WeekForecastView: View {
                 
                 ForEach(forecastViewModel.dailyForecasts.prefix(5), id: \.date) { forecast in
                     
-                    DayView(daily: forecast)
+                    dayView(daily: forecast)
                 }
             } else if let erro = forecastViewModel.errorMessage {
                 GeometryReader { geo in
@@ -42,14 +42,14 @@ struct WeekForecastView: View {
                 }
             }
         }
-        .padding(.bottom, 8)
+        .padding(.bottom, 20)
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
             forecastViewModel.loadForecast(for: coordinate)
         }
     }
 }
 
-func DayView(daily dailyForecast: DailyForecast) -> some View {
+func dayView(daily dailyForecast: DailyForecast) -> some View {
     VStack {
         HStack {
             Text(dailyForecast.date)
@@ -57,7 +57,7 @@ func DayView(daily dailyForecast: DailyForecast) -> some View {
                 .shadow(color: .black, radius: 1)
             
             Spacer()
-
+            
             Label { 
                 Text(dailyForecast.formattedTemp.min)
                     .shadow(color: .black, radius: 1)
@@ -86,13 +86,18 @@ func DayView(daily dailyForecast: DailyForecast) -> some View {
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .shadow(color: .black, radius: 1)
                     .offset(x: geo.size.width * 0.35)
+                    .padding(.top, 2)
             }
         }
-        
-        Divider()
-            .frame(height: 0.7)
-            .background(Color.white.opacity(0.5))
-            .padding(.bottom, 7)
+        .padding(.vertical, 10)
+        .overlay(
+            VStack {
+                Spacer()
+                Rectangle()
+                    .fill(Color.white.opacity(0.4))
+                    .frame(height: 0.7)
+            }
+        )
     }
 }
 

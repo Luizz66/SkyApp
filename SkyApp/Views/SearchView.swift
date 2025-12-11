@@ -15,23 +15,42 @@ struct SearchView: View {
     @State private var isPresented = false
     
     var body: some View {
-        VStack {
-            TextField("Buscar cidade...", text: $searchCompleter.queryFragment)
-                .textFieldStyle(.roundedBorder)
-                .padding()
-            
+        NavigationStack {
             List(searchCompleter.suggestions, id: \.self) { suggestion in
-                Button {
-                    locationManager.getSearchLocation(suggestion)
-                    isPresented = true
-                } label: {
-                    Text(suggestion.title + ", " + suggestion.subtitle)
+                if searchCompleter.queryFragment != "" {
+                    Button {
+                        locationManager.getSearchLocation(suggestion)
+                        isPresented = true
+                    } label: {
+                        Text(suggestion.title + ", " + suggestion.subtitle)
+                    }
                 }
             }
+            .navigationTitle("Tempo")
+            .searchable(
+                text: $searchCompleter.queryFragment,
+                placement: .navigationBarDrawer(displayMode: .always),
+                prompt: "Buscar cidade..."
+            )
+            .autocorrectionDisabled()
+            .listStyle(.plain)
         }
         .environmentObject(searchCompleter)
-        .sheet(isPresented: $isPresented) { 
-            MainView()
+        .sheet(isPresented: $isPresented) {
+            NavigationStack {
+                MainView()
+                    .toolbar {
+                        ToolbarItem(placement: .navigationBarLeading) {
+                            Button {
+                                isPresented = false
+                            } label: {
+                                Image(systemName: "xmark")
+                                    .font(.system(size: 18, weight: .bold))
+                                    .foregroundStyle(.white)
+                            }
+                        }
+                    }
+            }
         }
     }
 }
@@ -42,4 +61,5 @@ struct SearchView: View {
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())
         .environmentObject(Search())
+        .preferredColorScheme(.dark)
 }

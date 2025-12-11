@@ -13,7 +13,7 @@ class APIService {
     private let baseURL = "https://api.openweathermap.org/data/2.5/"
     
     func fetchCurrentWeather(for coord: CLLocationCoordinate2D, completion: @escaping (Result<WeatherData, Error>) -> Void) {
-        let urlString = "\(baseURL)weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=p"
+        let urlString = "\(baseURL)weather?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=pt_br"
         
         guard let url = URL(string: urlString) else {
             print("URL inválida")
@@ -50,7 +50,7 @@ class APIService {
     }
     
     func fetchForecast(for coord: CLLocationCoordinate2D, completion: @escaping (Result<ForecastData, Error>) -> Void) {
-        let urlString = "\(baseURL)forecast?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=pt"
+        let urlString = "\(baseURL)forecast?lat=\(coord.latitude)&lon=\(coord.longitude)&appid=\(token)&units=metric&lang=pt_br"
         
         guard let url = URL(string: urlString) else {
             print("URL inválida")

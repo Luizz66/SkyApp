@@ -8,22 +8,20 @@
 import SwiftUI
 
 struct BounceEffect: ViewModifier {
-    @State private var bounce = false
+    @State private var animate = false
     
     func body(content: Content) -> some View {
         content
-            .scaleEffect(bounce ? 1.04 : 1.0)
-            .offset(y: bounce ? -1.5 : 0)
-            .animation(
-                Animation.easeInOut(duration: 0.9)
-                    .repeatForever(autoreverses: true),
-                value: bounce
-            )
+            .scaleEffect(animate ? 1.04 : 1.0)
+            .offset(y: animate ? -1 : 0)
             .onAppear {
-                bounce = true
+                withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
+                    animate = true
+                }
             }
     }
 }
+
 
 extension View {
     func animationBounce() -> some View {

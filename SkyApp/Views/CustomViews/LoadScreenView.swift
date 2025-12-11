@@ -14,9 +14,9 @@ struct LoadScreenView: View {
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()
-                .blur(radius: 75)
+                .blur(radius: 85)
                 .overlay(
-                    Color.black.opacity(0.6)
+                    Color.black.opacity(0.7)
                 )
             VStack(spacing: 20) {
                 ProgressView()

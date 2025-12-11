@@ -17,7 +17,7 @@ struct DetailsWeatherView: View {
         VStack {
             if let clima = weatherViewModel.weatherData {
                 HStack {
-                    HumidityAndWindView(weatherData: clima)
+                    humidityAndWindView(weatherData: clima)
                     SensationView(weatherData: clima)
                 }
                 HStack {
@@ -33,7 +33,7 @@ struct DetailsWeatherView: View {
     }
 }
 
-func HumidityAndWindView(weatherData: WeatherData) -> some View {
+func humidityAndWindView(weatherData: WeatherData) -> some View {
     VStack {
         Group {
             VStack (alignment: .leading) {
@@ -148,7 +148,7 @@ func CloudsView(weatherData: WeatherData) -> some View {
     .padding(15)
     .font(.itim(size: 16))
     .shadowCustom()
-    .padding(.bottom, 20)
+    .padding(.bottom, 35)
 }
 
 #Preview {
