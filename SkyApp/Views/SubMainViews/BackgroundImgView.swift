@@ -13,12 +13,12 @@ struct BackgroundImgView: View {
     
     @EnvironmentObject var search: Search
     
-    let style = Style()
+    let bg = Background()
     
     var body: some View {
         VStack {
             if let clima = weatherViewModel.weatherData {
-                Image(style.backgroundStyle(icon: clima.weather[0].icon))
+                Image(bg.bgStyle(icon: clima.weather[0].icon))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()

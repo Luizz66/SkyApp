@@ -7,7 +7,6 @@
 
 import CoreLocation
 import MapKit
-import SwiftUI
 
 //get current location
 class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {

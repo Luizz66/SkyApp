@@ -16,7 +16,7 @@ struct LoadScreenView: View {
                 .ignoresSafeArea()
                 .blur(radius: 85)
                 .overlay(
-                    Color.black.opacity(0.7)
+                    Color.black.opacity(0.75)
                 )
             VStack(spacing: 20) {
                 ProgressView()

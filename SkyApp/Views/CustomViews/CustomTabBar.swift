@@ -16,17 +16,17 @@ struct CustomTabBar: View {
             tabButton(icon: "location", tag: 0)
             tabButton(icon: "magnifyingglass", tag: 1)
         }
-        .padding(.horizontal, 20)
-        .padding(.vertical, 12)
+        .padding(.horizontal, 8)
+        .padding(.vertical, 7)
         .background(
             ZStack {
-                Color.black.opacity(0.2)
-                    .blur(radius: 15)
+                Color.white.opacity(0.3)
+                    .blur(radius: 35)
                 
-                Color.gray.opacity(0.2)
-                    .blur(radius: 15)
+                Color.white.opacity(0.3)
+                    .blur(radius: 35)
             }
-                .clipShape(RoundedRectangle(cornerRadius: 25))
+                .clipShape(RoundedRectangle(cornerRadius: 20))
         )
         .padding(.bottom, 10)
     }
@@ -36,12 +36,13 @@ struct CustomTabBar: View {
             selection = tag
         } label: {
             Image(systemName: icon)
-                .font(.system(size: 22, weight: .semibold))
+                .font(.system(size: 25, weight: .medium))
                 .foregroundStyle(selection == tag ? .blue : .white)
                 .padding(12)
                 .background(
-                    RoundedRectangle(cornerRadius: 13)
-                        .fill(.ultraThinMaterial)
+                    RoundedRectangle(cornerRadius: 16)
+                        .fill(.foreground)
+                        .blur(radius: 6)
                         .opacity(selection == tag ? 0.6 : 0)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: 13))

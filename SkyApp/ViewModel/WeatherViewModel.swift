@@ -58,7 +58,7 @@ extension WeatherData {
     }
     
     var mainDescription: String {
-        return Legend().descriptionMap[weather.first?.id ?? 0] ?? "Condição desconhecida"
+        return weather.first?.description.capitalized ?? "⚠️ Condição desconhecida"
     }
     
     var sensationDescription: String {
@@ -77,7 +77,7 @@ extension WeatherData {
     }
     
     var mySFSymbol: String {
-        return Legend().SFSymbols[weather[0].icon] ?? "circle.badge.questionmark.fill"
+        return Symbol().SFSymbols[weather[0].icon] ?? "circle.badge.questionmark.fill"
     }
 }
 

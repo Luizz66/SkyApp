@@ -1,5 +1,5 @@
 //
-//  Style.swift
+//  Background.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 15/09/25.
@@ -7,8 +7,8 @@
 
 import SwiftUI
 
-class Style {
-    func backgroundStyle(icon: String) -> String {
+class Background {
+    func bgStyle(icon: String) -> String {
         switch icon {
         case "01d", "02d":
             return Img.day
@@ -40,34 +40,5 @@ class Style {
         static let nightCloud = "night-cloud"
         static let nightRain = "night-rain"
         static let nightSnow = "night-snow"
-    }
-}
-
-extension Image {
-    func symbolStyle(_ icon: String) -> some View {
-        Group {
-            switch icon {
-            case "01d":
-                self.foregroundColor(Color(.colorSun))
-            case "02d":
-                self.foregroundStyle(.white, .colorSun)
-            case "09d", "09n", "11d", "11n":
-                self.foregroundStyle(.white, .colorBlue)
-            case "10d":
-                self.foregroundStyle(.white, .colorSun, .colorBlue)
-            case "10n":
-                self.foregroundStyle(.white, .white, .colorBlue)
-            case "13d", "13n":
-                self.foregroundColor(Color(.colorBlue))
-            default:
-                self.foregroundColor(.white)
-            }
-        }
-    }
-}
-
-extension Font {
-    static func itim(size: CGFloat) -> Font {
-        .custom("Itim", size: size)
     }
 }

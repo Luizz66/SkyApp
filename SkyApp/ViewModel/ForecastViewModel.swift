@@ -25,6 +25,7 @@ class ForecastViewModel: ObservableObject {
         }
     }
     
+    // computed property
     var todayMinMaxTemp: (min: String, max: String)? {
         guard let list = forecastData?.list else { return nil }
         
@@ -136,6 +137,6 @@ extension DailyForecast {
     }
     
     var mySFSymbol: String {
-        return Legend().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
+        return Symbol().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
     }
 }

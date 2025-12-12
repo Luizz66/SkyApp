@@ -1,0 +1,55 @@
+//
+//  Symbol.swift
+//  SkyApp
+//
+//  Created by Luiz Gustavo Barros Campos on 15/09/25.
+//
+
+import Foundation
+import SwiftUI
+
+class Symbol {
+    let SFSymbols: [String: String] = [
+        "01d": "sun.max.fill",
+        "01n": "moon.stars.fill",
+        "02d": "cloud.sun.fill",
+        "02n": "cloud.moon.fill",
+        "03d": "cloud.fill",
+        "03n": "cloud.fill",
+        "04d": "smoke.fill",
+        "04n": "smoke.fill",
+        "09d": "cloud.drizzle.fill",
+        "09n": "cloud.drizzle.fill",
+        "10d": "cloud.sun.rain.fill",
+        "10n": "cloud.moon.rain.fill",
+        "11d": "cloud.bolt.rain.fill",
+        "11n": "cloud.bolt.rain.fill",
+        "13d": "snowflake",
+        "13n": "snowflake",
+        "50d": "cloud.fog.fill",
+        "50n": "cloud.fog.fill"
+    ]
+}
+
+extension Image {
+    func symbolStyle(_ icon: String) -> some View {
+        Group {
+            switch icon {
+            case "01d":
+                self.foregroundColor(Color(.colorSun))
+            case "02d":
+                self.foregroundStyle(.white, .colorSun)
+            case "09d", "09n", "11d", "11n":
+                self.foregroundStyle(.white, .colorBlue)
+            case "10d":
+                self.foregroundStyle(.white, .colorSun, .colorBlue)
+            case "10n":
+                self.foregroundStyle(.white, .white, .colorBlue)
+            case "13d", "13n":
+                self.foregroundColor(Color(.colorBlue))
+            default:
+                self.foregroundColor(.white)
+            }
+        }
+    }
+}

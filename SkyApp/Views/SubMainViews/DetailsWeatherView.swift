@@ -18,13 +18,13 @@ struct DetailsWeatherView: View {
             if let clima = weatherViewModel.weatherData {
                 HStack {
                     humidityAndWindView(weatherData: clima)
-                    SensationView(weatherData: clima)
+                    sensationView(weatherData: clima)
                 }
                 HStack {
-                    PrecipitationView(weatherData: clima)
-                    Sunriseview(weatherData: clima)
+                    precipitationView(weatherData: clima)
+                    sunriseView(weatherData: clima)
                 }
-                CloudsView(weatherData: clima)
+                cloudsView(weatherData: clima)
             }
         }
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
@@ -67,7 +67,7 @@ func humidityAndWindView(weatherData: WeatherData) -> some View {
     .padding(.trailing, 3)
 }
 
-func SensationView(weatherData: WeatherData) -> some View {
+func sensationView(weatherData: WeatherData) -> some View {
     VStack (alignment: .leading) {
         HStack {
             Image(systemName: "thermometer.medium")
@@ -87,7 +87,7 @@ func SensationView(weatherData: WeatherData) -> some View {
     .padding([.bottom, .leading], 3)
 }
 
-func PrecipitationView(weatherData: WeatherData) -> some View {
+func precipitationView(weatherData: WeatherData) -> some View {
     VStack (alignment: .leading) {
         HStack {
             Image(systemName: "drop.fill")
@@ -108,7 +108,7 @@ func PrecipitationView(weatherData: WeatherData) -> some View {
     .padding([.bottom, .trailing], 3)
 }
 
-func Sunriseview(weatherData: WeatherData) -> some View {
+func sunriseView(weatherData: WeatherData) -> some View {
     VStack (alignment: .leading) {
         HStack {
             Image(systemName: "sunrise.fill")
@@ -128,7 +128,7 @@ func Sunriseview(weatherData: WeatherData) -> some View {
     .padding([.bottom, .leading], 3)
 }
 
-func CloudsView(weatherData: WeatherData) -> some View {
+func cloudsView(weatherData: WeatherData) -> some View {
     VStack (alignment: .leading) {
         HStack {
             Image(systemName: "cloud.fill")
