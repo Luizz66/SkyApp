@@ -36,3 +36,7 @@ class SearchCompleterViewModel: NSObject, ObservableObject, MKLocalSearchComplet
         suggestions = completer.results
     }
 }
+
+class Search: ObservableObject {
+    @Published var isSearch: Bool = false
+}

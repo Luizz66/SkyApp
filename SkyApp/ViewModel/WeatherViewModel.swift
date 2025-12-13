@@ -1,12 +1,11 @@
 //
-//  Weather.swift
+//  WeatherViewModel.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
 //
 
 import CoreLocation
-import SwiftUI
 
 class WeatherViewModel: ObservableObject {
     @Published var weatherData: WeatherData?
@@ -14,13 +13,17 @@ class WeatherViewModel: ObservableObject {
     
     private let apiService = APIService()
     
-    func loadWeather(for coord: CLLocationCoordinate2D) {
-        apiService.fetchCurrentWeather(for: coord) { result in
-            switch result {
-            case .success(let dados):
+    func loadWeather(for coord: CLLocationCoordinate2D) async {
+        do {
+            let dados = try await apiService.fetchCurrentWeather(for: coord)
+            await MainActor.run {
                 self.weatherData = dados
-            case .failure(let erro):
-                self.errorMessage = erro.localizedDescription
+                self.errorMessage = nil
+            }
+        } catch {
+            await MainActor.run {
+                self.errorMessage = error.localizedDescription
+                self.weatherData = nil
             }
         }
     }
@@ -72,7 +75,7 @@ extension WeatherData {
             return "A sensação térmica está mais alta do que a temperatura real."
         }
         else {
-            return "Similar à temperatura real."
+            return "A sensação térmica é semelhante à temperatura real."
         }
     }
     

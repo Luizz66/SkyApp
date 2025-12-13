@@ -26,7 +26,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let location = locations.last else { return }
         DispatchQueue.main.async {
-//            print(location.coordinate)
             self.currentCoordinate = location.coordinate
         }
     }
@@ -37,7 +36,6 @@ class LocationManager: NSObject, ObservableObject, CLLocationManagerDelegate {
         
         search.start { response, error in
             if let location = response?.mapItems.first?.placemark.location {
-//                print(location.coordinate)
                 self.searchCoordinate = location.coordinate
             }
         }

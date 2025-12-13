@@ -10,7 +10,6 @@ import SwiftUI
 struct WeekForecastView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var forecastViewModel: ForecastViewModel
-    
     @EnvironmentObject var search: Search
     
     var body: some View {
@@ -44,7 +43,9 @@ struct WeekForecastView: View {
         }
         .padding(.bottom, 20)
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            forecastViewModel.loadForecast(for: coordinate)
+            Task {
+                await forecastViewModel.loadForecast(for: coordinate)
+            }
         }
     }
 }

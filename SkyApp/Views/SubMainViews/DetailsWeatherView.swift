@@ -10,25 +10,26 @@ import SwiftUI
 struct DetailsWeatherView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
-    
     @EnvironmentObject var search: Search
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
+            if let clim = weatherViewModel.weatherData {
                 HStack {
-                    humidityAndWindView(weatherData: clima)
-                    sensationView(weatherData: clima)
+                    humidityAndWindView(weatherData: clim)
+                    sensationView(weatherData: clim)
                 }
                 HStack {
-                    precipitationView(weatherData: clima)
-                    sunriseView(weatherData: clima)
+                    precipitationView(weatherData: clim)
+                    sunriseView(weatherData: clim)
                 }
-                cloudsView(weatherData: clima)
+                cloudsView(weatherData: clim)
             }
         }
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
+            Task {
+                await weatherViewModel.loadWeather(for: coordinate)
+            }
         }
     }
 }

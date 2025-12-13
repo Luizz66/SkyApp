@@ -6,7 +6,6 @@
 //
 
 import CoreLocation
-import SwiftUI
 
 class ForecastViewModel: ObservableObject {
     @Published var forecastData: ForecastData?
@@ -14,13 +13,17 @@ class ForecastViewModel: ObservableObject {
     
     private let apiService = APIService()
     
-    func loadForecast(for coord: CLLocationCoordinate2D) {
-        apiService.fetchForecast(for: coord) { result in
-            switch result {
-            case .success(let dados):
+    func loadForecast(for coord: CLLocationCoordinate2D) async {
+        do {
+            let dados = try await apiService.fetchForecast(for: coord)
+            await MainActor.run {
                 self.forecastData = dados
-            case .failure(let erro):
-                self.errorMessage = erro.localizedDescription
+                self.errorMessage = nil
+            }
+        } catch {
+            await MainActor.run {
+                self.errorMessage = error.localizedDescription
+                self.forecastData = nil
             }
         }
     }
@@ -95,38 +98,38 @@ class ForecastViewModel: ObservableObject {
                 tempMax: maxTemp
             )
         }
+    }
+    
+    private func formatDayWeek(from dateString: String) -> String {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.locale = Locale(identifier: "pt_BR")
         
-        func formatDayWeek(from dateString: String) -> String {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            dateFormatter.locale = Locale(identifier: "pt_BR")
-            
-            guard let date = dateFormatter.date(from: dateString) else {
-                return "--"
-            }
-            
-            dateFormatter.dateFormat = "EEE"
-            return dateFormatter.string(from: date).capitalized
+        guard let date = dateFormatter.date(from: dateString) else {
+            return "--"
         }
         
-        func isTomorrow(_ weekdayAbbrev: String) -> Bool {
-            let formatter = DateFormatter()
-            formatter.locale = Locale(identifier: "pt_BR")
-            formatter.dateFormat = "EEE"
-            
-            guard let date = formatter.date(from: weekdayAbbrev) else {
-                return false
-            }
-            
-            let calendar = Calendar.current
-            let targetWeekday = calendar.component(.weekday, from: date)
-            
-            let todayWeekday = calendar.component(.weekday, from: Date())
-            
-            let nextWeekday = todayWeekday % 7 + 1
-            
-            return targetWeekday == nextWeekday
+        dateFormatter.dateFormat = "EEE"
+        return dateFormatter.string(from: date).capitalized
+    }
+    
+    private func isTomorrow(_ weekdayAbbrev: String) -> Bool {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "pt_BR")
+        formatter.dateFormat = "EEE"
+        
+        guard let date = formatter.date(from: weekdayAbbrev) else {
+            return false
         }
+        
+        let calendar = Calendar.current
+        let targetWeekday = calendar.component(.weekday, from: date)
+        
+        let todayWeekday = calendar.component(.weekday, from: Date())
+        
+        let nextWeekday = todayWeekday % 7 + 1
+        
+        return targetWeekday == nextWeekday
     }
 }
 

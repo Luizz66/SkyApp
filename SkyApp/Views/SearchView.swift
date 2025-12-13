@@ -1,5 +1,5 @@
 //
-//  CitySearchView.swift
+//  SearchView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 09/12/25.

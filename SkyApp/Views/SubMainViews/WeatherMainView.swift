@@ -11,28 +11,29 @@ struct WeatherMainView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     @EnvironmentObject var forecastViewModel: ForecastViewModel
-    
     @EnvironmentObject var search: Search
+    
+    @StateObject var geocodingViewModel = GeocodingViewModel()
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
-                Text(clima.name)
+            if let clim = weatherViewModel.weatherData {
+                Text(geocodingViewModel.cityTranslate ?? clim.name)
                     .font(.itim(size: 35))
                     .padding(.bottom, 10)
                     .shadow(color: .black, radius: 1)
                 VStack {
                     HStack {
-                        Text(clima.formattedTemp.mainTemp)
+                        Text(clim.formattedTemp.mainTemp)
                             .padding(.trailing, 15)
-                        Image(systemName: clima.mySFSymbol)
-                            .symbolStyle(clima.weather[0].icon)
+                        Image(systemName: clim.mySFSymbol)
+                            .symbolStyle(clim.weather[0].icon)
                             .animationBounce()
                             .font(.system(size: 90))
                     }
                     .shadow(color: .black, radius: 1)
                     
-                    Text(clima.mainDescription)
+                    Text(clim.mainDescription)
                         .font(.itim(size: 22))
                         .opacity(0.7)
                 }
@@ -55,7 +56,14 @@ struct WeatherMainView: View {
         }
         .safeAreaPadding(.top, 70)
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
+            Task {
+                await weatherViewModel.loadWeather(for: coordinate)
+            }
+        }
+        .onReceive(weatherViewModel.$weatherData) { clim in
+            Task {
+               await geocodingViewModel.loadGeocode(for: clim?.name.capitalized ?? "")
+            }
         }
     }
 }
@@ -88,7 +96,9 @@ func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ for
         }
     }
     .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-        forecastViewModel.loadForecast(for: coordinate)
+        Task {
+            await forecastViewModel.loadForecast(for: coordinate)
+        }
     }
 }
 

@@ -10,15 +10,14 @@ import SwiftUI
 struct BackgroundImgView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
-    
     @EnvironmentObject var search: Search
     
     let bg = Background()
     
     var body: some View {
         VStack {
-            if let clima = weatherViewModel.weatherData {
-                Image(bg.bgStyle(icon: clima.weather[0].icon))
+            if let clim = weatherViewModel.weatherData {
+                Image(bg.bgStyle(icon: clim.weather[0].icon))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -30,7 +29,9 @@ struct BackgroundImgView: View {
             }
         }
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            weatherViewModel.loadWeather(for: coordinate)
+            Task {
+                await weatherViewModel.loadWeather(for: coordinate)
+            }
         }
     }
 }
