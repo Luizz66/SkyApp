@@ -62,7 +62,7 @@ func humidityAndWindView(weatherData: WeatherData) -> some View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(15)
         .font(.itim(size: 16))
-        .shadowCustom()
+        .myOverlay()
         .padding(.bottom, 3)
     }
     .padding(.trailing, 3)
@@ -84,7 +84,7 @@ func sensationView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.itim(size: 16))
-    .shadowCustom()
+    .myOverlay()
     .padding([.bottom, .leading], 3)
 }
 
@@ -105,7 +105,7 @@ func precipitationView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.itim(size: 16))
-    .shadowCustom()
+    .myOverlay()
     .padding([.bottom, .trailing], 3)
 }
 
@@ -125,7 +125,7 @@ func sunriseView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.itim(size: 16))
-    .shadowCustom()
+    .myOverlay()
     .padding([.bottom, .leading], 3)
 }
 
@@ -148,7 +148,7 @@ func cloudsView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.itim(size: 16))
-    .shadowCustom()
+    .myOverlay()
     .padding(.bottom, 35)
 }
 

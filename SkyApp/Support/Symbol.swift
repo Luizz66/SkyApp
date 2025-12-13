@@ -36,17 +36,17 @@ extension Image {
         Group {
             switch icon {
             case "01d":
-                self.foregroundColor(Color(.colorSun))
+                self.foregroundColor(Color(.iconColorSun))
             case "02d":
-                self.foregroundStyle(.white, .colorSun)
+                self.foregroundStyle(.white, .iconColorSun)
             case "09d", "09n", "11d", "11n":
-                self.foregroundStyle(.white, .colorBlue)
+                self.foregroundStyle(.white, .iconColorBlue)
             case "10d":
-                self.foregroundStyle(.white, .colorSun, .colorBlue)
+                self.foregroundStyle(.white, .iconColorSun, .iconColorBlue)
             case "10n":
-                self.foregroundStyle(.white, .white, .colorBlue)
+                self.foregroundStyle(.white, .white, .iconColorBlue)
             case "13d", "13n":
-                self.foregroundColor(Color(.colorBlue))
+                self.foregroundColor(Color(.iconColorBlue))
             default:
                 self.foregroundColor(.white)
             }

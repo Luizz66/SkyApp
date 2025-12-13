@@ -8,7 +8,7 @@
 import SwiftUI
 
 //if #unavailable(iOS 26)
-struct CustomTabBarView: View {
+struct MyTabBarView: View {
     @Binding var selection: Int
     
     var body: some View {

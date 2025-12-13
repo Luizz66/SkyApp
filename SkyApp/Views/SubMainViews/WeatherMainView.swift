@@ -28,7 +28,7 @@ struct WeatherMainView: View {
                             .padding(.trailing, 15)
                         Image(systemName: clim.mySFSymbol)
                             .symbolStyle(clim.weather[0].icon)
-                            .animationBounce()
+                            .myAnimation()
                             .font(.system(size: 90))
                     }
                     .shadow(color: .black, radius: 1)
@@ -76,7 +76,7 @@ func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ for
                         .shadow(color: .black, radius: 1)
                 } icon: { 
                     Image(systemName: "thermometer.low")
-                        .foregroundStyle(.blue, .white)
+                        .foregroundStyle(.blue.opacity(0.6), .white)
                         .opacity(0.8)
                 }
                 .padding(.trailing, 30)
@@ -86,7 +86,7 @@ func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ for
                         .shadow(color: .black, radius: 1)
                 } icon: { 
                     Image(systemName: "thermometer.high")
-                        .foregroundStyle(.red, .white)
+                        .foregroundStyle(.red.opacity(0.6), .white)
                         .opacity(0.8)
                 }
             }

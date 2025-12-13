@@ -62,7 +62,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                     .shadow(color: .black, radius: 1)
             } icon: { 
                 Image(systemName: "thermometer.low")
-                    .foregroundStyle(.blue, .white)
+                    .foregroundStyle(.blue.opacity(0.6), .white)
                     .opacity(0.8)
             }
             .padding(.trailing, 20)
@@ -72,7 +72,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                     .shadow(color: .black, radius: 1)
             } icon: { 
                 Image(systemName: "thermometer.high")
-                    .foregroundStyle(.red, .white)
+                    .foregroundStyle(.red.opacity(0.6), .white)
                     .opacity(0.8)
             }
         }
@@ -81,7 +81,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
             GeometryReader { geo in
                 Image(systemName: dailyForecast.mySFSymbol)
                     .symbolStyle(dailyForecast.icon)
-                    .animationBounce()
+                    .myAnimation()
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .shadow(color: .black, radius: 1)
                     .offset(x: geo.size.width * 0.35)
