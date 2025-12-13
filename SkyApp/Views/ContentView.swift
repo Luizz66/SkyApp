@@ -21,7 +21,7 @@ struct ContentView: View {
                         SearchView().tag(1)
                     }
                     
-                    CustomTabBar(selection: $selection)
+                    CustomTabBarView(selection: $selection)
                 }
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             } else {

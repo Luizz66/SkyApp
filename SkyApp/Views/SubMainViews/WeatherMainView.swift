@@ -44,13 +44,12 @@ struct WeatherMainView: View {
                 
             } else if let erro = weatherViewModel.errorMessage {
                 GeometryReader { geo in
-                    VStack {
-                        Text("❌ \(erro.uppercased())")
-                            .font(.itim(size: 16))
-                            .padding(.bottom, 50)
-                    }                    
+                    ThreeDotsAnimationView()  
                     .frame(width: geo.size.width / 1.3, height: geo.size.height)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear {
+                        print("❌ \(erro.uppercased())")
+                    }
                 }
             }
         }

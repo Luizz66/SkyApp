@@ -141,7 +141,7 @@ func cloudsView(weatherData: WeatherData) -> some View {
             Text("\(weatherData.clouds.all)% do céu.")
                 .font(.itim(size: 30))
             Spacer()
-            SymbolPorcentageView(progress: Double(weatherData.clouds.all))
+            CloudPorcentageView(progress: Double(weatherData.clouds.all))
                 .font(.itim(size: 65))
         }
     }
@@ -154,7 +154,7 @@ func cloudsView(weatherData: WeatherData) -> some View {
 
 #Preview {
     ZStack {
-        BackgroundImgView()
+        BackgroundView()
         ScrollView {
             DetailsWeatherView()
                 .padding(.top, 90)

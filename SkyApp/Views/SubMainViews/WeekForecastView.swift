@@ -30,14 +30,12 @@ struct WeekForecastView: View {
                 }
             } else if let erro = forecastViewModel.errorMessage {
                 GeometryReader { geo in
-                    VStack {
-                        Text("❌ \(erro.uppercased())")
-                            .font(.itim(size: 16))
-                            .fixedSize(horizontal: false, vertical: true)
-                            .padding(.top, geo.size.height * 40)
-                    }                    
-                    .frame(width: geo.size.width / 1.3, height: geo.size.height)
+                    ThreeDotsAnimationView()
+                    .frame(width: geo.size.width / 1.3, height: geo.size.height * 40)
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .onAppear {
+                        print("❌ \(erro.uppercased())")
+                    }
                 }
             }
         }

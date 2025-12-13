@@ -1,5 +1,5 @@
 //
-//  CustomTabBar.swift
+//  CustomTabBarView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 10/12/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 //if #unavailable(iOS 26)
-struct CustomTabBar: View {
+struct CustomTabBarView: View {
     @Binding var selection: Int
     
     var body: some View {

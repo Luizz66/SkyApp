@@ -10,7 +10,7 @@ import SwiftUI
 struct MainView: View {
     var body: some View {
         ZStack {
-            BackgroundImgView()
+            BackgroundView()
             VStack {
                 WeatherMainView()
                 ScrollView(.vertical, showsIndicators: false) {

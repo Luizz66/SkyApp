@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct SymbolPorcentageView: View {
+struct CloudPorcentageView: View {
     var progress: Double
     
     var body: some View {
@@ -36,6 +36,6 @@ struct SymbolPorcentageView: View {
 }
 
 #Preview{
-    SymbolPorcentageView(progress: 50) 
+    CloudPorcentageView(progress: 50) 
         .preferredColorScheme(.dark)
 }
