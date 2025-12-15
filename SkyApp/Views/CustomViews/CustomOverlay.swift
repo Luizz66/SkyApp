@@ -15,7 +15,7 @@ struct CustomOverlay: ViewModifier {
             content
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.overlayStyle(icon: clim.weather[0].icon).opacity(0.7))
+                        .fill(Color.overlayStyle(icon: clim.weather[0].icon).opacity(0.8))
                         .overlay(Color.black.opacity(0.2))
                         .blur(radius: 5)
                         .mask(

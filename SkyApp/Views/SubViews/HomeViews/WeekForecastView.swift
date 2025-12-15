@@ -28,23 +28,9 @@ struct WeekForecastView: View {
                     
                     dayView(daily: forecast)
                 }
-            } else if let erro = forecastViewModel.errorMessage {
-                GeometryReader { geo in
-                    ThreeDotsAnimationView()
-                    .frame(width: geo.size.width / 1.3, height: geo.size.height * 40)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear {
-                        print("❌ \(erro.uppercased())")
-                    }
-                }
             }
         }
         .padding(.bottom, 20)
-        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            Task {
-                await forecastViewModel.loadForecast(for: coordinate)
-            }
-        }
     }
 }
 

@@ -23,6 +23,7 @@ class ForecastViewModel: ObservableObject {
         } catch {
             await MainActor.run {
                 self.errorMessage = error.localizedDescription
+//                print("Erro Forecast: \(error.localizedDescription)")
                 self.forecastData = nil
             }
         }

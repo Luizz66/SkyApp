@@ -11,16 +11,22 @@ struct ThreeDotsAnimationView: View {
     @State private var dotOpacity: [Double] = [1.0, 0.0, 0.0]
     
     var body: some View {
-        HStack(spacing: 5) {
-            ForEach(0..<3, id: \.self) { index in
-                Circle()
-                    .frame(width: 10, height: 10)
-                    .foregroundColor(.white)
-                    .opacity(dotOpacity[index])
+        VStack {
+            Spacer()
+            HStack(spacing: 5) {
+                ForEach(0..<3, id: \.self) { index in
+                    Circle()
+                        .frame(width: 10, height: 10)
+                        .foregroundColor(.white)
+                        .opacity(dotOpacity[index])
+                }
             }
-        }
-        .onAppear {
-            animateDots()
+            Spacer()
+            Spacer()
+            Spacer()
+                .onAppear {
+                    animateDots()
+                }
         }
     }
     
@@ -42,9 +48,4 @@ struct ThreeDotsAnimationView: View {
             }
         }
     }
-}
-
-#Preview {
-    ThreeDotsAnimationView()
-        .preferredColorScheme(.dark)
 }

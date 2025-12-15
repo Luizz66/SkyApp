@@ -26,11 +26,6 @@ struct DetailsWeatherView: View {
                 cloudsView(weatherData: clim)
             }
         }
-        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            Task {
-                await weatherViewModel.loadWeather(for: coordinate)
-            }
-        }
     }
 }
 

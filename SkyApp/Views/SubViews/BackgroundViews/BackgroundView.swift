@@ -25,26 +25,7 @@ struct BackgroundView: View {
                            height: UIScreen.main.bounds.height)
                     .overlay(Color.black.opacity(0.4))
             } else {
-                ZStack{
-                    Image("loading")
-                        .resizable()
-                        .scaledToFill()
-                        .ignoresSafeArea()
-                        .blur(radius: 85)
-                        .overlay(
-                            Color.black.opacity(0.75)
-                        )
-                    VStack(spacing: 20) {
-                        ProgressView()
-                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                            .scaleEffect(2.6)
-                    }
-                }
-            }
-        }
-        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            Task {
-                await weatherViewModel.loadWeather(for: coordinate)
+                LoadingView()
             }
         }
     }

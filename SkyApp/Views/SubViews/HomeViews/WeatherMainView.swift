@@ -42,23 +42,9 @@ struct WeatherMainView: View {
                 
                 rangeForecastView(search, locationManager, forecastViewModel)
                 
-            } else if let erro = weatherViewModel.errorMessage {
-                GeometryReader { geo in
-                    ThreeDotsAnimationView()  
-                    .frame(width: geo.size.width / 1.3, height: geo.size.height)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .onAppear {
-                        print("❌ \(erro.uppercased())")
-                    }
-                }
             }
         }
         .safeAreaPadding(.top, 70)
-        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-            Task {
-                await weatherViewModel.loadWeather(for: coordinate)
-            }
-        }
         .onReceive(weatherViewModel.$weatherData) { clim in
             Task {
                await geocodingViewModel.loadGeocode(for: clim?.name.capitalized ?? "")
@@ -92,11 +78,6 @@ func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ for
             }
             .font(.itim(size: 23))
             .padding(.bottom, 15)
-        }
-    }
-    .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
-        Task {
-            await forecastViewModel.loadForecast(for: coordinate)
         }
     }
 }

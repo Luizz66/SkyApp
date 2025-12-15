@@ -23,6 +23,7 @@ class WeatherViewModel: ObservableObject {
         } catch {
             await MainActor.run {
                 self.errorMessage = error.localizedDescription
+//                print("Erro Weather: \(error.localizedDescription)")
                 self.weatherData = nil
             }
         }

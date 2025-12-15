@@ -35,10 +35,9 @@ struct SearchView: View {
             .autocorrectionDisabled()
             .listStyle(.plain)
         }
-        .environmentObject(searchCompleter)
         .sheet(isPresented: $isPresented) {
             NavigationStack {
-                MainView()
+                HomeView()
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {

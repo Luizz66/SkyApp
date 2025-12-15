@@ -22,7 +22,6 @@ struct BounceEffect: ViewModifier {
     }
 }
 
-
 extension View {
     func myAnimation() -> some View {
         self.modifier(BounceEffect())
