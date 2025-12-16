@@ -1,5 +1,5 @@
 //
-//  CustomTabBarView.swift
+//  MyTabBarView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 10/12/25.

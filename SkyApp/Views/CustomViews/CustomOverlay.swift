@@ -1,5 +1,5 @@
 //
-//  ShadowStyle.swift
+//  CustomOverlay.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 05/12/25.

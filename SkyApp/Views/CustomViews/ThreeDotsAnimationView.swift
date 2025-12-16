@@ -13,6 +13,9 @@ struct ThreeDotsAnimationView: View {
     var body: some View {
         VStack {
             Spacer()
+            Text("ERRO AO CARREGAR OS DADOS!!! 😵‍💫")
+                .font(.itim(size: 20))
+                .padding(.bottom, 10)
             HStack(spacing: 5) {
                 ForEach(0..<3, id: \.self) { index in
                     Circle()

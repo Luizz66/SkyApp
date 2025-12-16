@@ -1,5 +1,5 @@
 //
-//  SymbolPorcentageView.swift
+//  CloudPorcentageView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 26/09/25.
