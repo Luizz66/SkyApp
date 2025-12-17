@@ -15,20 +15,11 @@ struct CustomOverlay: ViewModifier {
             content
                 .background(
                     RoundedRectangle(cornerRadius: 20)
-                        .fill(Color.overlayStyle(icon: clim.weather[0].icon).opacity(0.8))
-                        .overlay(Color.black.opacity(0.2))
-                        .blur(radius: 5)
+                        .fill(Color.overlayStyle(icon: clim.weather[0].icon).opacity(0.3))
+                        .overlay(Color.black.opacity(0.1))
+                        .blur(radius: 3)
                         .mask(
                             RoundedRectangle(cornerRadius: 20)
-                        )
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 20)
-                        .stroke(Color.clear, lineWidth: 2)
-                        .blur(radius: 2)
-                        .mask(
-                            RoundedRectangle(cornerRadius: 20)
-                                .stroke(lineWidth: 3)
                         )
                 )
         }

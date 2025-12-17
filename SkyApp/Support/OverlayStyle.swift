@@ -11,7 +11,7 @@ extension Color {
     static func overlayStyle(icon: String) -> Color {
         switch icon {
         case "01d", "02d":
-            return Color(.colorDay.mix(with: .black, by: 0.20))
+            return Color(.colorDay.mix(with: .black, by: 0.2))
         case "03d", "04d", "50d":
             return Color(.colorDayCloud.mix(with: .black, by: 0.25))
         case "09d", "10d", "11d":
@@ -19,15 +19,15 @@ extension Color {
         case "01n", "02n":
             return Color(.colorNight.mix(with: .black, by: 0.3))
         case "03n", "04n", "50n":
-            return Color(.colorNightCloud.mix(with: .gray, by: 0.3))
+            return Color(.colorNightCloud.mix(with: .white, by: 0.2))
         case "09n", "10n", "11n":
-            return Color(.colorNightRain.mix(with: .white, by: 0.15))
+            return Color(.colorNightRain.mix(with: .gray, by: 0.6))
         case "13d":
-            return Color(.colorDaySnow.mix(with: .black, by: 0.12))
+            return Color(.colorDaySnow.mix(with: .black, by: 0.2))
         case "13n":
             return Color(.colorNightSnow.mix(with: .black, by: 0.3))
         default:
-            return Color(.colorDay.mix(with: .black, by: 0.20))
+            return Color(.colorDay.mix(with: .black, by: 0.2))
         }
     }
 }
