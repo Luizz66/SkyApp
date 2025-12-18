@@ -8,10 +8,8 @@
 import SwiftUI
 
 struct WeatherMainView: View {
-    @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     @EnvironmentObject var forecastViewModel: ForecastViewModel
-    @EnvironmentObject var search: Search
     
     @StateObject var geocodingViewModel = GeocodingViewModel()
     
@@ -24,23 +22,24 @@ struct WeatherMainView: View {
                     .shadow(color: .black, radius: 1)
                 VStack {
                     HStack {
-                        Text(clim.formattedTemp.mainTemp)
+                        Text(WeatherFormat.temp(clim.main.temp))
                             .padding(.trailing, 15)
-                        Image(systemName: clim.mySFSymbol)
+                        Image(systemName: Symbol.mySFSymbol(icon: clim.weather[0].icon))
                             .symbolStyle(clim.weather[0].icon)
                             .myAnimation()
                             .font(.system(size: 90))
                     }
                     .shadow(color: .black, radius: 1)
                     
-                    Text(clim.mainDescription)
+                    Text(WeatherFormat
+                            .mainDescription(clim.weather.first?.description))
                         .font(.itim(size: 22))
                         .opacity(0.7)
                 }
                 .font(.itim(size: 85))
                 .padding(.bottom, 10)
                 
-                rangeForecastView(search, locationManager, forecastViewModel)
+                rangeForecastView(forecastViewModel)
                 
             }
         }
@@ -53,7 +52,7 @@ struct WeatherMainView: View {
     }
 }
 
-func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ forecastViewModel: ForecastViewModel) -> some View {
+func rangeForecastView(_ forecastViewModel: ForecastViewModel) -> some View {
     VStack {
         if let todayTemp = forecastViewModel.todayMinMaxTemp {
             HStack {
@@ -87,6 +86,6 @@ func rangeForecastView(_ search: Search,_ locationManager: LocationManager,_ for
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())
-        .environmentObject(Search()) 
+        .environmentObject(Search())
         .preferredColorScheme(.dark)
 }

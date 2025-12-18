@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct DetailsWeatherView: View {
-    @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
-    @EnvironmentObject var search: Search
     
     var body: some View {
         VStack {
@@ -50,7 +48,7 @@ func humidityAndWindView(weatherData: WeatherData) -> some View {
                 }
                 .opacity(0.7)
                 .padding(.bottom, 20)
-                Text(weatherData.formattedWind)
+                Text(WeatherFormat.wind(weatherData.wind.speed))
                     .font(.itim(size: 30))
             }
         }
@@ -71,10 +69,10 @@ func sensationView(weatherData: WeatherData) -> some View {
         }
         .opacity(0.7)
         .padding(.bottom, 20)
-        Text(weatherData.formattedTemp.feelsLike)
+        Text(WeatherFormat.temp(weatherData.main.feels_like))
             .font(.itim(size: 30))
         Spacer()
-        Text(weatherData.sensationDescription)
+        Text(WeatherFormat.sensationDescription(weatherData.main.temp, weatherData.main.feels_like))
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
@@ -91,7 +89,7 @@ func precipitationView(weatherData: WeatherData) -> some View {
         }
         .opacity(0.7)
         .padding(.bottom, 40)
-        Text(weatherData.formattedPrecipitation) 
+        Text(WeatherFormat.precipatation(weatherData.rain?.one)) 
             .font(.itim(size: 30))
             .padding(.bottom, 50)
         Spacer()
@@ -112,10 +110,10 @@ func sunriseView(weatherData: WeatherData) -> some View {
         }
         .opacity(0.7)
         .padding(.bottom, 40)
-        Text(weatherData.formattedSys.sunrise)
+        Text(WeatherFormat.sys(weatherData.sys.sunrise))
             .font(.itim(size: 30))
         Spacer()
-        Text("Pôr do sol: \(weatherData.formattedSys.sunset)")
+        Text("Pôr do sol: \(WeatherFormat.sys(weatherData.sys.sunset))")
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
@@ -157,5 +155,6 @@ func cloudsView(weatherData: WeatherData) -> some View {
     }
     .environmentObject(LocationManager())
     .environmentObject(WeatherViewModel())
-    .environmentObject(Search()) 
+    .environmentObject(ForecastViewModel())
+    .environmentObject(Search())
 }

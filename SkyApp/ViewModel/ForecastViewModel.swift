@@ -134,13 +134,8 @@ class ForecastViewModel: ObservableObject {
     }
 }
 
-extension DailyForecast {
-    // computed property
-    var formattedTemp: (min: String, max: String) {
-        return ("\(Int(tempMin))°", "\(Int(tempMax))°")
-    }
-    
-    var mySFSymbol: String {
-        return Symbol().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
+struct ForecastFormat {
+    static func range(_ temp: Double) -> String {
+        return "\(Int(temp))°"
     }
 }

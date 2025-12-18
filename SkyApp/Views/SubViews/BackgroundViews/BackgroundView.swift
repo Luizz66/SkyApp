@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct BackgroundView: View {
-    @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
-    @EnvironmentObject var search: Search
     
     let bg = Background()
     
@@ -35,6 +33,7 @@ struct BackgroundView: View {
     BackgroundView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
-        .environmentObject(Search()) 
+        .environmentObject(ForecastViewModel())
+        .environmentObject(Search())
         .preferredColorScheme(.dark)
 }

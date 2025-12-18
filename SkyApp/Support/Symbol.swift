@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 
 class Symbol {
-    let SFSymbols: [String: String] = [
+    private let SFSymbols: [String: String] = [
         "01d": "sun.max.fill",
         "01n": "moon.stars.fill",
         "02d": "cloud.sun.fill",
@@ -29,6 +29,10 @@ class Symbol {
         "50d": "cloud.fog.fill",
         "50n": "cloud.fog.fill"
     ]
+    
+    static func mySFSymbol(icon: String) -> String {
+        return Symbol().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
+    }
 }
 
 extension Image {

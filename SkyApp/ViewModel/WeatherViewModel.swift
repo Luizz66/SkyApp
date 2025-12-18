@@ -30,44 +30,36 @@ class WeatherViewModel: ObservableObject {
     }
 }
 
-extension WeatherData {
-    // computed property
-    var formattedTemp: (mainTemp: String, feelsLike: String) {
-        let tempStr = String(format: "%.0f°", main.temp).dotToComma()
-        let feelsLikeStr = String(format: "%.0f°", main.feels_like).dotToComma()
-        
-        return (tempStr, feelsLikeStr)
+struct WeatherFormat {
+    static func temp(_ temp: Double) -> String {
+        return String(format: "%.0f°", temp).dotToComma()
     }
     
-    var formattedWind: String {
-        String(format: "%.1f km", wind.speed * 3.6).dotToComma()
+    static func wind(_ wind: Double) -> String {
+        return String(format: "%.1f km", wind * 3.6).lowercased().dotToComma()
     }
     
-    var formattedPrecipitation: String {
-        String(format: "%.1f mm" , rain?.one ?? 0).dotToComma()
+    static func precipatation(_ wind: Double?) -> String {
+        return String(format: "%.1f mm", wind ?? 0).lowercased().dotToComma()
     }
     
-    var formattedSys: (sunrise: String, sunset: String) {
-        let sunrise = Date(timeIntervalSince1970: sys.sunrise)
-        let sunset = Date(timeIntervalSince1970: sys.sunset)
+    static func sys(_ sys: TimeInterval) -> String {
+        let sysInterval = Date(timeIntervalSince1970: sys)
         
         let formatter = DateFormatter()
         formatter.dateFormat = "HH:mm"
         formatter.timeZone = TimeZone(identifier: "America/Sao_Paulo")
         
-        let formattedSunrise = formatter.string(from: sunrise) + " h"
-        let formattedSunset = formatter.string(from: sunset) + " h"
-        
-        return (formattedSunrise, formattedSunset)
+        return formatter.string(from: sysInterval) + " h"
     }
     
-    var mainDescription: String {
-        return weather.first?.description.capitalized ?? "⚠️ Condição desconhecida"
+    static func mainDescription(_ description: String?) -> String {
+        return description?.capitalized ?? "⚠️ Condição desconhecida"
     }
     
-    var sensationDescription: String {
-        let intTemp = Int(main.temp)
-        let intFeelsLike = Int(main.feels_like)
+    static func sensationDescription(_ temp: Double, _ feelsLike: Double) -> String {
+        let intTemp = Int(temp)
+        let intFeelsLike = Int(feelsLike)
         
         if intFeelsLike < intTemp {
             return "A sensação térmica está mais baixa do que a temperatura real."
@@ -78,10 +70,6 @@ extension WeatherData {
         else {
             return "A sensação térmica é semelhante à temperatura real."
         }
-    }
-    
-    var mySFSymbol: String {
-        return Symbol().SFSymbols[weather[0].icon] ?? "circle.badge.questionmark.fill"
     }
 }
 

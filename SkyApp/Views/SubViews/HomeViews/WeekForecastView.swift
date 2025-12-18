@@ -8,26 +8,22 @@
 import SwiftUI
 
 struct WeekForecastView: View {
-    @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var forecastViewModel: ForecastViewModel
-    @EnvironmentObject var search: Search
     
     var body: some View {
         VStack {
-            if let _ = forecastViewModel.forecastData {
-                HStack {
-                    Image(systemName: "calendar")
-                    Text("PREVISÃO PARA 5 DIAS")
-                }
-                .font(.itim(size: 20))
-                .opacity(0.7)
-                .padding(.bottom, 15)
-                .padding(.top, 40)
+            HStack {
+                Image(systemName: "calendar")
+                Text("PREVISÃO PARA 5 DIAS")
+            }
+            .font(.itim(size: 20))
+            .opacity(0.7)
+            .padding(.bottom, 15)
+            .padding(.top, 40)
+            
+            ForEach(forecastViewModel.dailyForecasts.prefix(5), id: \.date) { forecast in
                 
-                ForEach(forecastViewModel.dailyForecasts.prefix(5), id: \.date) { forecast in
-                    
-                    dayView(daily: forecast)
-                }
+                dayView(daily: forecast)
             }
         }
         .padding(.bottom, 20)
@@ -44,7 +40,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
             Spacer()
             
             Label { 
-                Text(dailyForecast.formattedTemp.min)
+                Text(ForecastFormat.range(dailyForecast.tempMin))
                     .shadow(color: .black, radius: 1)
             } icon: { 
                 Image(systemName: "thermometer.low")
@@ -54,7 +50,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
             .padding(.trailing, 20)
             
             Label { 
-                Text(dailyForecast.formattedTemp.max)
+                Text(ForecastFormat.range(dailyForecast.tempMax))
                     .shadow(color: .black, radius: 1)
             } icon: { 
                 Image(systemName: "thermometer.high")
@@ -65,7 +61,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
         .font(.itim(size: 20))
         .overlay(alignment: .leading) {
             GeometryReader { geo in
-                Image(systemName: dailyForecast.mySFSymbol)
+                Image(systemName: Symbol.mySFSymbol(icon: dailyForecast.icon))
                     .symbolStyle(dailyForecast.icon)
                     .myAnimation()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -88,8 +84,6 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
 
 #Preview {
     WeekForecastView()
-        .environmentObject(LocationManager())
         .environmentObject(ForecastViewModel())
-        .environmentObject(Search()) 
         .preferredColorScheme(.dark)
 }
