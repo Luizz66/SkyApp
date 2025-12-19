@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  AppView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 15/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ContentView: View {
+struct AppView: View {
     @EnvironmentObject var locationManager: LocationManager
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     @EnvironmentObject var forecastViewModel: ForecastViewModel
@@ -23,7 +23,7 @@ struct ContentView: View {
             if let _ = weatherViewModel.weatherData,
                let _ = forecastViewModel.forecastData {
                 
-                RootView()
+                HomeTabView()
                 
             } else if let erro = erroMessage {
                 ZStack {
@@ -48,7 +48,7 @@ struct ContentView: View {
 }
 
 #Preview {
-    ContentView()
+    AppView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())

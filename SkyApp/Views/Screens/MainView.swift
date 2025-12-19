@@ -1,5 +1,5 @@
 //
-//  HomeView.swift
+//  MainView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 14/03/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeView: View {
+struct MainView: View {
     var body: some View {
         ZStack {
             BackgroundView()
@@ -38,7 +38,7 @@ struct HomeView: View {
 }
 
 #Preview {
-    HomeView()
+    MainView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())

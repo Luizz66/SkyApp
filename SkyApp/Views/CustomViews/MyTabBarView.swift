@@ -20,15 +20,12 @@ struct MyTabBarView: View {
         .padding(.vertical, 7)
         .background(
             ZStack {
-                Color.white.opacity(0.3)
-                    .blur(radius: 35)
-                
-                Color.white.opacity(0.3)
-                    .blur(radius: 35)
+                Color.white.opacity(0.3) 
+                    .blur(radius: 20)
             }
                 .clipShape(RoundedRectangle(cornerRadius: 20))
+                .shadow(color: .black, radius: 4)
         )
-        .padding(.bottom, 10)
     }
     
     func tabButton(icon: String, tag: Int) -> some View {

@@ -1,5 +1,5 @@
 //
-//  RootView.swift
+//  HomeTabView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 09/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct RootView: View {
+struct HomeTabView: View {
     @EnvironmentObject var search: Search
     
     @State private var selection = 0
@@ -28,7 +28,7 @@ struct RootView: View {
             if #unavailable(iOS 26) {
                 ZStack(alignment: .bottom) {
                     TabView(selection: $selection) {
-                        HomeView().tag(0)
+                        MainView().tag(0)
                         SearchView().tag(1)
                     }
                     
@@ -37,7 +37,7 @@ struct RootView: View {
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             } else {
                 TabView(selection: $selection) {
-                    HomeView()
+                    MainView()
                         .tag(0)
                         .tabItem {
                             Image(systemName: "location")
@@ -58,7 +58,7 @@ struct RootView: View {
 }
 
 #Preview {
-    RootView()
+    HomeTabView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())
