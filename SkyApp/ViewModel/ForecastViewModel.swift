@@ -23,7 +23,6 @@ class ForecastViewModel: ObservableObject {
         } catch {
             await MainActor.run {
                 self.errorMessage = error.localizedDescription
-//                print("Erro Forecast: \(error.localizedDescription)")
                 self.forecastData = nil
             }
         }
@@ -69,7 +68,7 @@ class ForecastViewModel: ObservableObject {
         guard let list = forecastData?.list else { return [] }
         
         let grouped = Dictionary(grouping: list) { forecast in
-            String(forecast.dt_txt.prefix(10)) // yyyy-mm-dd
+            String(forecast.dt_txt.prefix(10))
         }
         let sortedKeys = grouped.keys.sorted()
         

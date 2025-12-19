@@ -10,12 +10,10 @@ import SwiftUI
 struct BackgroundView: View {
     @EnvironmentObject var weatherViewModel: WeatherViewModel
     
-    let bg = Background()
-    
     var body: some View {
         VStack {
             if let clim = weatherViewModel.weatherData {
-                Image(bg.bgStyle(icon: clim.weather[0].icon))
+                Image(Background.style(icon: clim.weather[0].icon))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()

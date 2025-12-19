@@ -8,7 +8,7 @@
 import SwiftUI
 
 class Background {
-    func bgStyle(icon: String) -> String {
+    static func style(icon: String) -> String {
         switch icon {
         case "01d", "02d":
             return Img.day

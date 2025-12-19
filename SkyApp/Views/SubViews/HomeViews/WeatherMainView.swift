@@ -17,7 +17,7 @@ struct WeatherMainView: View {
         VStack {
             if let clim = weatherViewModel.weatherData {
                 Text(geocodingViewModel.cityTranslate ?? clim.name)
-                    .font(.itim(size: 35))
+                    .font(.size(35))
                     .padding(.bottom, 10)
                     .shadow(color: .black, radius: 1)
                 VStack {
@@ -33,10 +33,10 @@ struct WeatherMainView: View {
                     
                     Text(WeatherFormat
                             .mainDescription(clim.weather.first?.description))
-                        .font(.itim(size: 22))
+                        .font(.size(22))
                         .opacity(0.7)
                 }
-                .font(.itim(size: 85))
+                .font(.size(85))
                 .padding(.bottom, 10)
                 
                 rangeForecastView(forecastViewModel)
@@ -75,7 +75,7 @@ func rangeForecastView(_ forecastViewModel: ForecastViewModel) -> some View {
                         .opacity(0.8)
                 }
             }
-            .font(.itim(size: 23))
+            .font(.size(23))
             .padding(.bottom, 15)
         }
     }

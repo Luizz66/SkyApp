@@ -28,7 +28,7 @@ struct ContentView: View {
             } else if let erro = erroMessage {
                 ZStack {
                     LoadingView()
-                    ThreeDotsAnimationView()
+                    ErrorView()
                         .onAppear {
                             print("❌ \(erro.uppercased())")
                         }

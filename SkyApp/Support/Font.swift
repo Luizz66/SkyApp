@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Font {
-    static func itim(size: CGFloat) -> Font {
+    static func size(_ size: CGFloat) -> Font {
         .custom("Itim", size: size)
     }
 }
