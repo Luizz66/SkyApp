@@ -37,7 +37,7 @@ struct SearchView: View {
         }
         .sheet(isPresented: $isPresented) {
             NavigationStack {
-                MainView()
+                HomeView()
                     .toolbar {
                         ToolbarItem(placement: .navigationBarLeading) {
                             Button {

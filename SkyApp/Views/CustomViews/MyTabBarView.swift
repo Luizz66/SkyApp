@@ -20,11 +20,11 @@ struct MyTabBarView: View {
         .padding(.vertical, 7)
         .background(
             ZStack {
-                Color.white.opacity(0.3) 
-                    .blur(radius: 20)
+                Color.white.opacity(0.4) 
+                    .blur(radius: 15)
             }
-                .clipShape(RoundedRectangle(cornerRadius: 20))
-                .shadow(color: .black, radius: 4)
+                .clipShape(RoundedRectangle(cornerRadius: 33))
+                .shadow(color: .black, radius: 6)
         )
     }
     
@@ -36,13 +36,14 @@ struct MyTabBarView: View {
                 .font(.system(size: 25, weight: .medium))
                 .foregroundStyle(selection == tag ? .blue : .white)
                 .padding(12)
+                .padding(.horizontal)
                 .background(
-                    RoundedRectangle(cornerRadius: 16)
+                    RoundedRectangle(cornerRadius: 20)
                         .fill(.foreground)
-                        .blur(radius: 6)
+                        .blur(radius: 15)
                         .opacity(selection == tag ? 0.6 : 0)
                 )
-                .clipShape(RoundedRectangle(cornerRadius: 13))
+                .clipShape(RoundedRectangle(cornerRadius: 23))
         }
         .buttonStyle(.plain)
     }

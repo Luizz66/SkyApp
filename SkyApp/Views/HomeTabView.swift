@@ -28,7 +28,7 @@ struct HomeTabView: View {
             if #unavailable(iOS 26) {
                 ZStack(alignment: .bottom) {
                     TabView(selection: $selection) {
-                        MainView().tag(0)
+                        HomeView().tag(0)
                         SearchView().tag(1)
                     }
                     
@@ -37,7 +37,7 @@ struct HomeTabView: View {
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             } else {
                 TabView(selection: $selection) {
-                    MainView()
+                    HomeView()
                         .tag(0)
                         .tabItem {
                             Image(systemName: "location")
