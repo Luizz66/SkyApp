@@ -32,13 +32,13 @@ class Background {
     }
 
     private struct Img {
-        static let day = "day"
-        static let dayCloud = "day-cloud"
-        static let dayRain = "day-rain"
-        static let daySnow = "day-snow"
-        static let night = "night"
-        static let nightCloud = "night-cloud"
-        static let nightRain = "night-rain"
-        static let nightSnow = "night-snow"
+        static let day = "dayBG"
+        static let dayCloud = "dayCloudBG"
+        static let dayRain = "dayRainBG"
+        static let daySnow = "daySnowBG"
+        static let night = "nightBG"
+        static let nightCloud = "nightCloudBG"
+        static let nightRain = "nightRainBG"
+        static let nightSnow = "nightSnowBG"
     }
 }

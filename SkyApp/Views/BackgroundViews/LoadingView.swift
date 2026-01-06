@@ -10,7 +10,7 @@ import SwiftUI
 struct LoadingView: View {
     var body: some View {
         ZStack{
-            Image("loading")
+            Image("loadingBG")
                 .resizable()
                 .scaledToFill()
                 .ignoresSafeArea()

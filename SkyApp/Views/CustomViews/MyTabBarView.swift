@@ -20,7 +20,7 @@ struct MyTabBarView: View {
         .padding(.vertical, 7)
         .background(
             ZStack {
-                Color.white.opacity(0.4) 
+                Color.white.opacity(0.2) 
                     .blur(radius: 15)
             }
                 .clipShape(RoundedRectangle(cornerRadius: 33))
