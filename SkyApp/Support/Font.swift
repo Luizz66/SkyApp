@@ -10,11 +10,11 @@ import SwiftUI
 extension Font {
     static func comicNeue(size: CGFloat, weight: fontWeight? = nil) -> Font {
         switch weight {
-        case .some(.light):
+        case .light:
             return .custom("ComicNeue-Light", size: size)
-        case .some(.regular):
+        case .regular:
             return .custom("ComicNeue-Regular", size: size)
-        case .some(.bold):
+        case .bold:
             return .custom("ComicNeue-Bold", size: size)
         default:
             return .custom("ComicNeue-Bold", size: size)
