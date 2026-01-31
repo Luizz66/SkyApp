@@ -61,6 +61,7 @@ func rangeForecastView(_ forecastViewModel: ForecastViewModel) -> some View {
                         .shadow(color: .black, radius: 0.8)
                 } icon: { 
                     Image(systemName: "thermometer.low")
+                        .font(.system(size: 21))
                         .foregroundStyle(.blue.opacity(0.6), .white)
                         .opacity(0.8)
                 }
@@ -71,6 +72,7 @@ func rangeForecastView(_ forecastViewModel: ForecastViewModel) -> some View {
                         .shadow(color: .black, radius: 0.8)
                 } icon: { 
                     Image(systemName: "thermometer.high")
+                        .font(.system(size: 21))
                         .foregroundStyle(.red.opacity(0.6), .white)
                         .opacity(0.8)
                 }

@@ -1,1 +1,34 @@
 Secrets.plist
+*.xcconfig
+
+# Xcode
+build/
+DerivedData/
+xcuserdata/
+*.xcuserdatad/
+*.xcuserstate
+
+# Swift Package Manager
+.build/
+Packages/
+
+# Logs / temps
+*.xcactivitylog
+*.xcarchive
+*.moved-aside
+
+# macOS
+.DS_Store
+
+# Coverage / tests
+*.profdata
+*.xccovreport
+*.xccovarchive
+
+# Editors
+.vscode/
+.idea/
+
+# General temps
+*.swp
+*.lock
