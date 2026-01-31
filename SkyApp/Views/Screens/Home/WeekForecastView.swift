@@ -38,12 +38,12 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                 .shadow(color: .black, radius: 0.8)
             
             Label { 
-                Text(ForecastFormat.range(dailyForecast.tempMin))
+                Text(ForecastFormat.range(dailyForecast.tempMax))
                     .shadow(color: .black, radius: 0.8)
             } icon: { 
-                Image(systemName: "thermometer.low")
+                Image(systemName: "thermometer.high")
                     .font(.system(size: 18))
-                    .foregroundStyle(.blue.opacity(0.6), .white)
+                    .foregroundStyle(.red.opacity(0.6), .white)
                     .opacity(0.8)
             }
         }
@@ -62,12 +62,12 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
         .overlay(alignment: .leading) { 
             GeometryReader { geo in
                 Label { 
-                    Text(ForecastFormat.range(dailyForecast.tempMax))
+                    Text(ForecastFormat.range(dailyForecast.tempMin))
                         .shadow(color: .black, radius: 0.8)
                 } icon: { 
-                    Image(systemName: "thermometer.high")
+                    Image(systemName: "thermometer.low")
                         .font(.system(size: 18))
-                        .foregroundStyle(.red.opacity(0.6), .white)
+                        .foregroundStyle(.blue.opacity(0.6), .white)
                         .opacity(0.8)
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)

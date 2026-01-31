@@ -29,10 +29,10 @@ struct WeatherMainView: View {
                         Image(systemName: Symbol.mySFSymbol(icon: clim.weather[0].icon))
                             .symbolStyle(clim.weather[0].icon)
                             .myAnimation()
-                            .font(.system(size: 90))
+                            .font(.system(size: 88))
                     }
                     .shadow(color: .black, radius: 0.8)
-                    .padding(.bottom, -15)
+                    .padding(.bottom, -5)
                     
                     Text(WeatherFormat.mainDescription(clim.weather.first?.description))
                         .font(.comicNeue(size: 22))
