@@ -19,6 +19,7 @@ struct WeatherMainView: View {
                 Text(geocodingViewModel.cityTranslate ?? clim.name)
                     .font(.comicNeue(size: 35, weight: .regular))
                     .padding(.bottom, 10)
+                    .padding(.top, 30)
                     .shadow(color: .black, radius: 0.8)
                 VStack {
                     HStack {
