@@ -14,7 +14,7 @@ struct ErrorView: View {
         VStack {
             Spacer()
             Text("ERRO AO CARREGAR OS DADOS!!! 😵‍💫")
-                .font(.size(20))
+                .font(.comicNeue(size: 20))
                 .padding(.bottom, 10)
             HStack(spacing: 5) {
                 ForEach(0..<3, id: \.self) { index in

@@ -4,7 +4,9 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string>Itim-Regular.ttf</string>
+		<string>ComicNeue-Bold.ttf</string>
+		<string>ComicNeue-Light.ttf</string>
+		<string>ComicNeue-Regular.ttf</string>
 	</array>
 	<key>UIRequiresFullScreen</key>
 	<true/>

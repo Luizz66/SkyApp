@@ -17,26 +17,26 @@ struct WeatherMainView: View {
         VStack {
             if let clim = weatherViewModel.weatherData {
                 Text(geocodingViewModel.cityTranslate ?? clim.name)
-                    .font(.size(35))
+                    .font(.comicNeue(size: 35, weight: .regular))
                     .padding(.bottom, 10)
-                    .shadow(color: .black, radius: 1)
+                    .shadow(color: .black, radius: 0.8)
                 VStack {
                     HStack {
                         Text(WeatherFormat.temp(clim.main.temp))
-                            .padding(.trailing, 15)
+                            .font(.comicNeue(size: 90, weight: .light))
+                            .padding(.trailing, 10)
                         Image(systemName: Symbol.mySFSymbol(icon: clim.weather[0].icon))
                             .symbolStyle(clim.weather[0].icon)
                             .myAnimation()
                             .font(.system(size: 90))
                     }
-                    .shadow(color: .black, radius: 1)
+                    .shadow(color: .black, radius: 0.8)
+                    .padding(.bottom, -15)
                     
-                    Text(WeatherFormat
-                            .mainDescription(clim.weather.first?.description))
-                        .font(.size(22))
+                    Text(WeatherFormat.mainDescription(clim.weather.first?.description))
+                        .font(.comicNeue(size: 22))
                         .opacity(0.7)
                 }
-                .font(.size(85))
                 .padding(.bottom, 10)
                 
                 rangeForecastView(forecastViewModel)
@@ -58,24 +58,24 @@ func rangeForecastView(_ forecastViewModel: ForecastViewModel) -> some View {
             HStack {
                 Label { 
                     Text(todayTemp.min)
-                        .shadow(color: .black, radius: 1)
+                        .shadow(color: .black, radius: 0.8)
                 } icon: { 
                     Image(systemName: "thermometer.low")
                         .foregroundStyle(.blue.opacity(0.6), .white)
                         .opacity(0.8)
                 }
-                .padding(.trailing, 30)
+                .padding(.trailing, 15)
                 
                 Label { 
                     Text(todayTemp.max)
-                        .shadow(color: .black, radius: 1)
+                        .shadow(color: .black, radius: 0.8)
                 } icon: { 
                     Image(systemName: "thermometer.high")
                         .foregroundStyle(.red.opacity(0.6), .white)
                         .opacity(0.8)
                 }
             }
-            .font(.size(23))
+            .font(.comicNeue(size: 23))
             .padding(.bottom, 15)
         }
     }

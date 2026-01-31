@@ -21,6 +21,7 @@ struct SkyApp: App {
                 .environmentObject(weatherViewModel)
                 .environmentObject(forecastViewModel)
                 .environmentObject(search)
+                .preferredColorScheme(.dark)
         }
     }
 }

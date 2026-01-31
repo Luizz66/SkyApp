@@ -16,7 +16,7 @@ struct WeekForecastView: View {
                 Image(systemName: "calendar")
                 Text("PREVISÃO PARA 5 DIAS")
             }
-            .font(.size(20))
+            .font(.comicNeue(size: 20))
             .opacity(0.7)
             .padding(.bottom, 15)
             .padding(.top, 40)
@@ -35,37 +35,35 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
         HStack {
             Text(dailyForecast.date)
                 .frame(maxWidth: .infinity, alignment: .leading)
-                .shadow(color: .black, radius: 1)
-            
-            Spacer()
+                .shadow(color: .black, radius: 0.8)
             
             Label { 
                 Text(ForecastFormat.range(dailyForecast.tempMin))
-                    .shadow(color: .black, radius: 1)
+                    .shadow(color: .black, radius: 0.8)
             } icon: { 
                 Image(systemName: "thermometer.low")
                     .foregroundStyle(.blue.opacity(0.6), .white)
                     .opacity(0.8)
             }
-            .padding(.trailing, 20)
+            .padding(.leading, -70)
             
             Label { 
                 Text(ForecastFormat.range(dailyForecast.tempMax))
-                    .shadow(color: .black, radius: 1)
+                    .shadow(color: .black, radius: 0.8)
             } icon: { 
                 Image(systemName: "thermometer.high")
                     .foregroundStyle(.red.opacity(0.6), .white)
                     .opacity(0.8)
             }
         }
-        .font(.size(20))
+        .font(.comicNeue(size: 20))
         .overlay(alignment: .leading) {
             GeometryReader { geo in
                 Image(systemName: Symbol.mySFSymbol(icon: dailyForecast.icon))
                     .symbolStyle(dailyForecast.icon)
                     .myAnimation()
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .shadow(color: .black, radius: 1)
+                    .shadow(color: .black, radius: 0.8)
                     .offset(x: geo.size.width * 0.35)
                     .padding(.top, 2)
             }
@@ -76,7 +74,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                 Spacer()
                 Rectangle()
                     .fill(Color.white.opacity(0.4))
-                    .frame(height: 0.7)
+                    .frame(height: 1)
             }
         )
     }

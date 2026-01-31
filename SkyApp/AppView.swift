@@ -53,4 +53,5 @@ struct AppView: View {
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())
         .environmentObject(Search())
+        .preferredColorScheme(.dark)
 }
