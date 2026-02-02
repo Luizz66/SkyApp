@@ -1,5 +1,5 @@
 //
-//  HomeTabView.swift
+//  ContentTabView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 09/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct HomeTabView: View {
+struct ContentTabView: View {
     @EnvironmentObject var search: Search
     
     @State private var selection = 0
@@ -58,7 +58,7 @@ struct HomeTabView: View {
 }
 
 #Preview {
-    HomeTabView()
+    ContentTabView()
         .environmentObject(LocationManager())
         .environmentObject(WeatherViewModel())
         .environmentObject(ForecastViewModel())

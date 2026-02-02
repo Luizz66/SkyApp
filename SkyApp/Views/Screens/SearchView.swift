@@ -35,21 +35,29 @@ struct SearchView: View {
             .autocorrectionDisabled()
             .listStyle(.plain)
         }
-        .sheet(isPresented: $isPresented) {
-            NavigationStack {
-                HomeView()
-                    .toolbar {
-                        ToolbarItem(placement: .navigationBarLeading) {
-                            Button {
-                                isPresented = false
-                            } label: {
-                                Image(systemName: "xmark")
-                                    .font(.system(size: 18, weight: .bold))
-                                    .foregroundStyle(.white)
+        .fullScreenCover(isPresented: $isPresented) {
+            ZStack {
+                NavigationStack {
+                    GeometryReader { geo in
+                        HomeView()
+                            .frame(width: geo.size.width, height: geo.size.height)
+                            .toolbar {
+                                ToolbarItem(placement: .navigationBarLeading) {
+                                    Button {
+                                        locationManager.searchCoordinate = locationManager.currentCoordinate
+                                        isPresented = false
+                                    } label: {
+                                        Image(systemName: "xmark")
+                                            .font(.system(size: 18, weight: .bold))
+                                            .foregroundStyle(.white)
+                                    }
+                                }
                             }
-                        }
                     }
+                    .padding(.bottom, 100)
+                }
             }
+            .ignoresSafeArea()
         }
     }
 }

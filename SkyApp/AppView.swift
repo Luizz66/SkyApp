@@ -23,7 +23,7 @@ struct AppView: View {
             if let _ = weatherViewModel.weatherData,
                let _ = forecastViewModel.forecastData {
                 
-                HomeTabView()
+                ContentTabView()
                 
             } else if let erro = erroMessage {
                 ZStack {
@@ -37,7 +37,6 @@ struct AppView: View {
                 LoadingView()
             }
         }
-        .preferredColorScheme(.dark)
         .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
             Task {
                 await weatherViewModel.loadWeather(for: coordinate)

@@ -15,10 +15,12 @@ struct BounceEffect: ViewModifier {
             .scaleEffect(animate ? 1.04 : 1.0)
             .offset(y: animate ? -1 : 0)
             .onAppear {
-                withAnimation(.easeInOut(duration: 0.9).repeatForever(autoreverses: true)) {
-                    animate = true
-                }
+                animate = true
             }
+            .animation(
+                .easeInOut(duration: 0.9).repeatForever(autoreverses: true),
+                value: animate
+            )
     }
 }
 

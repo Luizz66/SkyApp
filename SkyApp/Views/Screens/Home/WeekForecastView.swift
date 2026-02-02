@@ -53,6 +53,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                 Image(systemName: Symbol.mySFSymbol(icon: dailyForecast.icon))
                     .symbolStyle(dailyForecast.icon)
                     .myAnimation()
+                    .id(UUID()) // Force to recreate a view
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .shadow(color: .black, radius: 0.8)
                     .offset(x: geo.size.width * 0.35)

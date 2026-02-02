@@ -29,6 +29,7 @@ struct WeatherMainView: View {
                         Image(systemName: Symbol.mySFSymbol(icon: clim.weather[0].icon))
                             .symbolStyle(clim.weather[0].icon)
                             .myAnimation()
+                            .id(UUID()) // Force to recreate a view
                             .font(.system(size: 88))
                     }
                     .shadow(color: .black, radius: 0.8)
