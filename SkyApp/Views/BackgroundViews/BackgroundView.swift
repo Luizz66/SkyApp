@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct BackgroundView: View {
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    let weather: WeatherData?
     
     var body: some View {
         VStack {
-            if let clim = weatherViewModel.weatherData {
+            if let clim = weather {
                 Image(Background.style(icon: clim.weather[0].icon))
                     .resizable()
                     .scaledToFill()
@@ -20,18 +20,12 @@ struct BackgroundView: View {
                     .frame(width: UIScreen.main.bounds.width,
                            height: UIScreen.main.bounds.height)
                     .overlay(Color.black.opacity(0.4))
-            } else {
-                LoadingView()
             }
         }
     }
 }
 
 #Preview {
-    BackgroundView()
-        .environmentObject(LocationManager())
-        .environmentObject(WeatherViewModel())
-        .environmentObject(ForecastViewModel())
-        .environmentObject(Search())
+    BackgroundView(weather: WeatherViewModel().weatherData)
         .preferredColorScheme(.dark)
-}
+ }

@@ -8,11 +8,14 @@
 import SwiftUI
 
 struct ContentTabView: View {
+    @EnvironmentObject var locationManager: LocationManager
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var forecastViewModel: ForecastViewModel
     @EnvironmentObject var search: Search
     
     @State private var selection = 0
     
-    init() {
+    init() {//tabBar with transparent brackground
         let appearance = UITabBarAppearance()
         appearance.configureWithTransparentBackground()
         
@@ -49,6 +52,12 @@ struct ContentTabView: View {
                             Image(systemName: "magnifyingglass")
                         }
                 }
+            }
+        }
+        .onReceive(locationManager.coordinatePublisher(isSearch: search.isSearch).compactMap { $0 }) { coordinate in
+            Task {
+                await weatherViewModel.loadWeather(for: coordinate)
+                await forecastViewModel.loadForecast(for: coordinate)
             }
         }
         .onChange(of: selection) { _, newTab in

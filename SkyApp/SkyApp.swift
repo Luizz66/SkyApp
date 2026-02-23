@@ -16,7 +16,7 @@ struct SkyApp: App {
     
     var body: some Scene {
         WindowGroup {
-            AppView()
+            ContentTabView()
                 .environmentObject(locationManager)
                 .environmentObject(weatherViewModel)
                 .environmentObject(forecastViewModel)

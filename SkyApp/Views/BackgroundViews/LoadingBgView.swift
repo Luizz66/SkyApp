@@ -1,5 +1,5 @@
 //
-//  LoadingView.swift
+//  LoadingBgView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 15/12/25.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct LoadingView: View {
+struct LoadingBgView: View {
     var body: some View {
         ZStack{
             Image("loadingBG")
@@ -18,15 +18,10 @@ struct LoadingView: View {
                 .overlay(
                     Color.black.opacity(0.75)
                 )
-            VStack(spacing: 20) {
-                ProgressView()
-                    .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                    .scaleEffect(1.8)
-            }
         }
     }
 }
 
 #Preview {
-    LoadingView()
+    LoadingBgView()
 }

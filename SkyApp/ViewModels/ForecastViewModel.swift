@@ -82,17 +82,15 @@ class ForecastViewModel: ObservableObject {
             guard let forecasts = grouped[date] else { return nil }
             
             let middayForecast = forecasts.first(where: { $0.dt_txt.contains("12:00:00") })
-            
             let icon = middayForecast?.weather.first?.icon ?? forecasts.first?.weather.first?.icon ?? "01d"
             
             let minTemp = forecasts.map { $0.main.temp_min }.min() ?? 0.0
             let maxTemp = forecasts.map { $0.main.temp_max }.max() ?? 0.0
             
             let weekday = formatDayWeek(from: date)
-            let realDate = isTomorrow(weekday) ? "Amanhã" : weekday
             
             return DailyForecast(
-                date: realDate,
+                date: isTomorrow(weekday) ? "Amanhã" : weekday,
                 icon: icon,
                 tempMin: minTemp,
                 tempMax: maxTemp

@@ -55,7 +55,7 @@ func humidityAndWindView(weatherData: WeatherData) -> some View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(15)
         .font(.comicNeue(size: 16))
-        .myOverlay()
+        .myOverlay(weather: weatherData)
         .padding(.bottom, 3)
     }
     .padding(.trailing, 3)
@@ -77,7 +77,7 @@ func sensationView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.comicNeue(size: 16))
-    .myOverlay()
+    .myOverlay(weather: weatherData)
     .padding([.bottom, .leading], 3)
 }
 
@@ -89,7 +89,7 @@ func precipitationView(weatherData: WeatherData) -> some View {
         }
         .opacity(0.7)
         .padding(.bottom, 40)
-        Text(WeatherFormat.precipatation(weatherData.rain?.one)) 
+        Text(WeatherFormat.precipatation(weatherData.rain?.oneHour)) 
             .font(.comicNeue(size: 30))
             .padding(.bottom, 50)
         Spacer()
@@ -98,7 +98,7 @@ func precipitationView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.comicNeue(size: 16))
-    .myOverlay()
+    .myOverlay(weather: weatherData)
     .padding([.bottom, .trailing], 3)
 }
 
@@ -118,7 +118,7 @@ func sunriseView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.comicNeue(size: 16))
-    .myOverlay()
+    .myOverlay(weather: weatherData)
     .padding([.bottom, .leading], 3)
 }
 
@@ -141,13 +141,12 @@ func cloudsView(weatherData: WeatherData) -> some View {
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
     .font(.comicNeue(size: 16))
-    .myOverlay()
+    .myOverlay(weather: weatherData)
     .padding(.bottom, 35)
 }
 
 #Preview {
     ZStack {
-        BackgroundView()
         ScrollView {
             DetailsWeatherView()
                 .padding(.top, 90)

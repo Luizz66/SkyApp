@@ -8,10 +8,10 @@
 import SwiftUI
 
 struct CustomOverlay: ViewModifier {
-    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    let weather: WeatherData?
     
     func body(content: Content) -> some View {
-        if let clim = weatherViewModel.weatherData {
+        if let clim = weather {
             content
                 .background(
                     RoundedRectangle(cornerRadius: 20)
@@ -27,7 +27,7 @@ struct CustomOverlay: ViewModifier {
 }
 
 extension View {
-    func myOverlay() -> some View {
-        self.modifier(CustomOverlay())
+    func myOverlay(weather: WeatherData) -> some View {
+        self.modifier(CustomOverlay(weather: weather))
     }
 }

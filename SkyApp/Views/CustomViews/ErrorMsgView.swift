@@ -1,5 +1,5 @@
 //
-//  ErrorView.swift
+//  ErrorMsgView.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 13/12/25.
@@ -7,30 +7,31 @@
 
 import SwiftUI
 
-struct ErrorView: View {
+struct ErrorMsgView: View {
     @State private var dotOpacity: [Double] = [1.0, 0.0, 0.0]
     
     var body: some View {
-        VStack {
-            Spacer()
-            Text("ERRO AO CARREGAR OS DADOS!!! 😵‍💫")
-                .font(.comicNeue(size: 20))
-                .padding(.bottom, 10)
-            HStack(spacing: 5) {
-                ForEach(0..<3, id: \.self) { index in
-                    Circle()
-                        .frame(width: 10, height: 10)
-                        .foregroundColor(.white)
-                        .opacity(dotOpacity[index])
+            VStack {
+                Spacer()
+                Spacer()
+                Spacer()
+                Text("Ops... 😵‍💫")
+                Text("Algo de errado aconteceu, tente novamente mais tarde !!! ")
+                    .padding(.bottom)
+                HStack(spacing: 5) {
+                    ForEach(0..<3, id: \.self) { index in
+                        Circle()
+                            .frame(width: 10, height: 10)
+                            .foregroundColor(.white)
+                            .opacity(dotOpacity[index])
+                    }
                 }
-            }
-            Spacer()
-            Spacer()
-            Spacer()
                 .onAppear {
                     animateDots()
                 }
-        }
+            }
+            .font(.comicNeue(size: 20))
+            .padding(.horizontal, 60)
     }
     
     private func animateDots() {

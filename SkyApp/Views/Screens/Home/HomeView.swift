@@ -8,34 +8,62 @@
 import SwiftUI
 
 struct HomeView: View {
+    @EnvironmentObject var weatherViewModel: WeatherViewModel
+    @EnvironmentObject var forecastViewModel: ForecastViewModel
+    
+    var erroMessage: String? {
+        weatherViewModel.errorMessage ??
+        forecastViewModel.errorMessage
+    }
+    
     var body: some View {
-        ZStack {
-            BackgroundView()
-            VStack {
-                WeatherMainView()
-                ScrollView(.vertical, showsIndicators: false) {
-                    WeekForecastView()
-                    DetailsWeatherView()
+            ZStack {
+                if let clim = weatherViewModel.weatherData,
+                   let _ = forecastViewModel.forecastData {
+                    BackgroundView(weather: clim)
+                } else {
+                    LoadingBgView()
                 }
-                .padding(.horizontal, 15)
-                .padding(.bottom, 30)
-                .mask(
-                    LinearGradient(
-                        gradient: Gradient(stops: [
-                            .init(color: .clear, location: 0.0),
-                            .init(color: .black, location: 0.06),
-                            .init(color: .black, location: 0.90),
-                            .init(color: .black.opacity(0.1), location: 0.95),
-                            .init(color: .clear, location: 1.0)
-                        ]),
-                        startPoint: .top,
-                        endPoint: .bottom
-                    )
-                )
-            }
+                VStack {
+                    if let _ = weatherViewModel.weatherData,
+                       let _ = forecastViewModel.forecastData {
+                        WeatherMainView()
+                        ScrollView(.vertical, showsIndicators: false) {
+                            WeekForecastView()
+                            DetailsWeatherView()
+                        }
+                        .padding(.horizontal, 15)
+                        .padding(.bottom, 30)
+                        .verticalFadeMask()
+                    } else if let erro = erroMessage {
+                        strEmptyMainView()
+                        ScrollView(.vertical, showsIndicators: false) {
+                            ErrorMsgView()
+                                .onAppear {
+                                    print("❌ \(erro.uppercased())")
+                                }
+                        }
+                        .padding(.horizontal, 15)
+                        .padding(.bottom, 30)
+                        .verticalFadeMask()
+                    } else {
+                        strEmptyMainView()
+                        ProgressView()
+                            .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                            .scaleEffect(1.3)
+                        Spacer()
+                    }
+                }
         }
-    } 
+    }
+    
+    private func strEmptyMainView() -> some View {
+        Text("--")
+            .font(.comicNeue(size: 95, weight: .light))
+            .padding(.top, 70)
+    }
 }
+
 
 #Preview {
     HomeView()

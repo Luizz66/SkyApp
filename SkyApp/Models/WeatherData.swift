@@ -31,7 +31,11 @@ struct Wind: Codable {
 }
 
 struct Rain: Codable {
-    let one: Double
+    let oneHour: Double?
+    
+    enum CodingKeys: String, CodingKey {
+        case oneHour = "1h"
+    }
 }
 
 struct Clouds: Codable {
