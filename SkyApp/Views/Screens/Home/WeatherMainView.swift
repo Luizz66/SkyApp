@@ -26,10 +26,10 @@ struct WeatherMainView: View {
                         Text(WeatherFormat.temp(clim.main.temp))
                             .font(.comicNeue(size: 90, weight: .light))
                             .padding(.trailing, 10)
-                        Image(systemName: Symbol.mySFSymbol(icon: clim.weather[0].icon))
-                            .symbolStyle(clim.weather[0].icon)
+                        Image(systemName: Icons.myIcon(clim.weather[0].icon))
+                            .iconStyle(clim.weather[0].icon)
                             .myAnimation()
-                            .id(UUID()) // Force to recreate view
+                            .id(clim.weather[0].icon) // Force to recreate icon
                             .font(.system(size: 88))
                     }
                     .shadow(color: .black, radius: 0.8)

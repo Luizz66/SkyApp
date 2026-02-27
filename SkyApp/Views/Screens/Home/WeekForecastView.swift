@@ -50,10 +50,10 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
         .font(.comicNeue(size: 20))
         .overlay(alignment: .leading) {
             GeometryReader { geo in
-                Image(systemName: Symbol.mySFSymbol(icon: dailyForecast.icon))
-                    .symbolStyle(dailyForecast.icon)
+                Image(systemName: Icons.myIcon(dailyForecast.icon))
+                    .iconStyle(dailyForecast.icon)
                     .myAnimation()
-                    .id(UUID()) // Force to recreate view
+                    .id(UUID()) // Force to recreate icon
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .shadow(color: .black, radius: 0.8)
                     .offset(x: geo.size.width * 0.35)

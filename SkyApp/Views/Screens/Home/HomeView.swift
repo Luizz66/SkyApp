@@ -20,7 +20,7 @@ struct HomeView: View {
             ZStack {
                 if let clim = weatherViewModel.weatherData,
                    let _ = forecastViewModel.forecastData {
-                    BackgroundView(weather: clim)
+                    BackgroundView(weatherIcon: clim.weather[0].icon)
                 } else {
                     LoadingBgView()
                 }

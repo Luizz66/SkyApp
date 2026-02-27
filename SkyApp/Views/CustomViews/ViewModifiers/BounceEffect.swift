@@ -13,12 +13,12 @@ struct BounceEffect: ViewModifier {
     func body(content: Content) -> some View {
         content
             .scaleEffect(animate ? 1.04 : 1.0)
-            .offset(y: animate ? -1 : 0)
-            .onAppear {
+            .offset(y: animate ? -3 : 0)
+            .task {
                 animate = true
             }
             .animation(
-                .easeInOut(duration: 0.9).repeatForever(autoreverses: true),
+                .easeInOut(duration: 1.4).repeatForever(autoreverses: true),
                 value: animate
             )
     }
@@ -27,5 +27,13 @@ struct BounceEffect: ViewModifier {
 extension View {
     func myAnimation() -> some View {
         self.modifier(BounceEffect())
+    }
+}
+
+#Preview {
+    VStack {
+        Image(systemName: "cloud.drizzle.fill")
+            .myAnimation()
+            .font(.system(size: 200))
     }
 }

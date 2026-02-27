@@ -1,5 +1,5 @@
 //
-//  Symbol.swift
+//  Icons.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 15/09/25.
@@ -8,8 +8,8 @@
 import Foundation
 import SwiftUI
 
-class Symbol {
-    private let SFSymbols: [String: String] = [
+class Icons {
+    private let SF_Symbols: [String: String] = [
         "01d": "sun.max.fill",
         "01n": "moon.stars.fill",
         "02d": "cloud.sun.fill",
@@ -30,13 +30,13 @@ class Symbol {
         "50n": "cloud.fog.fill"
     ]
     
-    static func mySFSymbol(icon: String) -> String {
-        return Symbol().SFSymbols[icon] ?? "circle.badge.questionmark.fill"
+    static func myIcon(_ icon: String) -> String {
+        return Icons().SF_Symbols[icon] ?? "circle.badge.questionmark.fill"
     }
 }
 
 extension Image {
-    func symbolStyle(_ icon: String) -> some View {
+    func iconStyle(_ icon: String) -> some View {
         Group {
             switch icon {
             case "01d":

@@ -17,7 +17,7 @@ struct MyTabBarView: View {
             tabButton(icon: "magnifyingglass", tag: 1)
         }
         .padding(.horizontal, 8)
-        .padding(.vertical, 7)
+        .padding(.vertical, 5)
         .background(
             ZStack {
                 Color.white.opacity(0.2) 

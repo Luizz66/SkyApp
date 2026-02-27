@@ -8,12 +8,12 @@
 import SwiftUI
 
 struct BackgroundView: View {
-    let weather: WeatherData?
+    let weatherIcon: String?
     
     var body: some View {
         VStack {
-            if let clim = weather {
-                Image(Background.style(icon: clim.weather[0].icon))
+            if let clim = weatherIcon {
+                Image(Background.img(icon: clim))
                     .resizable()
                     .scaledToFill()
                     .ignoresSafeArea()
@@ -26,6 +26,6 @@ struct BackgroundView: View {
 }
 
 #Preview {
-    BackgroundView(weather: WeatherViewModel().weatherData)
+    BackgroundView(weatherIcon: Background.img(icon: "01d"))
         .preferredColorScheme(.dark)
  }
