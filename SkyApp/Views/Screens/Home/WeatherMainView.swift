@@ -17,14 +17,14 @@ struct WeatherMainView: View {
         VStack {
             if let clim = weatherViewModel.weatherData {
                 Text(geocodingViewModel.cityTranslate ?? clim.name)
-                    .font(.comicNeue(size: 35, weight: .regular))
+                    .font(.myFont(size: 35, weight: .regular))
                     .padding(.bottom, 10)
                     .padding(.top, 30)
                     .shadow(color: .black, radius: 0.8)
                 VStack {
                     HStack {
                         Text(WeatherFormat.temp(clim.main.temp))
-                            .font(.comicNeue(size: 90, weight: .light))
+                            .font(.myFont(size: 90, weight: .light))
                             .padding(.trailing, 10)
                         Image(systemName: Icons.myIcon(clim.weather[0].icon))
                             .iconStyle(clim.weather[0].icon)
@@ -36,7 +36,7 @@ struct WeatherMainView: View {
                     .padding(.bottom, -5)
                     
                     Text(WeatherFormat.mainDescription(clim.weather.first?.description))
-                        .font(.comicNeue(size: 22))
+                        .font(.myFont(size: 22))
                         .opacity(0.7)
                 }
                 .padding(.bottom, 10)
@@ -79,7 +79,7 @@ func rangeForecastView(_ forecastViewModel: ForecastViewModel) -> some View {
                         .opacity(0.8)
                 }
             }
-            .font(.comicNeue(size: 23))
+            .font(.myFont(size: 23))
             .padding(.bottom, 15)
         }
     }

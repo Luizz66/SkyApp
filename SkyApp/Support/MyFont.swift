@@ -1,5 +1,5 @@
 //
-//  Font.swift
+//  MyFont.swift
 //  SkyApp
 //
 //  Created by Luiz Gustavo Barros Campos on 11/12/25.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 extension Font {
-    static func comicNeue(size: CGFloat, weight: fontWeight? = nil) -> Font {
+    static func myFont(size: CGFloat, weight: fontWeight? = nil) -> Font {
         switch weight {
         case .light:
             return .custom("ComicNeue-Light", size: size)

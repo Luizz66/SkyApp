@@ -38,7 +38,7 @@ func humidityAndWindView(weatherData: WeatherData) -> some View {
                 .opacity(0.7)
                 .padding(.bottom, 20)
                 Text("\(weatherData.main.humidity)%")
-                    .font(.comicNeue(size: 30))
+                    .font(.myFont(size: 30))
             }
             
             VStack (alignment: .leading) {
@@ -49,12 +49,12 @@ func humidityAndWindView(weatherData: WeatherData) -> some View {
                 .opacity(0.7)
                 .padding(.bottom, 20)
                 Text(WeatherFormat.wind(weatherData.wind.speed))
-                    .font(.comicNeue(size: 30))
+                    .font(.myFont(size: 30))
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
         .padding(15)
-        .font(.comicNeue(size: 16))
+        .font(.myFont(size: 16))
         .myOverlay(weather: weatherData)
         .padding(.bottom, 3)
     }
@@ -70,13 +70,13 @@ func sensationView(weatherData: WeatherData) -> some View {
         .opacity(0.7)
         .padding(.bottom, 20)
         Text(WeatherFormat.temp(weatherData.main.feels_like))
-            .font(.comicNeue(size: 30))
+            .font(.myFont(size: 30))
         Spacer()
         Text(WeatherFormat.sensationDescription(weatherData.main.temp, weatherData.main.feels_like))
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
-    .font(.comicNeue(size: 16))
+    .font(.myFont(size: 16))
     .myOverlay(weather: weatherData)
     .padding([.bottom, .leading], 3)
 }
@@ -90,14 +90,14 @@ func precipitationView(weatherData: WeatherData) -> some View {
         .opacity(0.7)
         .padding(.bottom, 40)
         Text(WeatherFormat.precipatation(weatherData.rain?.oneHour)) 
-            .font(.comicNeue(size: 30))
+            .font(.myFont(size: 30))
             .padding(.bottom, 50)
         Spacer()
         Text("nas últimas 1h.")
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
-    .font(.comicNeue(size: 16))
+    .font(.myFont(size: 16))
     .myOverlay(weather: weatherData)
     .padding([.bottom, .trailing], 3)
 }
@@ -111,13 +111,13 @@ func sunriseView(weatherData: WeatherData) -> some View {
         .opacity(0.7)
         .padding(.bottom, 40)
         Text(WeatherFormat.sys(weatherData.sys.sunrise))
-            .font(.comicNeue(size: 30))
+            .font(.myFont(size: 30))
         Spacer()
         Text("Pôr do sol: \(WeatherFormat.sys(weatherData.sys.sunset))")
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
-    .font(.comicNeue(size: 16))
+    .font(.myFont(size: 16))
     .myOverlay(weather: weatherData)
     .padding([.bottom, .leading], 3)
 }
@@ -132,15 +132,15 @@ func cloudsView(weatherData: WeatherData) -> some View {
         .padding(.bottom, 20)
         HStack {
             Text("\(weatherData.clouds.all)% do céu.")
-                .font(.comicNeue(size: 30))
+                .font(.myFont(size: 30))
             Spacer()
             CloudPorcentageView(progress: Double(weatherData.clouds.all))
-                .font(.comicNeue(size: 65))
+                .font(.myFont(size: 65))
         }
     }
     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
     .padding(15)
-    .font(.comicNeue(size: 16))
+    .font(.myFont(size: 16))
     .myOverlay(weather: weatherData)
     .padding(.bottom, 35)
 }

@@ -59,7 +59,7 @@ struct HomeView: View {
     
     private func strEmptyMainView() -> some View {
         Text("--")
-            .font(.comicNeue(size: 95, weight: .light))
+            .font(.myFont(size: 95, weight: .light))
             .padding(.top, 70)
     }
 }
