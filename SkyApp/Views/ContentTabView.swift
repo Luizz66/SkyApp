@@ -36,7 +36,7 @@ struct ContentTabView: View {
                     }
                     
                     MyTabBarView(selection: $selection)
-                        .padding(.bottom, -15)
+                        .padding(.bottom, -5)
                 }
                 .ignoresSafeArea(.keyboard, edges: .bottom)
             } else {
