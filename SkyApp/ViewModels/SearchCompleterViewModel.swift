@@ -13,6 +13,7 @@ class SearchCompleterViewModel: NSObject, ObservableObject, MKLocalSearchComplet
     @Published var suggestions: [MKLocalSearchCompletion] = []
     
     private var completer: MKLocalSearchCompleter
+    private var cancellables = Set<AnyCancellable>()
     
     override init() {
         self.completer = MKLocalSearchCompleter()
@@ -29,8 +30,6 @@ class SearchCompleterViewModel: NSObject, ObservableObject, MKLocalSearchComplet
             }
             .store(in: &cancellables)
     }
-    
-    private var cancellables = Set<AnyCancellable>()
     
     func completerDidUpdateResults(_ completer: MKLocalSearchCompleter) {
         suggestions = completer.results

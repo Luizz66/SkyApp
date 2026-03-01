@@ -30,7 +30,7 @@ struct ErrorMsgView: View {
                     animateDots()
                 }
             }
-            .font(.myFont(size: 20))
+            .font(.myFont(style: .title3))
             .padding(.horizontal, 60)
     }
     

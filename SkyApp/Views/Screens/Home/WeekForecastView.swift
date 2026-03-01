@@ -16,7 +16,7 @@ struct WeekForecastView: View {
                 Image(systemName: "calendar")
                 Text("PREVISÃO PARA 5 DIAS")
             }
-            .font(.myFont(size: 20))
+            .font(.myFont(style: .title3))
             .opacity(0.7)
             .padding(.bottom, 15)
             .padding(.top, 40)
@@ -47,7 +47,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                     .opacity(0.8)
             }
         }
-        .font(.myFont(size: 20))
+        .font(.myFont(style: .title3))
         .overlay(alignment: .leading) {
             GeometryReader { geo in
                 Image(systemName: Icons.myIcon(dailyForecast.icon))
@@ -74,7 +74,7 @@ func dayView(daily dailyForecast: DailyForecast) -> some View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .offset(x: geo.size.width * 0.65)
             }
-            .font(.myFont(size: 20))
+            .font(.myFont(style: .title3))
         }
         .padding(.vertical, 10)
         .overlay(

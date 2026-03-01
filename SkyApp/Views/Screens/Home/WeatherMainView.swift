@@ -36,7 +36,7 @@ struct WeatherMainView: View {
                     .padding(.bottom, -5)
                     
                     Text(WeatherFormat.mainDescription(clim.weather.first?.description))
-                        .font(.myFont(size: 22))
+                        .font(.myFont(style: .title2))
                         .opacity(0.7)
                 }
                 .padding(.bottom, 10)

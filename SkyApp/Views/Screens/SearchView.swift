@@ -22,7 +22,7 @@ struct SearchView: View {
                         locationManager.getSearchLocation(suggestion)
                         isPresented = true
                     } label: {
-                        Text(suggestion.title + ", " + suggestion.subtitle)
+                        Text("\(suggestion.title), \(suggestion.subtitle)")
                     }
                 }
             }
@@ -35,6 +35,7 @@ struct SearchView: View {
             .autocorrectionDisabled()
             .listStyle(.plain)
         }
+        .font(.myFont(style: .title3))
         .fullScreenCover(isPresented: $isPresented) {
             ZStack {
                 NavigationStack {
